@@ -1,4 +1,6 @@
-AndroidRipper
-=============
+# Android Ripper ToolSet
 
-The GUI Ripper for Android Mobile Applications
+----
+
+**Android Ripper ToolSet** is a set of tools for the automatic GUI testing of Mobile Android Applications developed by the **REvERSE** (REsEarch laboRatory of Software Engineering) group of the University of Naples "Federico II".
+
