@@ -1,0 +1,354 @@
+package it.unina.android.ripper.driver.systematic;
+
+import it.unina.android.ripper.autoandroidlib.Actions;
+import it.unina.android.ripper.comparator.GenericComparator;
+import it.unina.android.ripper.comparator.GenericComparatorConfiguration;
+import it.unina.android.ripper.comparator.IComparator;
+import it.unina.android.ripper.description.XMLDescriptionLoader;
+import it.unina.android.ripper.driver.AbstractDriver;
+import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.net.Message;
+import it.unina.android.ripper.net.MessageType;
+import it.unina.android.ripper.net.RipperServiceSocket;
+import it.unina.android.ripper.planner.SimplePlanner;
+import it.unina.android.ripper.planner.task.Event;
+import it.unina.android.ripper.planner.task.Task;
+import it.unina.android.ripper.planner.task.TaskList;
+import it.unina.android.ripper.scheduler.DepthScheduler;
+import it.unina.android.ripper.states.ActivityStateList;
+
+import java.net.SocketException;
+
+public class SystematicDriver extends AbstractDriver
+{
+	int nEvents = 0;
+	int nTasks = 0;
+	
+	
+	protected IComparator comparator;
+	
+	//TODO: generalize -> now only activity-based state
+	protected ActivityStateList statesList;
+	
+	public SystematicDriver()
+	{
+		super();
+		this.scheduler = new DepthScheduler();
+		this.planner = new SimplePlanner();
+		this.comparator = new GenericComparator( GenericComparatorConfiguration.Factory.getDefaultComparator() ); 
+		this.descriptionLoader = new XMLDescriptionLoader();
+		this.statesList = new ActivityStateList(this.comparator);
+	}
+
+	/*
+	 * Precondition: rsSocket must be connected
+	 * 
+	 * returns true if ping ok, false if not
+	 */
+	/*
+	private boolean ping()
+	{
+		int pingRetryCount = 0;
+		
+		try
+		{			
+			do
+			{
+				notifyRipperLog("Ping...");
+				Message m = rsSocket.ping();
+				
+				if (m != null && m.getType().equals(MessageType.PONG_MESSAGE))
+				{
+					return true;
+				}
+				else if (m != null && m.getType().equals(MessageType.PONG_MESSAGE))
+				{
+					notifyRipperLog("Message != PONG -> " + m.getType());
+				}
+				
+				if (this.running == false )
+					return false;
+				
+				if (pingRetryCount++ > PING_MAX_RETRY)
+				{
+					appendLineToLogFile("\n<failure type=\"ping\" />\n");
+					return false;
+				}
+				
+			} while(true);
+		}
+		catch (Exception ex)
+		{
+			return false;
+		}
+	}
+	*/
+	
+
+	
+	
+	
+	/*
+	 * Precondition: rsSocket must be connected
+	 * 
+	 * returns true if ping ok, false if not
+	 */
+	private void rippingBootstrap()
+	{
+		try {
+			if (PULL_COVERAGE_ZERO)
+				pullCoverage(0);
+			
+			notifyRipperLog("Alive...");
+			if (rsSocket.isAlive() == false)
+				throw new RuntimeException("Emulator Killed!"); //emulator killed
+			
+			//describe
+			notifyRipperLog("Send describe msg...");
+			String xml = rsSocket.describe();
+			
+			if (xml != null)
+			{
+				//parse
+				notifyRipperLog("Parse...");
+				notifyRipperLog(xml);
+				appendLineToLogFile( xml.substring(45, xml.length() - 8) );
+				
+				ActivityDescription activity = descriptionLoader.load(xml);
+				
+				//add to visited states
+				statesList.addActivity(activity);
+				
+				//plan
+				notifyRipperLog("Plan...");
+				TaskList plannedTasks = planner.plan(null, activity);
+				
+				if (plannedTasks != null && plannedTasks.size() > 0)
+				{
+					notifyRipperLog("plannedTasks " + plannedTasks.size());
+					
+					appendLineToLogFile("\n<extracted_events>");
+					for (Task t : plannedTasks)
+						appendLineToLogFile(t.get(0).toXMLString());
+					appendLineToLogFile("</extracted_events>\n");
+				}
+				else
+				{
+					notifyRipperLog("error in planning!");
+					
+					appendLineToLogFile("\n<error type=\"no_planned_task\" />\n");
+					throw new RuntimeException("No planned tasks!");
+				}
+				
+				scheduler.addTasks(plannedTasks);
+			}
+			
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	protected void rippingLoop()
+	{		
+		//reset counters
+		nEvents = 0;
+		nTasks = 0;
+		
+		boolean bootstrap = false;
+	
+		long t1 = System.currentTimeMillis();
+				
+		while (running)
+		{			
+			boolean started = this.startup();
+			
+			if (running && started)
+			{
+				createLogFile();
+				
+				try
+				{
+					if (bootstrap == false)
+					{					
+						this.rippingBootstrap();
+						bootstrap = true;
+					}	
+					
+					//execute
+					Task t = scheduler.nextTask();
+					
+					//fine della tasklist					
+					if (t != null)
+					{
+						Message msg = executeTask(t);
+						
+						
+						if (msg != null && msg.isTypeOf(MessageType.ACK_MESSAGE))
+						{
+							nTasks++;
+							nEvents += t.size();
+							
+							Actions.sleepMilliSeconds(SLEEP_AFTER_EVENT);
+							
+							plan(msg);
+						}
+						else if ((msg != null && msg.isTypeOf(MessageType.FAIL_MESSAGE)) || running == false)
+						{
+							failureCount++;
+							
+							if ((msg != null && msg.isTypeOf(MessageType.FAIL_MESSAGE)))
+								appendLineToLogFile("\n<failure type=\"fail_message\" type=\"0\" />\n");
+							else
+								appendLineToLogFile("\n<failure type=\"fail_message\" type=\"1\" />\n");
+							
+							//describe
+							notifyRipperLog("Send describe msg...");
+							String xml = rsSocket.describe();
+							
+							if (xml != null)
+							{
+								//parse
+								notifyRipperLog("Parse...");
+								notifyRipperLog(xml);
+								appendLineToLogFile( xml.substring(45, xml.length() - 8) );
+							}
+							
+							if ((msg != null && msg.isTypeOf(MessageType.FAIL_MESSAGE)))
+								notifyRipperLog("Failure! (0)");
+							else
+								notifyRipperLog("Failure! (1)");
+						}
+								
+						if (PULL_COVERAGE)
+						{
+							notifyRipperLog("pull coverage before end...");
+							pullCoverage(nTasks);							
+						}
+					
+						
+						Actions.sleepMilliSeconds(SLEEP_AFTER_TASK);
+						
+						
+						
+					}
+					else
+					{
+						this.running = false;
+					}
+				}
+				catch(Throwable t)
+				{
+					t.printStackTrace();
+				}
+				
+				endLogFile();
+			}
+				
+			//shutdown
+			this.shutdown();
+			
+			this.ifIsPausedDoPause();
+		}
+		
+		this.notifyRipperEnded();
+		
+		long executionTime = System.currentTimeMillis() - t1;
+		
+	}
+	
+	public Message executeTask(Task t)
+	{
+		int failureCount = 0;
+		
+		Message msg = null;
+		for(Event evt : t)
+		{			
+			msg = executeEvent(evt);
+			
+			if (msg == null)
+			{
+				break;
+			}
+			else
+			{
+				getCurrentDescription();
+			}
+		}
+		
+		return msg;
+	}
+	
+	public Message executeEvent(Event evt)
+	{
+		Message msg = null;
+		
+		appendLineToLogFile(evt.toXMLString());
+		
+		notifyRipperLog("event:"+evt.toString());
+		rsSocket.sendEvent(evt);
+		
+		msg = this.waitAck();
+		
+		return msg;
+	}
+	
+	public void plan(Message msg)
+	{
+		//describe
+		notifyRipperLog("Send describe msg...");
+		String xml = rsSocket.describe();
+		
+		if (xml != null)
+		{
+			//parse
+			notifyRipperLog("Parse...");
+			notifyRipperLog(xml);
+			appendLineToLogFile( xml.substring(45, xml.length() - 8) );
+			
+			ActivityDescription activity = descriptionLoader.load(xml);
+			
+			notifyRipperLog("\tComparator...");
+			if (statesList.containsActivity(activity) == null)
+			{
+				//add to visited states
+				statesList.addActivity(activity);
+				
+				//plan
+				notifyRipperLog("Plan...");
+				TaskList plannedTasks = planner.plan(t, activity);
+				
+				if (plannedTasks != null && plannedTasks.size() > 0)
+				{
+					notifyRipperLog("plannedTasks " + plannedTasks.size());
+					
+					appendLineToLogFile("\n<extracted_events>");
+					for (Task tsk : plannedTasks)
+						appendLineToLogFile(tsk.get(tsk.size() - 1).toXMLString());
+					appendLineToLogFile("</extracted_events>\n");
+				}
+				else
+				{
+					appendLineToLogFile("\n<extracted_events />\n");
+				}
+				
+				scheduler.addTasks(plannedTasks);
+				
+				//DEBUG TASKLIST
+				appendLineToLogFile("\n<tasklist>");
+				for (Task task : scheduler.getTaskList())
+				{
+					appendLineToLogFile("\n<task>\n");
+					for(Event evt : task)
+					{
+						appendLineToLogFile(evt.toXMLString());
+					}
+					appendLineToLogFile("\n</task>");
+				}
+				appendLineToLogFile("\n</tasklist>");
+				
+			}
+		}
+	}
+}
