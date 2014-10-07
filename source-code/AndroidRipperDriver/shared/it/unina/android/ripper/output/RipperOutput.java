@@ -11,6 +11,7 @@ public interface RipperOutput {
 	public String outputActivityDescriptionAndPlannedTasks(ActivityDescription a, TaskList t);
 	public String outputWidgetDescription(WidgetDescription a);
 	public String outputEvent(Event a);
+	public String outputFiredEvent(Event evt);
 	public String outputTask(Task a);
 	public String outputExtractedEvents(TaskList a);
 	public String outputExtractedEvents(TaskList t, ActivityDescription from);

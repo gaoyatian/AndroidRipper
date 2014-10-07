@@ -4,7 +4,7 @@ import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.comparator.GenericComparator;
 import it.unina.android.ripper.comparator.GenericComparatorConfiguration;
 import it.unina.android.ripper.comparator.IComparator;
-import it.unina.android.ripper.description.IDescriptionLoader;
+import it.unina.android.ripper.input.RipperInput;
 import it.unina.android.ripper.observer.RipperEventListener;
 import it.unina.android.ripper.output.RipperOutput;
 import it.unina.android.ripper.planner.Planner;
@@ -82,7 +82,7 @@ public class SystematicRipperStarter implements RipperEventListener {
 		
 		Scheduler scheduler = null;
 		Planner planner = null;
-		IDescriptionLoader descriptionLoader = null;
+		RipperInput ripperInput = null;
 		TerminationCriterion terminationCriterion = null;
 		IComparator comparator = null;
 		RipperOutput ripperOutput = null;
@@ -107,7 +107,7 @@ public class SystematicRipperStarter implements RipperEventListener {
 			String comparatorClass = conf.getProperty("comparator", "it.unina.android.ripper.comparator.GenericComparator");
 			String schedulerClass = conf.getProperty("scheduler", "it.unina.android.ripper.scheduler.BreadthScheduler");
 			String plannerClass = conf.getProperty("planner", "it.unina.android.ripper.planner.HandlerBasedPlanner");
-			String descriptionLoaderClass = conf.getProperty("description_loader", "it.unina.android.ripper.description.XMLDescriptionLoader");
+			String inputClass = conf.getProperty("ripper_input", "it.unina.android.ripper.inpit.XMLRipperInput");
 			String terminationCriterionClass = conf.getProperty("termination_criterion", "it.unina.android.ripper.termination.EmptyActivityStateListTerminationCriterion");
 			String ripperOutputClass = conf.getProperty("ripper_output", "it.unina.android.ripper.output.XMLRipperOutput");
 			
@@ -194,9 +194,9 @@ public class SystematicRipperStarter implements RipperEventListener {
 			}
 			
 			try {
-				descriptionLoader = (IDescriptionLoader) Class.forName(descriptionLoaderClass).newInstance();
+				ripperInput = (RipperInput) Class.forName(inputClass).newInstance();
 			} catch (Exception ex) {
-				println("ERROR: description_loader class " + descriptionLoaderClass);
+				println("ERROR: description_loader class " + inputClass);
 				ex.printStackTrace();
 				System.exit(1);
 			}
@@ -276,7 +276,7 @@ public class SystematicRipperStarter implements RipperEventListener {
 		driver = new SystematicDriver(
 				scheduler,
 				planner,
-				descriptionLoader,
+				ripperInput,
 				comparator,
 				terminationCriterion,
 				ripperOutput

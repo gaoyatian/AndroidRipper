@@ -1,4 +1,4 @@
-package it.unina.android.ripper.description;
+package it.unina.android.ripper.input;
 
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.WidgetDescription;
@@ -12,10 +12,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class XMLDescriptionLoader implements IDescriptionLoader {
+public class XMLRipperInput implements RipperInput {
 
 	@Override
-	public ActivityDescription load(String description) {
+	public ActivityDescription inputActivityDescription(String description) {
 		
 		//System.out.println(description);
 		

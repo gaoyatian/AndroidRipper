@@ -41,10 +41,9 @@ public class XMLRipperOutput implements RipperOutput
 	protected Document buildActivityDescriptionDocument(ActivityDescription ad) throws ParserConfigurationException {
 		Document doc = DocumentBuilderFactory.newInstance()
 				.newDocumentBuilder().newDocument();
-		Element root = doc.createElement(ROOT);
-		doc.appendChild(root);
-
 		Element activity = doc.createElement(ACTIVITY);
+		doc.appendChild(activity);
+
 		activity.setAttribute(ACTIVITY_TITLE, ad.getTitle());
 		activity.setAttribute(ACTIVITY_NAME, ad.getName());
 		activity.setAttribute(ACTIVITY_CLASS, ad.getClassName());
@@ -85,8 +84,6 @@ public class XMLRipperOutput implements RipperOutput
 					.getDocumentElement();
 			activity.appendChild( doc.importNode((Node)widget, true) );
 		}
-
-		root.appendChild(activity);
 		
 		return doc;
 	}
@@ -217,7 +214,19 @@ public class XMLRipperOutput implements RipperOutput
 	@Override
 	public String outputEvent(Event evt) {
 		try {
-			Document doc = this.buildEventDescriptionDocument(evt);
+			Document doc = this.buildEventDescriptionDocument(evt, EVENT);
+			return this.XML2String(doc);
+		} catch (ParserConfigurationException pex) {
+			pex.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public String outputFiredEvent(Event evt) {
+		try {
+			Document doc = this.buildEventDescriptionDocument(evt, FIRED_EVENT);
 			return this.XML2String(doc);
 		} catch (ParserConfigurationException pex) {
 			pex.printStackTrace();
@@ -226,9 +235,9 @@ public class XMLRipperOutput implements RipperOutput
 		return null;
 	}
 
-	protected Document buildEventDescriptionDocument(Event e) throws ParserConfigurationException {
+	protected Document buildEventDescriptionDocument(Event e, String TAG) throws ParserConfigurationException {
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		Element event = doc.createElement(EVENT);
+		Element event = doc.createElement(TAG);
 		doc.appendChild(event);
 		
 		event.setAttribute(EVENT_INTERACTION, e.getInteraction());
@@ -299,7 +308,7 @@ public class XMLRipperOutput implements RipperOutput
 			
 			Element event = null;
 			if (e != null) {
-				event = this.buildEventDescriptionDocument(e).getDocumentElement();
+				event = this.buildEventDescriptionDocument(e, EVENT).getDocumentElement();
 				task.appendChild( doc.importNode((Node)event, true) );
 			} else {
 				event = doc.createElement(EVENT);
@@ -329,7 +338,7 @@ public class XMLRipperOutput implements RipperOutput
 		
 		Element event = null;
 		if (e != null) {
-			event = this.buildEventDescriptionDocument(e).getDocumentElement();		
+			event = this.buildEventDescriptionDocument(e, FIRED_EVENT).getDocumentElement();		
 			step.appendChild( doc.importNode((Node)event, true) );
 		} else {
 			event = doc.createElement(EVENT);
@@ -405,7 +414,7 @@ public class XMLRipperOutput implements RipperOutput
 		
 		Element event = null;
 		if (e != null) {
-			event = this.buildEventDescriptionDocument(e).getDocumentElement();
+			event = this.buildEventDescriptionDocument(e, FIRED_EVENT).getDocumentElement();
 			step.appendChild( doc.importNode((Node)event, true) );
 		} else {
 			event = doc.createElement(EVENT);
@@ -466,7 +475,7 @@ public class XMLRipperOutput implements RipperOutput
 		
 			Element event = null;
 			if (e != null) {
-				event = this.buildEventDescriptionDocument(e).getDocumentElement();
+				event = this.buildEventDescriptionDocument(e, EVENT).getDocumentElement();
 				extractedEvents.appendChild( doc.importNode((Node)event, true) );
 			}
 			
@@ -576,8 +585,9 @@ public class XMLRipperOutput implements RipperOutput
 	public static final String FINAL_ACTIVITY = "final_activity";
 	
 	public static final String EXTRACTED_EVENTS = "extracted_events";
+	public static final String FIRED_EVENT = "fired_event";
 	
 	public static final String FIRST_STEP = "bootstrap";
 	
-	public static final String DESCRIPTION = "description";
+	public static final String DESCRIPTION = "activity_description";
 }

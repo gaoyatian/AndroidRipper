@@ -1,8 +1,8 @@
 package it.unina.android.ripper.driver.random;
 
 import it.unina.android.ripper.autoandroidlib.Actions;
-import it.unina.android.ripper.description.IDescriptionLoader;
 import it.unina.android.ripper.driver.systematic.SystematicDriver;
+import it.unina.android.ripper.input.RipperInput;
 import it.unina.android.ripper.observer.RipperEventListener;
 import it.unina.android.ripper.planner.Planner;
 import it.unina.android.ripper.scheduler.DebugRandomScheduler;
@@ -77,7 +77,7 @@ public class RandomRipperStarter implements RipperEventListener {
 		
 		Scheduler scheduler = null;
 		Planner planner = null;
-		IDescriptionLoader descriptionLoader = null;
+		RipperInput ripperInput = null;
 		
 		if (conf != null)
 		{
@@ -103,7 +103,7 @@ public class RandomRipperStarter implements RipperEventListener {
 			
 			String schedulerClass = conf.getProperty("scheduler", "it.unina.android.ripper.scheduler.DebugRandomScheduler");
 			String plannerClass = conf.getProperty("planner", "it.unina.android.ripper.planner.HandlerBasedPlanner");
-			String descriptionLoaderClass = conf.getProperty("description_loader", "it.unina.android.ripper.description.XMLDescriptionLoader");
+			String inputClass = conf.getProperty("ripper_input", "it.unina.android.ripper.input.XMLRipperInput");
 			
 			String logcatPath = null;
 			try { logcatPath = conf.getProperty("logcat_path", ((new java.io.File( "." ).getCanonicalPath())+"/logcat/")); } catch (IOException e) { }
@@ -194,9 +194,9 @@ public class RandomRipperStarter implements RipperEventListener {
 			}
 			
 			try {
-				descriptionLoader = (IDescriptionLoader) Class.forName(descriptionLoaderClass).newInstance();
+				ripperInput = (RipperInput) Class.forName(inputClass).newInstance();
 			} catch (Exception ex) {
-				println("ERROR: description_loader class " + descriptionLoaderClass);
+				println("ERROR: description_loader class " + inputClass);
 				ex.printStackTrace();
 				System.exit(1);
 			}
@@ -226,7 +226,7 @@ public class RandomRipperStarter implements RipperEventListener {
 		//starting ripper
 		println("Starting ripper");
 		
-		driver = new RandomDriver(scheduler, planner, descriptionLoader);
+		driver = new RandomDriver(scheduler, planner, ripperInput);
 		
 		
 		driver.setRipperEventListener(this);

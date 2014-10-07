@@ -2,8 +2,8 @@ package it.unina.android.ripper.driver.random;
 
 import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.autoandroidlib.logcat.LogcatDumper;
-import it.unina.android.ripper.description.IDescriptionLoader;
-import it.unina.android.ripper.description.XMLDescriptionLoader;
+import it.unina.android.ripper.input.RipperInput;
+import it.unina.android.ripper.input.XMLRipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.Event;
 import it.unina.android.ripper.model.Task;
@@ -76,7 +76,7 @@ public class RandomDriver
 	Scheduler scheduler;
 	Planner planner;
 	RipperServiceSocket rsSocket;
-	IDescriptionLoader descriptionLoader;	
+	RipperInput ripperInput;	
 	
 	RipperOutput ripperOutput;
 	
@@ -89,7 +89,7 @@ public class RandomDriver
 		this(
 				new RandomScheduler(RANDOM_SEED),
 				new HandlerBasedPlanner(),
-				new XMLDescriptionLoader()
+				new XMLRipperInput()
 		);
 	}
 	
@@ -98,7 +98,7 @@ public class RandomDriver
 		this(
 			new DebugRandomScheduler(RANDOM_SEED),
 			planner,		
-			new XMLDescriptionLoader()
+			new XMLRipperInput()
 		);
 	}
 
@@ -106,17 +106,17 @@ public class RandomDriver
 		this(
 				scheduler,
 				planner,
-				new XMLDescriptionLoader()
+				new XMLRipperInput()
 		);
 	}	
 	
-	public RandomDriver(Scheduler scheduler, Planner planner, IDescriptionLoader descriptionLoader)
+	public RandomDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput)
 	{
 		super();
 		
 		this.scheduler = scheduler;
 		this.planner = planner;		
-		this.descriptionLoader = descriptionLoader;
+		this.ripperInput = ripperInput;
 		
 		this.ripperOutput = new XMLRipperOutput();
 		
@@ -289,7 +289,7 @@ public class RandomDriver
 							//notifyRipperLog(xml);
 							//appendLineToLogFile( xml.substring(45, xml.length() - 8) );
 							
-							ActivityDescription activity = descriptionLoader.load(xml);
+							ActivityDescription activity = ripperInput.inputActivityDescription(xml);
 							
 							//plan
 							notifyRipperLog("Plan...");
@@ -342,7 +342,9 @@ public class RandomDriver
 							
 							notifyRipperLog("event:"+evt.toString());
 							rsSocket.sendEvent(evt);
-																				
+							
+							appendLineToLogFile(ripperOutput.outputFiredEvent(evt));
+							
 							//wait for ack
 							notifyRipperLog("Wait ack...");
 							

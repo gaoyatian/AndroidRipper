@@ -2,9 +2,9 @@ package it.unina.android.ripper.driver;
 
 import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.autoandroidlib.logcat.LogcatDumper;
-import it.unina.android.ripper.description.IDescriptionLoader;
 import it.unina.android.ripper.driver.exception.AckNotReceivedException;
 import it.unina.android.ripper.driver.exception.NullMessageReceivedException;
+import it.unina.android.ripper.input.RipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.net.Message;
 import it.unina.android.ripper.net.MessageType;
@@ -57,7 +57,7 @@ public abstract class AbstractDriver {
 	protected Scheduler scheduler;
 	protected Planner planner;
 	protected RipperServiceSocket rsSocket;
-	protected IDescriptionLoader descriptionLoader;	
+	protected RipperInput ripperInput;	
 	
 	protected boolean running = true;	
 	
@@ -400,7 +400,7 @@ public abstract class AbstractDriver {
 		
 		if (xml != null)
 		{
-			this.lastActivityDescription = descriptionLoader.load(xml);
+			this.lastActivityDescription = ripperInput.inputActivityDescription(xml);
 			this.lastActivityDescription.setUid( Integer.toString( ++activityUID ) );
 		}
 		return this.lastActivityDescription;

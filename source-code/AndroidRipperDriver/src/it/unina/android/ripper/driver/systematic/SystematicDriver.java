@@ -4,11 +4,11 @@ import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.comparator.GenericComparator;
 import it.unina.android.ripper.comparator.GenericComparatorConfiguration;
 import it.unina.android.ripper.comparator.IComparator;
-import it.unina.android.ripper.description.IDescriptionLoader;
-import it.unina.android.ripper.description.XMLDescriptionLoader;
 import it.unina.android.ripper.driver.AbstractDriver;
 import it.unina.android.ripper.driver.exception.AckNotReceivedException;
 import it.unina.android.ripper.driver.exception.NullMessageReceivedException;
+import it.unina.android.ripper.input.RipperInput;
+import it.unina.android.ripper.input.XMLRipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.Event;
 import it.unina.android.ripper.model.Task;
@@ -50,7 +50,7 @@ public class SystematicDriver extends AbstractDriver
 		this(
 				new BreadthScheduler(),
 				new HandlerBasedPlanner(),
-				new XMLDescriptionLoader(),
+				new XMLRipperInput(),
 				new GenericComparator( GenericComparatorConfiguration.Factory.getCustomWidgetSimpleComparator() ),
 				new EmptyActivityStateListTerminationCriterion(),
 				new XMLRipperOutput()
@@ -62,7 +62,7 @@ public class SystematicDriver extends AbstractDriver
 	public SystematicDriver(
 			Scheduler scheduler,
 			Planner planner,
-			IDescriptionLoader descriptionLoader,
+			RipperInput ripperInput,
 			IComparator comparator,
 			TerminationCriterion terminationCriterion,
 			RipperOutput ripperOutput
@@ -72,7 +72,7 @@ public class SystematicDriver extends AbstractDriver
 		
 		this.scheduler = scheduler;
 		this.planner = planner;
-		this.descriptionLoader = descriptionLoader;
+		this.ripperInput = ripperInput;
 		this.comparator = comparator;
 		this.statesList = new ActivityStateList(this.comparator);
 		this.terminationCriterion = terminationCriterion;
