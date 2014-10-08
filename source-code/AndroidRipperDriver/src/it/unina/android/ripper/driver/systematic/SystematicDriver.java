@@ -152,7 +152,7 @@ public class SystematicDriver extends AbstractDriver
 									plannedTasks = new TaskList();
 								}
 								//appendLineToLogFile( this.ripperOutput.outputStepAndPlannedTasks(t.get(t.size() - 1), getLastActivityDescription(), plannedTasks) );
-								appendLineToLogFile( this.ripperOutput.outputExtractedEvents(plannedTasks, getLastActivityDescription()) );
+								appendLineToLogFile( this.ripperOutput.outputActivityDescriptionAndPlannedTasks(getCurrentDescriptionAsActivityDescription(), plannedTasks) );
 							}
 							else if ((msg != null && msg.isTypeOf(MessageType.FAIL_MESSAGE)))
 							{
@@ -344,8 +344,11 @@ public class SystematicDriver extends AbstractDriver
 			return null;
 		}
 		
-		for(Event evt : t)
+		//for(Event evt : t)
+		for (int i = 0; i < t.size(); i++)
 		{
+			Event evt = t.get(i);
+			
 			//this.appendLineToLogFile("<begin timestamp=\""+System.currentTimeMillis()+"\" />");
 			try
 			{
@@ -376,7 +379,12 @@ public class SystematicDriver extends AbstractDriver
 						//output
 						ad = this.getLastActivityDescription();
 						ad.setId(statesList.getEquivalentActivityStateId(ad));
-						this.appendLineToLogFile(this.ripperOutput.outputStep(evt, ad));
+						this.appendLineToLogFile(this.ripperOutput.outputFiredEvent(evt));
+						
+						//ignore last activity 
+						if (i < t.size() - 1 ) {
+							this.appendLineToLogFile(this.ripperOutput.outputActivityDescription(ad));
+						}
 						
 						Actions.sleepMilliSeconds(SLEEP_AFTER_EVENT);						
 					}

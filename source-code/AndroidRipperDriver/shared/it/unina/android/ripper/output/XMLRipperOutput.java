@@ -341,7 +341,7 @@ public class XMLRipperOutput implements RipperOutput
 			event = this.buildEventDescriptionDocument(e, FIRED_EVENT).getDocumentElement();		
 			step.appendChild( doc.importNode((Node)event, true) );
 		} else {
-			event = doc.createElement(EVENT);
+			event = doc.createElement(FIRED_EVENT);
 			step.appendChild(event);
 		}
 
@@ -350,7 +350,7 @@ public class XMLRipperOutput implements RipperOutput
 			activity = this.buildActivityDescriptionDocument(a).getDocumentElement();
 			step.appendChild( doc.importNode((Node)activity, true) );
 		} else {
-			event = doc.createElement(EVENT);
+			activity = doc.createElement(ACTIVITY);
 			step.appendChild(activity);
 		}
 		

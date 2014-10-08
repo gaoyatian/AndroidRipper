@@ -107,7 +107,7 @@ public class SystematicRipperStarter implements RipperEventListener {
 			String comparatorClass = conf.getProperty("comparator", "it.unina.android.ripper.comparator.GenericComparator");
 			String schedulerClass = conf.getProperty("scheduler", "it.unina.android.ripper.scheduler.BreadthScheduler");
 			String plannerClass = conf.getProperty("planner", "it.unina.android.ripper.planner.HandlerBasedPlanner");
-			String inputClass = conf.getProperty("ripper_input", "it.unina.android.ripper.inpit.XMLRipperInput");
+			String inputClass = conf.getProperty("ripper_input", "it.unina.android.ripper.input.XMLRipperInput");
 			String terminationCriterionClass = conf.getProperty("termination_criterion", "it.unina.android.ripper.termination.EmptyActivityStateListTerminationCriterion");
 			String ripperOutputClass = conf.getProperty("ripper_output", "it.unina.android.ripper.output.XMLRipperOutput");
 			
