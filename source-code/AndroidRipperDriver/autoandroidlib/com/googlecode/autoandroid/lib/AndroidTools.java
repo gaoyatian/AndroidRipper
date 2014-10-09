@@ -18,9 +18,11 @@ public abstract class AndroidTools {
 	public static final String ANDROID_SDK_ENV_VAR = "ANDROID_SDK";
 	public static final String ANDROID_HOME_SYS_PROP = "android-home";
 	public static final String OS_FAMILY_SYS_PROP = "os-family";
+	public static String DETECTED_OS = null;
 	
 	public static AndroidTools get() {
 		String osFamily = System.getProperty(OS_FAMILY_SYS_PROP);
+		
 		if (osFamily == null) {
 			// boosted straight from ant:
 			if (OS_NAME.indexOf("windows") > -1) {
@@ -32,6 +34,8 @@ public abstract class AndroidTools {
 				throw new IllegalStateException("Can't infer your OS family.  Please set the " + OS_FAMILY_SYS_PROP + " system property to one of 'windows', 'unix'.");
 			}
 		}
+		DETECTED_OS = osFamily;
+		
 		return forOsFamily(osFamily);
 	}
 
@@ -107,6 +111,10 @@ public abstract class AndroidTools {
 		String path = null;
 		String androidHome = getAndroidHome();
 
+		if (tool.equals("emulator") && DETECTED_OS.equals("unix")) {
+			return new File(androidHome, "tools/emulator").getAbsolutePath();
+		}
+		
 		for (File file : new File(androidHome, "tools").listFiles()) {
 			if (!file.getName().toLowerCase().startsWith(tool)) continue;
 			path = file.getAbsolutePath();

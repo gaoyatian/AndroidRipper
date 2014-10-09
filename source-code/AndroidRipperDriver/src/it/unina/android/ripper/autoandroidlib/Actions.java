@@ -40,7 +40,7 @@ public class Actions {
 	public static void sendBackKey()
 	{
 		try {
-			tools.adb("shell", "input keyevent 4").waitFor();
+			tools.adb("shell", "input", "keyevent", "4").waitFor();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,7 +62,7 @@ public class Actions {
 	public static void sendHomeKey()
 	{
 		try {
-			tools.adb("shell", "input keyevent 3").waitFor();
+			tools.adb("shell", "input", "keyevent", "3").waitFor();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,7 +72,7 @@ public class Actions {
 	public static void startAndroidRipperService()
 	{
 		try {
-			tools.adb("shell", "am startservice -a it.unina.android.ripper_service.ANDROID_RIPPER_SERVICE");//.connectStdout(System.out).connectStderr(System.err);
+			tools.adb("shell", "am startservice -a it.unina.android.ripper_service.ANDROID_RIPPER_SERVICE").connectStdout(System.out).connectStderr(System.out);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,7 +117,7 @@ public class Actions {
 			{
 				try {
 					ripperActive = true;
-					tools.adb("shell", "am instrument -w -e coverage true -e class it.unina.android.ripper.RipperTestCase it.unina.android.ripper/pl.polidea.instrumentation.PolideaInstrumentationTestRunner").waitFor() ;
+					tools.adb("shell", "am instrument -w -e coverage true -e class it.unina.android.ripper.RipperTestCase it.unina.android.ripper/pl.polidea.instrumentation.PolideaInstrumentationTestRunner").connectStdout(System.out).connectStderr(System.out).waitFor() ;
 					ripperActive = false;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -135,8 +135,8 @@ public class Actions {
 	public static void createAUTFilesDir(String AUT_PACKAGE)
 	{
 		try {
-			tools.adb("shell", "mkdir /data/data/"+AUT_PACKAGE+"/files");
-			tools.adb("shell", "chmod -R 777 /data/data/"+AUT_PACKAGE+"/files");
+			tools.adb("shell", "mkdir","/data/data/"+AUT_PACKAGE+"/files");
+			tools.adb("shell", "chmod", "-R", "777", "/data/data/"+AUT_PACKAGE+"/files");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -151,8 +151,8 @@ public class Actions {
 				public void run()
 				{
 					try {
-						tools.emulator("-avd "+AVD_NAME,"-no-snapshot-load", "-port "+EMULATOR_PORT);
-					} catch (IOException e) {
+						tools.emulator("-avd",AVD_NAME,"-no-snapshot-load", "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.err).waitForSuccess();
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -169,8 +169,8 @@ public class Actions {
 				public void run()
 				{
 					try {
-						tools.emulator("-avd "+AVD_NAME,"-no-snapshot-load", "-wipe-data" , "-port "+EMULATOR_PORT);
-					} catch (IOException e) {
+						tools.emulator("-avd",AVD_NAME,"-no-snapshot-load", "-wipe-data" , "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.err).waitForSuccess();
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -183,9 +183,8 @@ public class Actions {
 	
 	public static void startEmulatorNoSnapshotSave(final String AVD_NAME, final int EMULATOR_PORT)
 	{
-		AndroidTools tools = AndroidTools.get();
 		try {
-			tools.emulator("-avd "+AVD_NAME,"-no-snapshot-save", "-port "+EMULATOR_PORT).connectStdout(System.out).connectStderr(System.out);
+			tools.emulator("-avd", AVD_NAME,"-no-snapshot-save", "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.out);
 			
 			sleepSeconds(START_EMULATOR_SNAPSHOOT_WAIT_SECONDS);
 			
@@ -229,7 +228,7 @@ public class Actions {
 		String dest = COV_PATH+"coverage"+ num.format(COV_COUNTER) +".ec";
 
 		try {
-			tools.adb("-s emulator-"+EMULATOR_PORT, "pull", src, dest).connectStderr(System.out).connectStdout(System.out);
+			tools.adb("-s", "emulator-"+EMULATOR_PORT, "pull", src, dest).connectStderr(System.out).connectStdout(System.out);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -263,7 +262,7 @@ public class Actions {
 		String dest = COV_PATH+"coverage"+ num.format(COV_COUNTER) +"_ec.ec";
 
 		try {
-			tools.adb("-s emulator-"+EMULATOR_PORT, "pull", src, dest).connectStderr(System.out).connectStdout(System.out).waitFor();
+			tools.adb("-s", "emulator-"+EMULATOR_PORT, "pull", src, dest).connectStderr(System.out).connectStdout(System.out).waitFor();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -295,7 +294,7 @@ public class Actions {
 		String dest = DEST_PATH+"junit-log-"+ num.format(COV_COUNTER) +".xml";
 
 		try {
-			tools.adb("-s emulator-"+EMULATOR_PORT, "pull", src, dest).connectStderr(System.out).connectStdout(System.out).waitFor();
+			tools.adb("-s", "emulator-"+EMULATOR_PORT, "pull", src, dest).connectStderr(System.out).connectStdout(System.out).waitFor();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -434,7 +433,7 @@ public class Actions {
 		if (PID != null) 
 		{
 			try {
-				tools.adb("shell", "ps -9 " + PID ).waitFor();
+				tools.adb("shell", "ps", "-9", PID ).waitFor();
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();

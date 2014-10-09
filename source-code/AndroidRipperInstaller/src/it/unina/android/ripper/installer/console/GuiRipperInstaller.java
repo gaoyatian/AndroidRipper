@@ -28,7 +28,7 @@ public class GuiRipperInstaller {
 	public static final String AVD_PORT = "AVD_PORT";
 	public static final String LOG_FILE = "LOG_FILE";
 	
-	public static String shell_CMD = "cmd /C";
+	public static String shell_CMD = OSSpecific.getShellCommand();
 	
 	Properties config;
 	String currentPath;
@@ -70,8 +70,8 @@ public class GuiRipperInstaller {
 			throw new RuntimeException("java not in PATH");
 		}
 		
-		if (validateCommand("android.bat") == false) {
-			if (validateCommand("android") == false) {
+		if (validateCommand("android.bat \"list avd\"") == false) {
+			if (validateCommand("android \"list avd\"") == false) {
 				throw new RuntimeException("android not in PATH");
 			}
 		}
@@ -106,6 +106,10 @@ public class GuiRipperInstaller {
 		if (checkAVD(avdName) == false) {
 			throw new RuntimeException("AVD does not exist!");
 		}
+		
+		if (new File(serviceApkPath+"/AndroidRipperService.apk").exists() == false) {
+			throw new RuntimeException(serviceApkPath+"/AndroidRipperService.apk does not exist!");
+		}
 
 		//get application infos
 		String[] appInfo = getAppInfo(autPath);
@@ -127,11 +131,11 @@ public class GuiRipperInstaller {
 		{
 			println("update project...");
 			//Runtime.getRuntime().exec("cmd /C android update project --path "+autPath).waitFor();
-			execCommand("\" cd /d "+autPath+" & android update project --path ./\"");
+			execCommand("android update project --path "+autPath);
 			
 			println("update test project...");
 			//Runtime.getRuntime().exec("cmd /C android update test-project -p "+testSuitePath+" --main "+autPath).waitFor();
-			execCommand("\" cd /d "+testSuitePath+" & android update test-project -p ./ --main "+autPath+"\"");
+			execCommand("android update test-project -p "+testSuitePath+" --main "+autPath);
 			
 			println("compiling...");
 			//Runtime.getRuntime().exec("cmd /C \" cd /d "+testSuitePath+" & ant emma debug install\"").waitFor();
@@ -139,7 +143,7 @@ public class GuiRipperInstaller {
 			if (deployFailed == false) {
 				println("install ripper-serivice apk...");
 				//Runtime.getRuntime().exec("cmd /C adb shell mkdir /data/data/"+app_package+"/files").waitFor();
-				execCommand("\" cd /d "+serviceApkPath+" & adb install AndroidRipperService.apk\"");
+				execCommand("adb install "+serviceApkPath+"/AndroidRipperService.apk");
 				
 				println("adb shell mkdir...");
 				//Runtime.getRuntime().exec("cmd /C adb shell mkdir /data/data/"+app_package+"/files").waitFor();
@@ -263,7 +267,7 @@ public class GuiRipperInstaller {
 		try {
 			final PrintStream logFileStream = new PrintStream( new FileOutputStream(logfile, true) );
 			
-			final Process p = Runtime.getRuntime().exec(shell_CMD + " " + "\" cd /d "+testSuitePath+" & ant emma debug install\"");
+			final Process p = Runtime.getRuntime().exec(shell_CMD + "ant -buildfile "+testSuitePath+"/build.xml emma debug install");
 
 			Thread t = new Thread() {
 				public void run() {
@@ -300,7 +304,7 @@ public class GuiRipperInstaller {
 
 	public static void execCommand(String cmd, boolean wait) {
 		try {
-			final Process p = Runtime.getRuntime().exec(shell_CMD + " " + cmd);
+			final Process p = Runtime.getRuntime().exec(shell_CMD + cmd);
 
 			Thread t = new Thread() {
 				public void run() {
@@ -343,10 +347,10 @@ public class GuiRipperInstaller {
 	
 	protected boolean checkAVD(String avdName) {
 		try {
-			Process proc = Runtime.getRuntime().exec(shell_CMD + " " + "android.bat list avd");
+			Process proc = Runtime.getRuntime().exec(OSSpecific.getAndroidListAVDCommand());			
 	        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 	        String s;
-	        while ((s = stdInput.readLine()) != null) {
+	        while ((s = stdInput.readLine()) != null) {	        	
 	        	if(s.contains("Name: ")) {
 	        		String name = s.substring(s.indexOf("Name: ")+6).trim();
 	        		
@@ -365,6 +369,9 @@ public class GuiRipperInstaller {
 	protected boolean validateCommand(String cmd) {
 		try {
 			Process proc = Runtime.getRuntime().exec(cmd);
+			try {
+				proc.destroy();
+			} catch (Exception ex) {}
 			return true;
 		} catch (IOException e1) {
 			return false;
