@@ -110,7 +110,9 @@ public class GuiRipperInstaller {
 		if (new File(serviceApkPath+"/AndroidRipperService.apk").exists() == false) {
 			throw new RuntimeException(serviceApkPath+"/AndroidRipperService.apk does not exist!");
 		}
-
+		
+		String serviceApKFilePath = new File(serviceApkPath+"/AndroidRipperService.apk").getAbsolutePath();
+		
 		//get application infos
 		String[] appInfo = getAppInfo(autPath);
 		String appPackage = appInfo[0];
@@ -143,7 +145,7 @@ public class GuiRipperInstaller {
 			if (deployFailed == false) {
 				println("install ripper-serivice apk...");
 				//Runtime.getRuntime().exec("cmd /C adb shell mkdir /data/data/"+app_package+"/files").waitFor();
-				execCommand("adb install "+serviceApkPath+"/AndroidRipperService.apk");
+				execCommand("adb install "+serviceApKFilePath);
 				
 				println("adb shell mkdir...");
 				//Runtime.getRuntime().exec("cmd /C adb shell mkdir /data/data/"+app_package+"/files").waitFor();
