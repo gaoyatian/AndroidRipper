@@ -70,8 +70,8 @@ public class GuiRipperInstaller {
 			throw new RuntimeException("java not in PATH");
 		}
 		
-		if (validateCommand("android.bat \"list avd\"") == false) {
-			if (validateCommand("android \"list avd\"") == false) {
+		if (validateCommand("android.bat list avd") == false) {
+			if (validateCommand("android list avd") == false) {
 				throw new RuntimeException("android not in PATH");
 			}
 		}
@@ -376,6 +376,7 @@ public class GuiRipperInstaller {
 			} catch (Exception ex) {}
 			return true;
 		} catch (IOException e1) {
+			e1.printStackTrace();
 			return false;
 		}
 	}
