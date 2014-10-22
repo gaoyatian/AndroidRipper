@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: C:\\Users\\Testing\\workspace_new_ripper\\AndroidRipper\\src\\it\\unina\\android\\ripper_service\\IAnrdoidRipperServiceCallback.aidl
+ * Original file: D:\\AndroidRipper\\source-code\\AndroidRipper\\src\\it\\unina\\android\\ripper_service\\IAnrdoidRipperServiceCallback.aidl
  */
 package it.unina.android.ripper_service;
 public interface IAnrdoidRipperServiceCallback extends android.os.IInterface
