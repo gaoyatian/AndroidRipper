@@ -151,7 +151,7 @@ public class Actions {
 				public void run()
 				{
 					try {
-						tools.emulator("-avd",AVD_NAME,"-no-snapshot-load", "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.err).waitForSuccess();
+						tools.emulator("@"+AVD_NAME,"-partition-size","129","-no-snapshot-load", "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.err).waitForSuccess();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -169,7 +169,7 @@ public class Actions {
 				public void run()
 				{
 					try {
-						tools.emulator("-avd",AVD_NAME,"-no-snapshot-load", "-wipe-data" , "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.err).waitForSuccess();
+						tools.emulator("@"+AVD_NAME,"-partition-size","129","-no-snapshot-load", "-wipe-data" , "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.err).waitForSuccess();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -184,7 +184,7 @@ public class Actions {
 	public static void startEmulatorNoSnapshotSave(final String AVD_NAME, final int EMULATOR_PORT)
 	{
 		try {
-			tools.emulator("-avd", AVD_NAME,"-no-snapshot-save", "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.out);
+			tools.emulator("@"+AVD_NAME,"-partition-size","129","-no-snapshot-save", "-port",Integer.toString(EMULATOR_PORT)).connectStdout(System.out).connectStderr(System.out);
 			
 			sleepSeconds(START_EMULATOR_SNAPSHOOT_WAIT_SECONDS);
 			

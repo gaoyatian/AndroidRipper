@@ -61,6 +61,9 @@ public class RandomDriver
 	public static String LOG_FILE_PREFIX = "log_";
 	public static int NEW_LOG_FREQUENCY = 100;
 	
+	public static boolean FORCE_STOP_EMULATOR_AFTER_EVENTS = false;
+	public static int FORCE_STOP_EMULATOR_AFTER_EVENTS_MAX = 100000;
+	
 	public static int PING_MAX_RETRY = 10;
 	public static int ACK_MAX_RETRY = 10;
 	public static int FAILURE_THRESHOLD = 10;
@@ -176,6 +179,8 @@ public class RandomDriver
 		
 		int socketExceptionCount = 0;
 		
+		boolean force_stop = false;
+		
 		notifyRipperLog("Random Seed = " + RANDOM_SEED);
 		
 		//start emulator
@@ -255,6 +260,14 @@ public class RandomDriver
 							&&	(pingRetryCount <= PING_MAX_RETRY) //too many pings, need a restart
 					)
 					{
+						
+						if (force_stop == false && (N_EVENTS_DONE - 1) > 0 && FORCE_STOP_EMULATOR_AFTER_EVENTS && ((N_EVENTS_DONE - 1) % FORCE_STOP_EMULATOR_AFTER_EVENTS_MAX) <= 0 ) {
+							notifyRipperLog("Force Stop!");
+							force_stop = true;
+							break;
+						} else if (force_stop == true) {
+							force_stop = false;
+						}
 						
 						//create a new log file 
 						if (N_EVENTS_DONE == 0 || ((N_EVENTS_DONE - 1) >= NEW_LOG_FREQUENCY && ((N_EVENTS_DONE-1) % NEW_LOG_FREQUENCY == 0)))
@@ -488,8 +501,8 @@ public class RandomDriver
 			//Actions.pullCoverage(AUT_PACKAGE, COVERAGE_PATH, N_EVENTS_DONE);
 			
 			this.notifyRipperTaskEnded();
-		
-			if (running && (failureSinceLastSucces >= FAILURE_THRESHOLD || pingFailures >=  PING_FAILURE_THRESHOLD || socketExceptionCount >= SOCKET_EXCEPTION_THRESHOLD ))
+			
+			if (running && (force_stop || failureSinceLastSucces >= FAILURE_THRESHOLD || pingFailures >=  PING_FAILURE_THRESHOLD || socketExceptionCount >= SOCKET_EXCEPTION_THRESHOLD ))
 			{
 				//set counters
 				resetCount++;

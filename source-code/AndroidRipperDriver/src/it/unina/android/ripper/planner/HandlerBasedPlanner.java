@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class HandlerBasedPlanner extends Planner
 {
-	public static int MAX_INTERACTIONS_FOR_LIST = 3;
+	public static int MAX_INTERACTIONS_FOR_LIST = 9999;
 	public static int MAX_INTERACTIONS_FOR_PREFERENCES_LIST = 9999;
 	public static int MAX_INTERACTIONS_FOR_SINGLE_CHOICE_LIST = 9999;
 	public static int MAX_INTERACTIONS_FOR_MULTI_CHOICE_LIST = 9999;

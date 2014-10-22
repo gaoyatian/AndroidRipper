@@ -19,6 +19,8 @@ public class XMLRipperInput implements RipperInput {
 		ActivityDescription ret = null;
 		
 		if (activityElement != null) {
+			ret = new ActivityDescription();
+			
 			ret.setTitle(activityElement.getAttribute(ACTIVITY_TITLE));
 			ret.setName(activityElement.getAttribute(ACTIVITY_NAME));
 			ret.setClassName(activityElement.getAttribute(ACTIVITY_CLASS));
@@ -128,7 +130,7 @@ public class XMLRipperInput implements RipperInput {
 		ActivityDescription ret = null;
 
 		try {
-			ret = new ActivityDescription();
+			//ret = new ActivityDescription();
 
 			Document doc = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder()
