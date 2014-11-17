@@ -37,7 +37,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TabHost;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 public class RipperAutomation implements IAutomation {
 

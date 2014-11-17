@@ -24,7 +24,8 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
+
 
 public class RobotiumWrapperRobot implements IRobot
 {

@@ -1,9 +1,12 @@
 package it.unina.android.ripper.input;
 
 import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.model.Event;
+import it.unina.android.ripper.model.Input;
 import it.unina.android.ripper.model.WidgetDescription;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -62,56 +65,9 @@ public class XMLRipperInput implements RipperInput {
 
 					} else if (e.getNodeName().equals(WIDGET)) {
 
-						WidgetDescription wd = new WidgetDescription();
-
-						wd.setId(e.getAttribute(WIDGET_ID));
-						wd.setClassName(e.getAttribute(WIDGET_CLASS));
-						wd.setName(e.getAttribute(WIDGET_NAME));
-						wd.setSimpleType(e.getAttribute(WIDGET_SIMPLE_TYPE));
-						wd.setEnabled(e.getAttribute(WIDGET_ENABLED)
-								.equalsIgnoreCase("TRUE"));
-						wd.setVisible(e.getAttribute(WIDGET_VISIBLE)
-								.equalsIgnoreCase("TRUE"));
-						
-						wd.setIndex(Integer.parseInt(e.getAttribute(WIDGET_INDEX)));
-						
-						if (e.getAttribute(WIDGET_COUNT) != null && e.getAttribute(WIDGET_COUNT).equals("") == false)
-							wd.setCount(Integer.parseInt(e.getAttribute(WIDGET_COUNT)));
-						
-						NodeList widgetChildNodes = e.getElementsByTagName(LISTENER);
-						//System.out.println(widgetChildNodes.getLength());
-						for (int index2 = 0; index2 < widgetChildNodes.getLength(); index2++) {
-							Node node2 = (Node) widgetChildNodes.item(index2);
-							if (node2.getNodeType() == Node.ELEMENT_NODE)
-							{
-									Element e2 = (Element)node2;
-									wd.addListener(
-											e2.getAttribute(LISTENER_CLASS),
-											e2.getAttribute(LISTENER_PRESENT).equalsIgnoreCase(
-													"TRUE"));
-							}
-						}
-						
-						try
-						{
-							wd.setParentId( Integer.parseInt(activityElement.getAttribute(WIDGET_PARENT_ID)));
-						} catch(Throwable t){
-							wd.setParentId(-1);
-						}
-						
-						wd.setParentName(e.getAttribute(WIDGET_PARENT_NAME));
-						wd.setParentType(e.getAttribute(WIDGET_PARENT_TYPE));
-						
-						try
-						{
-							wd.setAncestorId( Integer.parseInt(activityElement.getAttribute(WIDGET_ANCESTOR_ID)));
-						} catch(Throwable t){
-							wd.setAncestorId(-1);
-						}
-						
-						wd.setAncestorType(e.getAttribute(WIDGET_ANCESTOR_TYPE));
-						
+						WidgetDescription wd = this.inputWidgetDescription(e);
 						ret.addWidget(wd);
+						
 					}
 				}
 			}
@@ -154,17 +110,152 @@ public class XMLRipperInput implements RipperInput {
 		return ret;
 	}
 
+	public WidgetDescription inputWidgetDescription(Element e) {
+		WidgetDescription wd = null;
+		
+		if (e != null) {
+			
+			wd = new WidgetDescription();
+			
+			wd.setId(e.getAttribute(WIDGET_ID));
+			wd.setClassName(e.getAttribute(WIDGET_CLASS));
+			wd.setName(e.getAttribute(WIDGET_NAME));
+			wd.setSimpleType(e.getAttribute(WIDGET_SIMPLE_TYPE));
+			wd.setEnabled(e.getAttribute(WIDGET_ENABLED)
+					.equalsIgnoreCase("TRUE"));
+			wd.setVisible(e.getAttribute(WIDGET_VISIBLE)
+					.equalsIgnoreCase("TRUE"));
+			
+			wd.setIndex(Integer.parseInt(e.getAttribute(WIDGET_INDEX)));
+			
+			if (e.getAttribute(WIDGET_COUNT) != null && e.getAttribute(WIDGET_COUNT).equals("") == false)
+				wd.setCount(Integer.parseInt(e.getAttribute(WIDGET_COUNT)));
+			
+			NodeList widgetChildNodes = e.getElementsByTagName(LISTENER);
+			//System.out.println(widgetChildNodes.getLength());
+			for (int index2 = 0; index2 < widgetChildNodes.getLength(); index2++) {
+				Node node2 = (Node) widgetChildNodes.item(index2);
+				if (node2.getNodeType() == Node.ELEMENT_NODE)
+				{
+						Element e2 = (Element)node2;
+						wd.addListener(
+								e2.getAttribute(LISTENER_CLASS),
+								e2.getAttribute(LISTENER_PRESENT).equalsIgnoreCase(
+										"TRUE"));
+				}
+			}
+			
+			try
+			{
+				//wd.setParentId( Integer.parseInt(activityElement.getAttribute(WIDGET_PARENT_ID)));
+				wd.setParentId( Integer.parseInt(e.getAttribute(WIDGET_PARENT_ID)));
+			} catch(Throwable t){
+				wd.setParentId(-1);
+			}
+			
+			wd.setParentName(e.getAttribute(WIDGET_PARENT_NAME));
+			wd.setParentType(e.getAttribute(WIDGET_PARENT_TYPE));
+			
+			try
+			{
+				//wd.setAncestorId( Integer.parseInt(activityElement.getAttribute(WIDGET_ANCESTOR_ID)));
+				wd.setAncestorId( Integer.parseInt(e.getAttribute(WIDGET_ANCESTOR_ID)));
+			} catch(Throwable t){
+				wd.setAncestorId(-1);
+			}
+			
+			wd.setAncestorType(e.getAttribute(WIDGET_ANCESTOR_TYPE));			
+			
+		}
+	
+		return wd;
+	}
+	
+	public Event inputEvent(Element e) {
+		Event event = null;
+		
+		if (e != null) {
+		
+			event = new Event();
+			ArrayList<Input> inputs = new ArrayList<Input>();
+			
+			event.setInteraction(e.getAttribute(EVENT_INTERACTION));
+			event.setValue(e.getAttribute(EVENT_VALUE));
+			
+			NodeList childNodes = e.getChildNodes();
+			
+			for (int index = 0; index < childNodes.getLength(); index++) {
+
+				Node node = (Node) childNodes.item(index);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					
+					Element ce = (Element)node;
+					
+					if (ce.getNodeName().equals(WIDGET)) {
+						WidgetDescription wd = this.inputWidgetDescription(ce);
+						event.setWidget(wd);
+					}
+					
+					if (ce.getNodeName().equals(INPUT)) {
+						
+						Input input = this.inputInput(ce);
+						inputs.add(input);
+					}
+					
+				}
+			}
+			
+			event.setInputs(inputs);
+		}
+		
+		return event;
+	}
+	
+	public Input inputInput(Element e) {
+		Input input = null;
+		
+		if (e != null) {
+			input = new Input();
+			
+			input.setInputType(e.getAttribute(INPUT_TYPE));
+			input.setValue(e.getAttribute(INPUT_VALUE));
+			
+			NodeList childNodes = e.getChildNodes();
+			
+			for (int index = 0; index < childNodes.getLength(); index++) {
+
+				Node node = (Node) childNodes.item(index);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					
+					Element ce = (Element)node;
+					
+					if (ce.getNodeName().equals(WIDGET)) {
+						WidgetDescription wd = this.inputWidgetDescription(ce);
+						input.setWidget(wd);
+						break;
+					}
+				}
+			}
+			
+		}
+		
+		return input;
+	}
+	
+	
 	public static final String ROOT = "root";
 	
 	public static final String ACTIVITY = "activity";	
 	public static final String ACTIVITY_TITLE = "title";
-	public static final String ACTIVITY_NAME = "name";
 	public static final String ACTIVITY_CLASS = "class";
+	public static final String ACTIVITY_NAME = "name";
 	public static final String ACTIVITY_MENU = "menu";
 	public static final String ACTIVITY_HANDLES_KEYPRESS = "keypress";
 	public static final String ACTIVITY_HANDLES_LONG_KEYPRESS = "longkeypress";
 	public static final String ACTIVITY_IS_TABACTIVITY = "tab_activity";
 	public static final String ACTIVITY_TABS_COUNT = "tab_activity";
+	public static final String ACTIVITY_ID = "id";
+	public static final String ACTIVITY_UID = "uid";
 	
 	public static final String LISTENER = "listener";
 	public static final String LISTENER_CLASS = "class";
@@ -195,4 +286,24 @@ public class XMLRipperInput implements RipperInput {
 	
 	public static final String WIDGET_ANCESTOR_ID = "ancestor_id";
 	public static final String WIDGET_ANCESTOR_TYPE = "ancestor_type";
+	
+	public static final String EVENT = "event";
+	public static final String EVENT_INTERACTION = "interaction";
+	public static final String EVENT_VALUE = "value";
+	
+	public static final String INPUT = "input";
+	public static final String INPUT_TYPE = "type";
+	public static final String INPUT_VALUE = "value";
+	
+	public static final String TASK = "task";
+	
+	public static final String STEP = "step";
+	public static final String FINAL_ACTIVITY = "final_activity";
+	
+	public static final String EXTRACTED_EVENTS = "extracted_events";
+	public static final String FIRED_EVENT = "fired_event";
+	
+	public static final String FIRST_STEP = "bootstrap";
+	
+	public static final String DESCRIPTION = "activity_description";
 }

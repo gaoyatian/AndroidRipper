@@ -5,7 +5,6 @@ import it.unina.android.ripper.automation.RipperAutomation;
 import it.unina.android.ripper.automation.robot.IRobot;
 import it.unina.android.ripper.automation.robot.RobotiumWrapperRobot;
 import it.unina.android.ripper.configuration.Configuration;
-import it.unina.android.ripper.constants.InteractionType;
 import it.unina.android.ripper.extractor.IExtractor;
 import it.unina.android.ripper.extractor.ReflectionExtractor;
 import it.unina.android.ripper.extractor.output.OutputAbstract;
@@ -20,14 +19,10 @@ import it.unina.android.ripper_service.IAndroidRipperService;
 import it.unina.android.ripper_service.IAnrdoidRipperServiceCallback;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +32,7 @@ import android.os.RemoteException;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 public class RipperTestCase  extends ActivityInstrumentationTestCase2  {
 
