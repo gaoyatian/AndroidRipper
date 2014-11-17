@@ -24,6 +24,18 @@ public class XMLRipperInput implements RipperInput {
 		if (activityElement != null) {
 			ret = new ActivityDescription();
 			
+			try {
+				ret.setId( activityElement.getAttribute(ACTIVITY_ID) );
+			} catch (Exception ex) {
+				
+			}
+			
+			try {
+				ret.setUid( activityElement.getAttribute(ACTIVITY_UID) );
+			} catch (Exception ex) {
+				
+			}
+			
 			ret.setTitle(activityElement.getAttribute(ACTIVITY_TITLE));
 			ret.setName(activityElement.getAttribute(ACTIVITY_NAME));
 			ret.setClassName(activityElement.getAttribute(ACTIVITY_CLASS));

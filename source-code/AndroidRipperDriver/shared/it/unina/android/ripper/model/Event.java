@@ -60,6 +60,9 @@ public class Event implements Serializable {
 
 	public void addInput(WidgetDescription widget, String interactionType, String value)
 	{
+		if (inputs == null) {
+			inputs = new ArrayList<Input>();
+		}
 		this.inputs.add(new Input(widget, interactionType, value));
 	}
 	
@@ -87,7 +90,7 @@ public class Event implements Serializable {
 	@Override
 	public String toString()
 	{
-		return ((widget!=null)?widget.toString():"[widget=null]") + "[interaction="+interaction+"][value="+value+"]";
+		return ((widget!=null)?widget.toString()+",":"") + interaction;
 	}
 	
 	public String toXMLString()
@@ -110,5 +113,27 @@ public class Event implements Serializable {
 		xml += "</event>\n";
 		
 		return xml;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		
+		if (o != null && o instanceof Event) {
+			
+			Event e = (Event)o;
+			
+			return (
+					(
+								(e.widget == null && this.widget == null)
+							||	(e.widget != null && this.widget != null && e.widget.getId() == null && this.widget.getId() == null)
+							||	(e.widget != null && this.widget != null && e.widget.getId() != null && this.widget.getId() != null && e.widget.getId().equals(this.widget.getId()))
+					) 
+					&&	e.interaction.equals(this.interaction)
+					&&	((e.value == null && this.value == null) || (e.value != null && this.value != null && e.value.equals(this.value)))
+					);
+					
+		}
+		
+		return false;
 	}
 }

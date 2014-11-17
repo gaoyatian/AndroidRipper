@@ -237,8 +237,9 @@ public class WidgetDescription implements Serializable
 	@Override
 	public String toString()
 	{
-		return 	"[id="+this.id+"]" +
-				"[type="+((this.type!=null)?this.type.getCanonicalName():className)+"]";
+		/*return 	"[id="+this.id+"]" +
+				"[type="+((this.type!=null)?this.type.getCanonicalName():className)+"]";*/
+		return ((this.type!=null)?this.type.getCanonicalName():className);
 	}
 	
 	public String toXMLString()
