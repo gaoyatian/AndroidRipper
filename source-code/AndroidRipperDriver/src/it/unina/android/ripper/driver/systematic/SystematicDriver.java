@@ -152,7 +152,9 @@ public class SystematicDriver extends AbstractDriver
 									plannedTasks = new TaskList();
 								}
 								//appendLineToLogFile( this.ripperOutput.outputStepAndPlannedTasks(t.get(t.size() - 1), getLastActivityDescription(), plannedTasks) );
-								appendLineToLogFile( this.ripperOutput.outputActivityDescriptionAndPlannedTasks(getCurrentDescriptionAsActivityDescription(), plannedTasks) );
+								ActivityDescription ad = getLastActivityDescription();
+								ad.setId(statesList.getEquivalentActivityStateId(ad));
+								appendLineToLogFile( this.ripperOutput.outputActivityDescriptionAndPlannedTasks(ad, plannedTasks) );
 							}
 							else if ((msg != null && msg.isTypeOf(MessageType.FAIL_MESSAGE)))
 							{
@@ -172,6 +174,7 @@ public class SystematicDriver extends AbstractDriver
 							else
 							{
 								notifyRipperLog("executeTask(): something went wrong?!?");
+								this.appendLineToLogFile("\n<error type='executeTask' />\n");
 							}
 							
 							if (PULL_COVERAGE)
@@ -361,13 +364,17 @@ public class SystematicDriver extends AbstractDriver
 				if (checkBeforeEventStateId(ad, evt))
 				{
 					try {
+						this.appendLineToLogFile(this.ripperOutput.outputFiredEvent(evt));
 						msg = executeEvent(evt);
+						//output firede event						
 					} catch (AckNotReceivedException e1) {
 						msg = null;
 						notifyRipperLog("executeTask(): AckNotReceivedException"); //failure
+						this.appendLineToLogFile("\n<error type='AckNotReceivedException' />\n");
 					} catch (NullMessageReceivedException e2) {
 						msg = null;
 						notifyRipperLog("executeTask(): NullMessageReceivedException");  //failure
+						this.appendLineToLogFile("\n<error type='NullMessageReceivedException' />\n");
 					}
 					
 					if (msg == null || running == false) {
@@ -379,7 +386,6 @@ public class SystematicDriver extends AbstractDriver
 						//output
 						ad = this.getLastActivityDescription();
 						ad.setId(statesList.getEquivalentActivityStateId(ad));
-						this.appendLineToLogFile(this.ripperOutput.outputFiredEvent(evt));
 						
 						//ignore last activity 
 						if (i < t.size() - 1 ) {
@@ -397,11 +403,13 @@ public class SystematicDriver extends AbstractDriver
 				{
 					//something went wrong
 					//throw new BeforeEventStateAssertionFailedException()???
+					this.appendLineToLogFile("\n<error type='BeforeEventStateAssertionFailed' />\n");
 				}
 			}
 			catch (IOException ex)
 			{
 				notifyRipperLog("executeTask(): Description IOException");
+				this.appendLineToLogFile("\n<error type='IOException' />\n");
 			}
 			
 			//this.appendLineToLogFile("<end timestamp=\""+System.currentTimeMillis()+"\" />");

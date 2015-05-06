@@ -25,13 +25,13 @@ public class ConfigurationBasedPlanner extends HandlerBasedPlanner
 		this.eventConfiguration = new HashMap<String, WidgetEventPlanner.WidgetEventPlannerConfiguration>();
 		
 		this.eventConfiguration.put(SimpleType.LIST_VIEW, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
-		this.eventConfiguration.put(SimpleType.PREFERENCE_LIST, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
+		this.eventConfiguration.put(SimpleType.PREFERENCE_LIST, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, false, false));
 		this.eventConfiguration.put(SimpleType.SINGLE_CHOICE_LIST, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
 		this.eventConfiguration.put(SimpleType.MULTI_CHOICE_LIST, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
 		this.eventConfiguration.put(SimpleType.MULTI_CHOICE_LIST, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
 		this.eventConfiguration.put(SimpleType.SPINNER, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
 		this.eventConfiguration.put(SimpleType.RADIO_GROUP, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
-		this.eventConfiguration.put(SimpleType.TEXT_VIEW, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
+		this.eventConfiguration.put(SimpleType.TEXT_VIEW, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, false, false));
 		this.eventConfiguration.put(SimpleType.SEEK_BAR, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
 		this.eventConfiguration.put(SimpleType.RATING_BAR, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, true, false));
 	}

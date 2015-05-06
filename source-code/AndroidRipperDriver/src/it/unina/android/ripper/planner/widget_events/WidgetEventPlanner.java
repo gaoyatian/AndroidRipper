@@ -63,10 +63,10 @@ public class WidgetEventPlanner {
 			if (mWidget.isClickable() || configuration.doClick)
 				taskList.addAll(tap(currentTask, inputs, options));
 			
-			if (mWidget.isLongClickable() || configuration.doClick)
+			if (mWidget.isLongClickable() || configuration.doLongClick)
 				taskList.addAll(longTap(currentTask, inputs, options));
 			
-			if (mWidget.hasOnFocusChangeListener() || configuration.doClick)
+			if (mWidget.hasOnFocusChangeListener() || configuration.doFocus)
 				taskList.addAll(focus(currentTask, inputs, options));
 		}
 		

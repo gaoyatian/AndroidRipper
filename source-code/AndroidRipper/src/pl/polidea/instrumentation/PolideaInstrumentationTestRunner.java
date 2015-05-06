@@ -613,8 +613,8 @@ public class PolideaInstrumentationTestRunner extends InstrumentationTestRunner 
             return "xhdpi";
         case DisplayMetrics.DENSITY_HIGH:
             return "hdpi";
-        case DisplayMetrics.DENSITY_TV:
-            return "tvdpi";
+        //case DisplayMetrics.DENSITY_TV:
+        //    return "tvdpi";
         case DisplayMetrics.DENSITY_MEDIUM:
             return "mdpi";
         case DisplayMetrics.DENSITY_LOW:
