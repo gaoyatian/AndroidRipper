@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: D:\\AndroidRipper\\source-code\\AndroidRipperService\\src\\it\\unina\\android\\ripper_service\\IAndroidRipperService.aidl
+ * Original file: E:\\AndroidRipper\\source-code\\AndroidRipperService\\src\\it\\unina\\android\\ripper_service\\IAndroidRipperService.aidl
  */
 package it.unina.android.ripper_service;
 public interface IAndroidRipperService extends android.os.IInterface
