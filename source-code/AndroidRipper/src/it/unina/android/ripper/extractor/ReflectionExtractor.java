@@ -98,7 +98,7 @@ public class ReflectionExtractor implements IExtractor
 		            wd.setVisible(v.getVisibility() == 0);
 		            
 		            //wd.setTextualId(this.reflectTextualIDbyNumericalID(v.getId()));
-		            if (v.getId() > 0)
+		            if (v.getId() > 0 && v.getResources() != null)
 		            	wd.setTextualId(v.getResources().getResourceEntryName(v.getId()));
 		            
 		            wd.setIndex(index++);
@@ -190,7 +190,7 @@ public class ReflectionExtractor implements IExtractor
 	
 	private View detectFirstAncestorWithId(View v) throws Exception
 	{
-		if (v != null && v.getParent() == null)
+		if ( (v == null) || (v != null && v.getParent() == null) )
 			return null;
 		
 		ViewParent parentView = v.getParent();
