@@ -74,7 +74,7 @@ public class SimpleExtractor implements IExtractor
 		            wd.setType(v.getClass());
 		            wd.setName(this.detectName(v));
 		            
-		            this.setViewListeners(ret, wd, v);
+		            //this.setViewListeners(ret, wd, v);
 		            
 		            this.setValue(v, wd);
 		            
@@ -178,17 +178,7 @@ public class SimpleExtractor implements IExtractor
 			return null;
 		}
 	}
-		
-	private void setViewListeners(ActivityDescription ad, WidgetDescription wd, View v)
-	{
-		wd.addListener("OnClickListener", true);
-		
-		if (v instanceof android.widget.TabHost)
-		{
-			wd.addSupportedEvent(InteractionType.SWAP_TAB);
-		}
-	}
-	
+
 	private String detectName (View v) {
 		String name = "";
 		if (v instanceof TextView) {

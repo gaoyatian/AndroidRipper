@@ -34,5 +34,8 @@ public class SimpleType {
 	public final static String RELATIVE_LAYOUT = "relativeLayout";
 	public final static String FOCUSABLE_EDIT_TEXT = "focusableEditText";
 	public final static String SLIDING_DRAWER = "slidingDrawer";
+	public final static String NUMBER_PICKER_BUTTON = "numberPickerButton";
+	public final static String NUMBER_PICKER = "numberPicker";
+	public final static String AUTOCOMPLETE_TEXTVIEW = "autoCompleteTextView";
 
 }

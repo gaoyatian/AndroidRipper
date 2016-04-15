@@ -12,12 +12,18 @@ import org.w3c.dom.Node;
 
 import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.autoandroidlib.logcat.LogcatDumper;
+import it.unina.android.ripper.comparator.IComparator;
+import it.unina.android.ripper.input.RipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.Task;
 import it.unina.android.ripper.net.Message;
 import it.unina.android.ripper.net.MessageType;
 import it.unina.android.ripper.net.RipperServiceSocket;
+import it.unina.android.ripper.output.RipperOutput;
+import it.unina.android.ripper.planner.Planner;
 import it.unina.android.ripper.planner.task.TaskList;
+import it.unina.android.ripper.scheduler.Scheduler;
+import it.unina.android.ripper.termination.TerminationCriterion;
 
 public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 
@@ -47,6 +53,17 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 	 * test case
 	 */
 	boolean newStateFoundFromTestExecution = false; // cond_nuovo
+
+	public TestCasesExecutionSystematicDriver() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public TestCasesExecutionSystematicDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput,
+			IComparator comparator, TerminationCriterion terminationCriterion, RipperOutput ripperOutput) {
+		super(scheduler, planner, ripperInput, comparator, terminationCriterion, ripperOutput);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Sends a message to execute a test case by index

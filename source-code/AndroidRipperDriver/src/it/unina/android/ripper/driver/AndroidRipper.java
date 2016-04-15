@@ -1,10 +1,10 @@
 package it.unina.android.ripper.driver;
 
-import it.unina.android.ripper.autoandroidlib.Actions;
+import java.io.File;
+
 import it.unina.android.ripper.driver.random.RandomRipperStarter;
 import it.unina.android.ripper.driver.systematic.SystematicRipperStarter;
-
-import java.io.File;
+import it.unina.android.ripper.driver.systematic.TestCasesSystematicRipperStarter;
 
 public class AndroidRipper {
 
@@ -26,6 +26,12 @@ public class AndroidRipper {
 			} else if (args[0] != null && (args[0].equals("random") || args[0].equals("r")) ) {
 				if (checkConfigurationFile(args[1])) {
 					new RandomRipperStarter(args[1]).startRipping();
+				} else {
+					System.out.println("ERROR: Configuration file not found!");
+				}
+			} else if (args[0] != null && (args[0].equals("systematic-with-test-cases") || args[0].equals("tc")) ) {
+				if (checkConfigurationFile(args[1])) {
+					new TestCasesSystematicRipperStarter(args[1]).startRipping();
 				} else {
 					System.out.println("ERROR: Configuration file not found!");
 				}

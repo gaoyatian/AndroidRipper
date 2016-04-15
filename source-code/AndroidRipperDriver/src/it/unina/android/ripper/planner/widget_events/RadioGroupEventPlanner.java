@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class RadioGroupEventPlanner extends WidgetEventPlanner {
 
-	int MAX_INTERACTIONS = 3;
+	int MAX_INTERACTIONS = 5;
 	
 	public RadioGroupEventPlanner(WidgetDescription widgetDescription, int MAX_INTERACTIONS) {
 		super(widgetDescription);

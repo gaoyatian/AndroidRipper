@@ -26,11 +26,12 @@ import java.util.ArrayList;
  */
 public class HandlerBasedPlanner extends Planner
 {
-	public static int MAX_INTERACTIONS_FOR_LIST = 9999;
+	public static int MAX_INTERACTIONS_FOR_LIST = 3;
 	public static int MAX_INTERACTIONS_FOR_PREFERENCES_LIST = 9999;
-	public static int MAX_INTERACTIONS_FOR_SINGLE_CHOICE_LIST = 9999;
-	public static int MAX_INTERACTIONS_FOR_MULTI_CHOICE_LIST = 9999;
-	public static int MAX_INTERACTIONS_FOR_SPINNER = 9999;
+	public static int MAX_INTERACTIONS_FOR_SINGLE_CHOICE_LIST = 3;
+	public static int MAX_INTERACTIONS_FOR_MULTI_CHOICE_LIST = 3;
+	public static int MAX_INTERACTIONS_FOR_SPINNER = 9;
+	public static int MAX_INTERACTIONS_FOR_RADIO_GROUP = 9;
 	
 	public static boolean CAN_GO_BACK = true;
 	public static boolean CAN_CHANGE_ORIENTATION = true;
@@ -77,9 +78,11 @@ public class HandlerBasedPlanner extends Planner
 		ArrayList<Input> inputs = new ArrayList<Input>();
 		for (WidgetDescription wd: activity.getWidgets())
 		{
-			Input input = getInputForWidget(wd);
-			if (input != null)
-				inputs.add(input);
+			if (wd.isEnabled() && wd.isVisible()) {
+				Input input = getInputForWidget(wd);
+				if (input != null)
+					inputs.add(input);
+			}
 		}
 		
 		//TODO: set extra inputs
@@ -139,8 +142,10 @@ public class HandlerBasedPlanner extends Planner
 	
 	protected TaskList planForWidget(Task currentTask, WidgetDescription widgetDescription, ArrayList<Input> inputs, String... options)
 	{
-		//excludes widgets used as input
-		if (isInputWidget(widgetDescription) == false)
+		//excludes widgets used as input and not enabled or not visible widgets
+		if (	isInputWidget(widgetDescription) == false &&
+				(widgetDescription.isEnabled() && widgetDescription.isVisible())
+		)
 		{
 			WidgetEventPlanner widgetEventPlanner;
 			
@@ -171,7 +176,7 @@ public class HandlerBasedPlanner extends Planner
 			}
 			else if (widgetDescription.getSimpleType().equals(SimpleType.RADIO_GROUP))
 			{
-				widgetEventPlanner =  new RadioGroupEventPlanner(widgetDescription, MAX_INTERACTIONS_FOR_SPINNER);
+				widgetEventPlanner =  new RadioGroupEventPlanner(widgetDescription, MAX_INTERACTIONS_FOR_RADIO_GROUP);
 			}
 			else if (widgetDescription.getSimpleType().equals(SimpleType.TEXT_VIEW))
 			{

@@ -19,10 +19,10 @@ public class WidgetEventPlanner {
 			super();
 		}
 		
-		public WidgetEventPlannerConfiguration(boolean doClick, boolean doLongClick, boolean doFocus) {
+		public WidgetEventPlannerConfiguration(boolean doTap, boolean doLongTap, boolean doFocus) {
 			super();
-			this.doClick = doClick;
-			this.doLongClick = doLongClick;
+			this.doClick = doTap;
+			this.doLongClick = doLongTap;
 			this.doFocus = doFocus;
 		}
 	}
@@ -75,7 +75,7 @@ public class WidgetEventPlanner {
 	
 	public boolean canPlanForWidget()
 	{
-		return mWidget != null && mWidget.isEnabled(); // && mWidget.getSimpleType() != null && mWidget.getSimpleType().equals("") == false;
+		return mWidget != null && mWidget.isEnabled() && mWidget.isVisible(); // && mWidget.getSimpleType() != null && mWidget.getSimpleType().equals("") == false;
 	}
 	
 	protected TaskList tap(Task currentTask, ArrayList<Input> inputs, String... options)
