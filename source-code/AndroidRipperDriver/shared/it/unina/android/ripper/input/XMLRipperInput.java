@@ -6,8 +6,10 @@ import it.unina.android.ripper.model.Input;
 import it.unina.android.ripper.model.WidgetDescription;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
@@ -133,6 +135,7 @@ public class XMLRipperInput implements RipperInput {
 			wd.setClassName(e.getAttribute(WIDGET_CLASS));
 			wd.setName(e.getAttribute(WIDGET_NAME));
 			wd.setSimpleType(e.getAttribute(WIDGET_SIMPLE_TYPE));
+			wd.setValue(e.getAttribute(WIDGET_VALUE));
 			wd.setEnabled(e.getAttribute(WIDGET_ENABLED)
 					.equalsIgnoreCase("TRUE"));
 			wd.setVisible(e.getAttribute(WIDGET_VISIBLE)
@@ -252,6 +255,39 @@ public class XMLRipperInput implements RipperInput {
 		}
 		
 		return input;
+	}
+	
+	public ArrayList<ActivityDescription> loadActivityDescriptionList(String sourceURI) {
+		ArrayList<ActivityDescription> ret = new ArrayList<ActivityDescription>();
+		
+		NodeList nList = null;
+		try {
+
+			File fXmlFile = new File(sourceURI);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+
+			doc.getDocumentElement().normalize();
+
+			nList = doc.getElementsByTagName(ACTIVITY);
+			
+			for (int i = 0; i < nList.getLength(); i++) {
+	
+				Node nNode = nList.item(i);
+	
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					ActivityDescription ad = this.inputActivityDescription(eElement);
+					ret.add(ad);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
 	}
 	
 	

@@ -41,6 +41,35 @@ public class Message extends HashMap<String, String>
 	{
 		return new Message(MessageType.NACK_MESSAGE);
 	}
+
+	/* REGION TEST CASE EXECUTION */
+	
+	public static Message getUserTestMessage(String i)
+	{
+		Message msg = new Message(MessageType.USER_TEST_MESSAGE);
+		msg.addParameter("test", i);
+		return msg;
+	}
+
+	public static Message getNumTestCaseMessage()
+	{
+		return new Message(MessageType.TOTAL_NUMBER_OF_TEST_CASE_MESSAGE);
+	}
+	
+	public static Message getExecuteTestCaseMessage(String string)
+	{	
+		Message msg = new Message(MessageType.EXECUTE_TEST_CASE_MESSAGE);
+		msg.addParameter("runner", string);
+		return msg;
+	}
+	
+	public static Message getExecuteTestCaseMessage()
+	{
+		Message msg = new Message(MessageType.EXECUTE_TEST_CASE_MESSAGE);
+		return msg;
+	}
+	
+	/* END REGION TEST CASE EXECUTION */
 	
 	public static Message getEndMessage()
 	{

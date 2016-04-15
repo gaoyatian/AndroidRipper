@@ -84,7 +84,8 @@ public class ConfigurationBasedPlanner extends HandlerBasedPlanner
 			}
 			else
 			{
-				widgetEventPlanner =  new WidgetEventPlanner(widgetDescription);
+				//widgetEventPlanner =  new WidgetEventPlanner(widgetDescription);
+				return null;
 			}
 			
 			WidgetEventPlanner.WidgetEventPlannerConfiguration config = eventConfiguration.get(widgetDescription.getSimpleType());

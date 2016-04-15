@@ -1,13 +1,13 @@
 package it.unina.android.ripper.comparator;
 
-import it.unina.android.ripper.constants.SimpleType;
-import it.unina.android.ripper.model.ActivityDescription;
-import it.unina.android.ripper.model.WidgetDescription;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import it.unina.android.ripper.constants.SimpleType;
+import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.model.WidgetDescription;
 
 public class GenericComparator implements IComparator, Serializable {
 
@@ -268,6 +268,18 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		
 		
+		if (config.compareDialogTitle && w1.getSimpleType().equals(SimpleType.DIALOG_VIEW) && w2.getSimpleType().equals(SimpleType.DIALOG_VIEW))
+		{
+			if (w1.getName().equals(w2.getName()) == false) {
+				debug("compare dialog names -> false");
+				return false;
+			}
+			debug("compare dialog names -> true");
+		}
+		
+		
+		
+		
 		return true;
 	}
 	
@@ -305,7 +317,7 @@ public class GenericComparator implements IComparator, Serializable {
 			if (checkedAlready.contains(w2) == false) {
 				if(lookFor(w2, widgets1) == false)
 				{
-					debug("lookFor(w2, widgets1) no");
+					debug("lookFor(w2, widgets1) no" +w2.getName());
 					return false;
 				}
 			}

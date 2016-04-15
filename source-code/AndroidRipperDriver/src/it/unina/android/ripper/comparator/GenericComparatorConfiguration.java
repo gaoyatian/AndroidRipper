@@ -115,6 +115,7 @@ public class GenericComparatorConfiguration
 	/* ACTIVITY OPTIONS */
 	public boolean compareActivityNames = false;
 	public boolean compareActivityTitles = false;
+	public boolean compareDialogTitle = false;
 	public boolean compareActivityClasses = false;
 	public boolean compareActivityWidgetsCount = false;	
 	public boolean testIfWidgetsMatch = false;

@@ -1,25 +1,9 @@
 package it.unina.android.ripper;
 
-import it.unina.android.ripper.automation.IAutomation;
-import it.unina.android.ripper.automation.RipperAutomation;
-import it.unina.android.ripper.automation.robot.IRobot;
-import it.unina.android.ripper.automation.robot.RobotiumWrapperRobot;
-import it.unina.android.ripper.configuration.Configuration;
-import it.unina.android.ripper.extractor.IExtractor;
-import it.unina.android.ripper.extractor.ReflectionExtractor;
-import it.unina.android.ripper.extractor.output.OutputAbstract;
-import it.unina.android.ripper.extractor.output.XMLOutput;
-import it.unina.android.ripper.extractor.screenshoot.IScreenshotTaker;
-import it.unina.android.ripper.extractor.screenshoot.RobotiumScreenshotTaker;
-import it.unina.android.ripper.log.Debug;
-import it.unina.android.ripper.model.ActivityDescription;
-import it.unina.android.ripper.net.Message;
-import it.unina.android.ripper.net.MessageType;
-import it.unina.android.ripper_service.IAndroidRipperService;
-import it.unina.android.ripper_service.IAnrdoidRipperServiceCallback;
-
 import java.lang.reflect.Method;
 import java.util.Map;
+
+import com.robotium.solo.Solo;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -31,8 +15,23 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-
-import com.robotium.solo.Solo;
+import it.unina.android.ripper.automation.IAutomation;
+import it.unina.android.ripper.automation.RipperAutomation;
+import it.unina.android.ripper.automation.robot.IRobot;
+import it.unina.android.ripper.automation.robot.RobotiumWrapperRobot;
+import it.unina.android.ripper.configuration.Configuration;
+import it.unina.android.ripper.extractor.IExtractor;
+import it.unina.android.ripper.extractor.SimpleExtractor;
+import it.unina.android.ripper.extractor.output.OutputAbstract;
+import it.unina.android.ripper.extractor.output.XMLOutput;
+import it.unina.android.ripper.extractor.screenshoot.IScreenshotTaker;
+import it.unina.android.ripper.extractor.screenshoot.RobotiumScreenshotTaker;
+import it.unina.android.ripper.log.Debug;
+import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.net.Message;
+import it.unina.android.ripper.net.MessageType;
+import it.unina.android.ripper_service.IAndroidRipperService;
+import it.unina.android.ripper_service.IAnrdoidRipperServiceCallback;
 
 public class RipperTestCase  extends ActivityInstrumentationTestCase2  {
 
@@ -119,7 +118,7 @@ public class RipperTestCase  extends ActivityInstrumentationTestCase2  {
 		//init components
 		this.robot = new RobotiumWrapperRobot(this);
 		this.automation = new RipperAutomation(this.robot);
-		this.extractor = new ReflectionExtractor(this.robot);
+		this.extractor = new SimpleExtractor(this.robot);
 		this.screenshotTaker = new RobotiumScreenshotTaker(this.robot);
 		
 		this.afterRestart();
@@ -259,6 +258,8 @@ public class RipperTestCase  extends ActivityInstrumentationTestCase2  {
 					}
 					else
 					{
+						getInstrumentation().waitForIdleSync();
+						
 		        		Activity activity = getActivity();
 		        		
 		        		if (activity != null)
