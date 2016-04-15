@@ -478,6 +478,12 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 					// test case
 					ActivityDescription activityUtente = getCurrentDescriptionAsActivityDescription_Utente(
 							currentTestCaseIndex);
+					
+					if (PULL_COVERAGE) {
+						notifyRipperLog("pull coverage after test case...");
+						pullCoverage(0, currentTestCaseIndex);
+					}
+					
 					// notifyRipperLog("ActivityUtente ricevuta prima di
 					// comparazione: "+activityUtente.toString());
 

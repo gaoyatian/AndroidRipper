@@ -58,14 +58,24 @@ public class GenericComparatorConfiguration
 			ret.testIfFilteredWidgetsMatch = true;
 			
 			String[] filteredWidgetsArray = {
-					SimpleType.EDIT_TEXT,
-					SimpleType.BUTTON,
-					SimpleType.MENU_VIEW,
-					SimpleType.DIALOG_VIEW,
-					SimpleType.SINGLE_CHOICE_LIST,
-					SimpleType.MULTI_CHOICE_LIST,
-					SimpleType.WEB_VIEW,
-					SimpleType.TAB_HOST
+					SimpleType.BUTTON
+					,SimpleType.MENU_ITEM
+					,SimpleType.TEXT_VIEW
+					,SimpleType.LINEAR_LAYOUT
+					,SimpleType.RELATIVE_LAYOUT
+					,SimpleType.CHECKBOX
+					,SimpleType.TOGGLE_BUTTON
+					,SimpleType.NUMBER_PICKER_BUTTON
+					,SimpleType.IMAGE_VIEW
+					,SimpleType.WEB_VIEW
+					,SimpleType.PREFERENCE_LIST
+					,SimpleType.LIST_VIEW
+					,SimpleType.SINGLE_CHOICE_LIST
+					,SimpleType.MULTI_CHOICE_LIST
+					,SimpleType.SPINNER
+					,SimpleType.RADIO_GROUP
+					,SimpleType.SEEK_BAR
+					,SimpleType.RATING_BAR
 			};
 			ret.filteredWidgetsArray = filteredWidgetsArray;
 			
@@ -73,6 +83,10 @@ public class GenericComparatorConfiguration
 			ret.compareWidgetSimpleType = true;
 			
 			ret.compareMenuItemCount = true;
+
+			ret.testIfBothListHaveMinusThanAFixedNumberOfElements = true;
+			ret.fixedNumberOfListElements = 5;
+			
 			return ret;
 		}
 		
@@ -91,14 +105,24 @@ public class GenericComparatorConfiguration
 			ret.testIfFilteredWidgetsMatch = true;
 			
 			String[] filteredWidgetsArray = {
-					SimpleType.EDIT_TEXT,
-					SimpleType.BUTTON,
-					SimpleType.MENU_VIEW,
-					SimpleType.DIALOG_VIEW,
-					SimpleType.SINGLE_CHOICE_LIST,
-					SimpleType.MULTI_CHOICE_LIST,
-					SimpleType.WEB_VIEW,
-					SimpleType.TAB_HOST
+					SimpleType.BUTTON
+					,SimpleType.MENU_ITEM
+					,SimpleType.TEXT_VIEW
+					,SimpleType.LINEAR_LAYOUT
+					,SimpleType.RELATIVE_LAYOUT
+					,SimpleType.CHECKBOX
+					,SimpleType.TOGGLE_BUTTON
+					,SimpleType.NUMBER_PICKER_BUTTON
+					,SimpleType.IMAGE_VIEW
+					,SimpleType.WEB_VIEW
+					,SimpleType.PREFERENCE_LIST
+					,SimpleType.LIST_VIEW
+					,SimpleType.SINGLE_CHOICE_LIST
+					,SimpleType.MULTI_CHOICE_LIST
+					,SimpleType.SPINNER
+					,SimpleType.RADIO_GROUP
+					,SimpleType.SEEK_BAR
+					,SimpleType.RATING_BAR
 			};
 			ret.filteredWidgetsArray = filteredWidgetsArray;
 			
@@ -106,6 +130,10 @@ public class GenericComparatorConfiguration
 			ret.compareWidgetSimpleType = true;
 			
 			ret.compareMenuItemCount = true;
+			
+			ret.testIfBothListHaveMinusThanAFixedNumberOfElements = true;
+			ret.fixedNumberOfListElements = 5;
+			
 			return ret;
 		}
 	}
