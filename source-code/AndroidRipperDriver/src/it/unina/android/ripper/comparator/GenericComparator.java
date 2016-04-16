@@ -230,26 +230,33 @@ public class GenericComparator implements IComparator, Serializable {
 		{		
 			if (config.compareListItemCount &&  w1.getCount() != w2.getCount())
 			{
-				debug("compare list item count -> false");
-				return false;
+				if (w1.getCount() >= config.maxListElementsConut && w2.getCount() >= config.maxListElementsConut)
+				{
+					debug(config.compareListItemCount, "compare list item count (maxListElementsConut) -> true");	
+				}
+				else
+				{
+					debug("compare list item count -> false");
+					return false;
+				}
 			}
 			debug(config.compareListItemCount, "compare list item count -> true");
 			
 			
-			if (config.testIfBothListHaveAtLeastOneElement &&  w1.getCount() >= 1 && w2.getCount() >= 1)
-			{
-				debug("testIfBothListHaveAtLeastOneElement -> false");
-				return false;
-			}
-			debug(config.testIfBothListHaveAtLeastOneElement, "testIfBothListHaveAtLeastOneElement -> true");
-			
-			
-			if (config.testIfBothListHaveMinusThanAFixedNumberOfElements &&  w1.getCount() <= config.fixedNumberOfListElements && w2.getCount() <= config.fixedNumberOfListElements)
-			{
-				debug("testIfBothListHaveMinusThanAFixedNumberOfElements -> false");
-				return false;
-			}
-			debug(config.testIfBothListHaveMinusThanAFixedNumberOfElements, "testIfBothListHaveMinusThanAFixedNumberOfElements -> true");
+//			if (config.testIfBothListHaveAtLeastOneElement &&  w1.getCount() >= 1 && w2.getCount() >= 1)
+//			{
+//				debug("testIfBothListHaveAtLeastOneElement -> false");
+//				return false;
+//			}
+//			debug(config.testIfBothListHaveAtLeastOneElement, "testIfBothListHaveAtLeastOneElement -> true");
+//			
+//			
+//			if (config.testIfBothListHaveMinusThanAFixedNumberOfElements &&  w1.getCount() <= config.fixedNumberOfListElements && w2.getCount() <= config.fixedNumberOfListElements)
+//			{
+//				debug("testIfBothListHaveMinusThanAFixedNumberOfElements -> false");
+//				return false;
+//			}
+//			debug(config.testIfBothListHaveMinusThanAFixedNumberOfElements, "testIfBothListHaveMinusThanAFixedNumberOfElements -> true");
 		}
 			
 		

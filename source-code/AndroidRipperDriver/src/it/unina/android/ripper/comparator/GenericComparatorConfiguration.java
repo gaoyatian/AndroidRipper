@@ -57,25 +57,16 @@ public class GenericComparatorConfiguration
 			
 			ret.testIfFilteredWidgetsMatch = true;
 			
-			String[] filteredWidgetsArray = {
-					SimpleType.BUTTON
-					,SimpleType.MENU_ITEM
-					,SimpleType.TEXT_VIEW
-					,SimpleType.LINEAR_LAYOUT
-					,SimpleType.RELATIVE_LAYOUT
-					,SimpleType.CHECKBOX
-					,SimpleType.TOGGLE_BUTTON
-					,SimpleType.NUMBER_PICKER_BUTTON
-					,SimpleType.IMAGE_VIEW
-					,SimpleType.WEB_VIEW
-					,SimpleType.PREFERENCE_LIST
-					,SimpleType.LIST_VIEW
-					,SimpleType.SINGLE_CHOICE_LIST
-					,SimpleType.MULTI_CHOICE_LIST
-					,SimpleType.SPINNER
-					,SimpleType.RADIO_GROUP
-					,SimpleType.SEEK_BAR
-					,SimpleType.RATING_BAR
+			String[] filteredWidgetsArray = { 
+					SimpleType.EDIT_TEXT,
+					SimpleType.BUTTON,
+					SimpleType.MENU_VIEW,
+					SimpleType.DIALOG_VIEW,
+					SimpleType.SINGLE_CHOICE_LIST,
+					SimpleType.MULTI_CHOICE_LIST,
+					SimpleType.WEB_VIEW,
+					SimpleType.TAB_HOST,
+					SimpleType.LIST_VIEW
 			};
 			ret.filteredWidgetsArray = filteredWidgetsArray;
 			
@@ -84,8 +75,8 @@ public class GenericComparatorConfiguration
 			
 			ret.compareMenuItemCount = true;
 
-			ret.testIfBothListHaveMinusThanAFixedNumberOfElements = true;
-			ret.fixedNumberOfListElements = 5;
+			ret.compareListItemCount = true;
+			ret.maxListElementsConut = 3;
 			
 			return ret;
 		}
@@ -105,24 +96,15 @@ public class GenericComparatorConfiguration
 			ret.testIfFilteredWidgetsMatch = true;
 			
 			String[] filteredWidgetsArray = {
-					SimpleType.BUTTON
-					,SimpleType.MENU_ITEM
-					,SimpleType.TEXT_VIEW
-					,SimpleType.LINEAR_LAYOUT
-					,SimpleType.RELATIVE_LAYOUT
-					,SimpleType.CHECKBOX
-					,SimpleType.TOGGLE_BUTTON
-					,SimpleType.NUMBER_PICKER_BUTTON
-					,SimpleType.IMAGE_VIEW
-					,SimpleType.WEB_VIEW
-					,SimpleType.PREFERENCE_LIST
-					,SimpleType.LIST_VIEW
-					,SimpleType.SINGLE_CHOICE_LIST
-					,SimpleType.MULTI_CHOICE_LIST
-					,SimpleType.SPINNER
-					,SimpleType.RADIO_GROUP
-					,SimpleType.SEEK_BAR
-					,SimpleType.RATING_BAR
+					SimpleType.EDIT_TEXT,
+					SimpleType.BUTTON,
+					SimpleType.MENU_VIEW,
+					SimpleType.DIALOG_VIEW,
+					SimpleType.SINGLE_CHOICE_LIST,
+					SimpleType.MULTI_CHOICE_LIST,
+					SimpleType.WEB_VIEW,
+					SimpleType.TAB_HOST,
+					SimpleType.LIST_VIEW
 			};
 			ret.filteredWidgetsArray = filteredWidgetsArray;
 			
@@ -131,8 +113,8 @@ public class GenericComparatorConfiguration
 			
 			ret.compareMenuItemCount = true;
 			
-			ret.testIfBothListHaveMinusThanAFixedNumberOfElements = true;
-			ret.fixedNumberOfListElements = 5;
+			ret.compareListItemCount = true;
+			ret.maxListElementsConut = 3;
 			
 			return ret;
 		}
@@ -175,10 +157,11 @@ public class GenericComparatorConfiguration
 	/* SPECIFIC WIDGETS OPTIONS */
 
 	//LIST
-	public boolean compareListItemCount = false;	
-	public boolean testIfBothListHaveAtLeastOneElement = false;
-	public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
-	public int fixedNumberOfListElements = 5;
+	public boolean compareListItemCount = false;
+	public int maxListElementsConut = 5;
+//	public boolean testIfBothListHaveAtLeastOneElement = false;
+//	public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
+//	public int fixedNumberOfListElements = 5;
 	
 	//MENU
 	public boolean compareMenuItemCount = false;
