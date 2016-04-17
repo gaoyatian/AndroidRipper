@@ -76,7 +76,7 @@ public class GenericComparatorConfiguration
 			ret.compareMenuItemCount = true;
 
 			ret.compareListItemCount = true;
-			ret.maxListElementsConut = 3;
+			ret.maxListElementsCount = 3;
 			
 			return ret;
 		}
@@ -114,7 +114,7 @@ public class GenericComparatorConfiguration
 			ret.compareMenuItemCount = true;
 			
 			ret.compareListItemCount = true;
-			ret.maxListElementsConut = 3;
+			ret.maxListElementsCount = 3;
 			
 			return ret;
 		}
@@ -158,7 +158,7 @@ public class GenericComparatorConfiguration
 
 	//LIST
 	public boolean compareListItemCount = false;
-	public int maxListElementsConut = 5;
+	public int maxListElementsCount = 5;
 //	public boolean testIfBothListHaveAtLeastOneElement = false;
 //	public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
 //	public int fixedNumberOfListElements = 5;

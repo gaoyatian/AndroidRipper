@@ -198,7 +198,7 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		if (config.compareWidgetSimpleType && w1.getSimpleType().equals(w2.getSimpleType()) == false)
 		{
-			debug("compare widget simple type -> false");
+			debug("compare widget simple type("+w1.getSimpleType()+","+w2.getSimpleType()+") -> false");
 			return false;
 		}
 		debug(config.compareWidgetSimpleType, "compare widget simple type -> true");
@@ -230,7 +230,7 @@ public class GenericComparator implements IComparator, Serializable {
 		{		
 			if (config.compareListItemCount &&  w1.getCount() != w2.getCount())
 			{
-				if (w1.getCount() >= config.maxListElementsConut && w2.getCount() >= config.maxListElementsConut)
+				if (w1.getCount() >= config.maxListElementsCount && w2.getCount() >= config.maxListElementsCount)
 				{
 					debug(config.compareListItemCount, "compare list item count (maxListElementsConut) -> true");	
 				}
