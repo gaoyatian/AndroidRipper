@@ -1,13 +1,13 @@
 package it.unina.android.ripper.comparator;
 
-import it.unina.android.ripper.constants.SimpleType;
-import it.unina.android.ripper.model.ActivityDescription;
-import it.unina.android.ripper.model.WidgetDescription;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import it.unina.android.ripper.constants.SimpleType;
+import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.model.WidgetDescription;
 
 public class GenericComparator implements IComparator, Serializable {
 
@@ -198,7 +198,7 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		if (config.compareWidgetSimpleType && w1.getSimpleType().equals(w2.getSimpleType()) == false)
 		{
-			debug("compare widget simple type -> false");
+			debug("compare widget simple type("+w1.getSimpleType()+","+w2.getSimpleType()+") -> false");
 			return false;
 		}
 		debug(config.compareWidgetSimpleType, "compare widget simple type -> true");
@@ -230,26 +230,33 @@ public class GenericComparator implements IComparator, Serializable {
 		{		
 			if (config.compareListItemCount &&  w1.getCount() != w2.getCount())
 			{
-				debug("compare list item count -> false");
-				return false;
+				if (w1.getCount() >= config.maxListElementsCount && w2.getCount() >= config.maxListElementsCount)
+				{
+					debug(config.compareListItemCount, "compare list item count (maxListElementsConut) -> true");	
+				}
+				else
+				{
+					debug("compare list item count -> false");
+					return false;
+				}
 			}
 			debug(config.compareListItemCount, "compare list item count -> true");
 			
 			
-			if (config.testIfBothListHaveAtLeastOneElement &&  w1.getCount() >= 1 && w2.getCount() >= 1)
-			{
-				debug("testIfBothListHaveAtLeastOneElement -> false");
-				return false;
-			}
-			debug(config.testIfBothListHaveAtLeastOneElement, "testIfBothListHaveAtLeastOneElement -> true");
-			
-			
-			if (config.testIfBothListHaveMinusThanAFixedNumberOfElements &&  w1.getCount() <= config.fixedNumberOfListElements && w2.getCount() <= config.fixedNumberOfListElements)
-			{
-				debug("testIfBothListHaveMinusThanAFixedNumberOfElements -> false");
-				return false;
-			}
-			debug(config.testIfBothListHaveMinusThanAFixedNumberOfElements, "testIfBothListHaveMinusThanAFixedNumberOfElements -> true");
+//			if (config.testIfBothListHaveAtLeastOneElement &&  w1.getCount() >= 1 && w2.getCount() >= 1)
+//			{
+//				debug("testIfBothListHaveAtLeastOneElement -> false");
+//				return false;
+//			}
+//			debug(config.testIfBothListHaveAtLeastOneElement, "testIfBothListHaveAtLeastOneElement -> true");
+//			
+//			
+//			if (config.testIfBothListHaveMinusThanAFixedNumberOfElements &&  w1.getCount() <= config.fixedNumberOfListElements && w2.getCount() <= config.fixedNumberOfListElements)
+//			{
+//				debug("testIfBothListHaveMinusThanAFixedNumberOfElements -> false");
+//				return false;
+//			}
+//			debug(config.testIfBothListHaveMinusThanAFixedNumberOfElements, "testIfBothListHaveMinusThanAFixedNumberOfElements -> true");
 		}
 			
 		
@@ -263,6 +270,18 @@ public class GenericComparator implements IComparator, Serializable {
 				return false;
 			}
 			debug(config.compareMenuItemCount, "compare menu item count -> true");
+		}
+		
+		
+		
+		
+		if (config.compareDialogTitle && w1.getSimpleType().equals(SimpleType.DIALOG_VIEW) && w2.getSimpleType().equals(SimpleType.DIALOG_VIEW))
+		{
+			if (w1.getName().equals(w2.getName()) == false) {
+				debug("compare dialog names -> false");
+				return false;
+			}
+			debug("compare dialog names -> true");
 		}
 		
 		
@@ -305,7 +324,7 @@ public class GenericComparator implements IComparator, Serializable {
 			if (checkedAlready.contains(w2) == false) {
 				if(lookFor(w2, widgets1) == false)
 				{
-					debug("lookFor(w2, widgets1) no");
+					debug("lookFor(w2, widgets1) no" +w2.getName());
 					return false;
 				}
 			}

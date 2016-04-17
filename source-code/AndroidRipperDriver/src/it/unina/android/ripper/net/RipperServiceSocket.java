@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 public class RipperServiceSocket {
 	public static final String TAG = "RipperServiceSocket";
 	
-	public static int READ_TIMEOUT = 10000;
+	public static int READ_TIMEOUT = 20000;
 	
 	String host;
 	int port;
@@ -81,6 +81,21 @@ public class RipperServiceSocket {
 		}
 	}
 	
+	private byte[] readBytesNoTimeout(boolean bigBuffer) throws IOException
+	{
+		if(bigBuffer) {
+			//this.socket.setSoTimeout(timeout);
+			byte[] buffer = this.readBytesBigBuffer();
+			//this.socket.setSoTimeout(0);
+			return buffer;
+		} else {
+			//this.socket.setSoTimeout(timeout);
+			byte[] buffer = this.readBytes();
+			//this.socket.setSoTimeout(0);
+			return buffer;			
+		}
+	}
+
 	private byte[] readBytes() throws IOException
 	{
 		byte[] buffer = new byte[5600];
@@ -191,6 +206,43 @@ public class RipperServiceSocket {
 		}
 		
 		return null;		
+	}
+	
+	public Message readMessageNoTimeout(boolean bigBuffer) throws SocketException {
+
+		try {
+			byte[] buffer = this.readBytesNoTimeout(bigBuffer);
+
+			if (buffer != null) {
+				System.out.println();
+				System.out.println(new String(buffer));
+				System.out.println();
+
+				Message msg = new Message(MessagePacker.unpack(buffer));
+				System.out.println("" + msg.getType());
+
+				try {
+					String index = msg.getParameterValue("index");
+					long indexLong = Long.parseLong(index);
+
+					if (indexLong >= curIndex) {
+						curIndex = indexLong;
+						return msg;
+					}
+				} catch (Throwable t) {
+				}
+
+			}
+		} catch (java.net.SocketException se) {
+			throw se;
+		} catch (java.net.SocketTimeoutException e) {
+
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 	
 	public Message readMessage(int timeout, boolean bigBuffer) throws SocketException

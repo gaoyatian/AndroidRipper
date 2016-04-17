@@ -1,5 +1,12 @@
 package it.unina.android.ripper.driver;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.SocketException;
+
 import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.autoandroidlib.logcat.LogcatDumper;
 import it.unina.android.ripper.driver.exception.AckNotReceivedException;
@@ -14,11 +21,6 @@ import it.unina.android.ripper.output.RipperOutput;
 import it.unina.android.ripper.planner.Planner;
 import it.unina.android.ripper.planner.task.TaskList;
 import it.unina.android.ripper.scheduler.Scheduler;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.SocketException;
 
 public abstract class AbstractDriver {
 
@@ -54,15 +56,15 @@ public abstract class AbstractDriver {
 	public static String XML_OUTPUT_PATH = "";
 	public static String JUNIT_OUTPUT_PATH = "";
 	
-	protected Scheduler scheduler;
-	protected Planner planner;
-	protected RipperServiceSocket rsSocket;
-	protected RipperInput ripperInput;	
+	public Scheduler scheduler;
+	public Planner planner;
+	public RipperServiceSocket rsSocket;
+	public RipperInput ripperInput;	
 	
-	protected boolean running = true;	
+	public boolean running = true;	
 	
-	protected String currentLogFile;
-	protected RipperOutput ripperOutput;
+	public String currentLogFile;
+	public RipperOutput ripperOutput;
 	
 	public AbstractDriver()
 	{
@@ -76,7 +78,7 @@ public abstract class AbstractDriver {
 		this.rippingLoop();
 	}
 	
-	private boolean paused = false;
+	public boolean paused = false;
 	
 	public void pauseRipping()
 	{
@@ -108,7 +110,7 @@ public abstract class AbstractDriver {
 		}
 	}
 	
-	protected abstract void rippingLoop();
+	public abstract void rippingLoop();
 	
 	public TaskList getTaskList()
 	{
@@ -156,10 +158,16 @@ public abstract class AbstractDriver {
 	{
 		try
 		{
-			FileWriter fileWritter = new FileWriter(file, false);
-	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-	        bufferWritter.write(string);
-	        bufferWritter.close();
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+	        	    new FileOutputStream(file,false), "UTF-8"));
+	        
+	        out.write(string);
+	        out.close();
+			
+			//FileWriter fileWritter = new FileWriter(file, false);
+	        //BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+	        //bufferWritter.write(string);
+	        //bufferWritter.close();
 		}
 		catch(Exception ex)
 		{
@@ -171,10 +179,16 @@ public abstract class AbstractDriver {
 	{
 		try
 		{
-			FileWriter fileWritter = new FileWriter(file, true);
-	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-	        bufferWritter.write(string);
-	        bufferWritter.close();
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+	        	    new FileOutputStream(file,true), "UTF-8"));
+	        
+	        out.write(string);
+	        out.close();
+			
+	        //FileWriter fileWritter = new FileWriter(file, true);
+	        //BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+	        //bufferWritter.write(string);
+	        //bufferWritter.close();
 		}
 		catch(Exception ex)
 		{
@@ -182,7 +196,7 @@ public abstract class AbstractDriver {
 		}
 	}
 	
-	protected int LOG_FILE_NUMBER = 0;
+	public int LOG_FILE_NUMBER = 0;
 	
 	public void createLogFile()
 	{
@@ -274,7 +288,7 @@ public abstract class AbstractDriver {
 		}
 	}
 	
-	protected void pullCoverageFile(String src, int count) {
+	public void pullCoverageFile(String src, int count) {
 		notifyRipperLog("coverage");
 		Actions.pullCoverage(AUT_PACKAGE, src, COVERAGE_PATH, count);
 	}
@@ -290,7 +304,7 @@ public abstract class AbstractDriver {
 		Actions.pullJUnitLog(AUT_PACKAGE, JUNIT_OUTPUT_PATH, count);
 	}
 	
-	protected boolean ping()
+	public boolean ping()
 	{
 		int pingRetryCount = 0;
 		
@@ -406,15 +420,15 @@ public abstract class AbstractDriver {
 		return this.lastActivityDescription;
 	}
 	
-	ActivityDescription lastActivityDescription = null;
+	public ActivityDescription lastActivityDescription = null;
 	public ActivityDescription getLastActivityDescription()
 	{
 		return lastActivityDescription;
 	}
 
-	private int LOGCAT_FILE_NUMBER = 0;
+	public int LOGCAT_FILE_NUMBER = 0;
 	
-	protected boolean startup()
+	public boolean startup()
 	{
 		int pingFailures = 0;
 		
@@ -499,7 +513,7 @@ public abstract class AbstractDriver {
 	/*
 	 * Kills the emulator
 	 * */
-	protected boolean shutdown()
+	public boolean shutdown()
 	{
 		notifyRipperLog("Shutdown...");
 		//Actions.sendMessageToEmualtor(EMULATOR_PORT, "kill");
@@ -517,7 +531,7 @@ public abstract class AbstractDriver {
 	 * 
 	 * @param avdPort
 	 */
-	protected void waitForEmulator(Integer avdPort) {
+	public void waitForEmulator(Integer avdPort) {
 		notifyRipperLog("Waiting for AVD...");
 		Actions.waitForEmulator(avdPort);
 		notifyRipperLog("AVD online!");
@@ -533,6 +547,5 @@ public abstract class AbstractDriver {
 
 	public RipperOutput getRipperOutput() {
 		return ripperOutput;
-	}	
-	
+	}
 }

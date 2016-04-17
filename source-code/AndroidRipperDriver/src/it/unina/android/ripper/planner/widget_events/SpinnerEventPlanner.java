@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SpinnerEventPlanner extends WidgetEventPlanner {
 
-	int MAX_INTERACTIONS = 3;
+	int MAX_INTERACTIONS = 9;
 	
 	public SpinnerEventPlanner(WidgetDescription widgetDescription, int MAX_INTERACTIONS) {
 		super(widgetDescription);

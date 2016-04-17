@@ -579,5 +579,43 @@ public class Actions {
 		return (iter > maxIter);
 	}
 	
+	public static void pullCoverageForUserTestCase(final String AUT_PACKAGE, final String COV_FILE, final String COV_PATH, int TEST_COV_COUNTER, int TEST_CASE_INDEX)
+	{
+		String src = "/data/data/"+AUT_PACKAGE+"/"+COV_FILE;
+		String dest = COV_PATH+"coverage_test_"+TEST_CASE_INDEX+ "_"+ TEST_COV_COUNTER +".ec";
+
+		try {
+			tools.adb("pull", src, dest).connectStderr(System.out).connectStdout(System.out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void pullCoverageStandardFileForUserTestCase(final String AUT_PACKAGE, final String COV_PATH, int TEST_COV_COUNTER_EC, int TEST_CASE_INDEX)
+	{
+		String src = "/data/data/"+AUT_PACKAGE+"/files/coverage.ec";
+		String dest = COV_PATH+"coverage_test_"+TEST_CASE_INDEX+"_"+ TEST_COV_COUNTER_EC +"_ec.ec";
+
+		try {
+			tools.adb("pull", src, dest).connectStderr(System.out).connectStdout(System.out).waitFor();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void pullJUnitLogForUserTestCase(final String AUT_PACKAGE, final String DEST_PATH, final int TEST_JUNIT_COUNTER, int INDICE_TESTCASE)
+	{
+		String src = "/data/data/"+AUT_PACKAGE+"/files/it.unina.android.ripper-TEST.xml";
+		String dest = DEST_PATH+"junit-log-"+ "test_"+INDICE_TESTCASE +"_"+TEST_JUNIT_COUNTER +".xml";
+
+		try {
+			tools.adb("pull", src, dest).connectStderr(System.out).connectStdout(System.out).waitFor();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 	

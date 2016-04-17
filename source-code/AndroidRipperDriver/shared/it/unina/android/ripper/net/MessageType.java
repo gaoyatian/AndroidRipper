@@ -14,4 +14,7 @@ public class MessageType {
 	public static final String CRASH_MESSAGE = "CRASH";
 	public static final String COVERAGE_MESSAGE = "COVER";
 	public static final String HOME_MESSAGE = "HOME";
+	public static final String USER_TEST_MESSAGE = "TEST"; // usato per exec i-esimo testcase
+	public static final String TOTAL_NUMBER_OF_TEST_CASE_MESSAGE = "NUMTC"; // usato per ricavare il numero tot di testcase presenti
+	public static final String EXECUTE_TEST_CASE_MESSAGE = "ETC"; // per rieseguire testcase utente da driver 	// messaggio per forzare exec test case
 }

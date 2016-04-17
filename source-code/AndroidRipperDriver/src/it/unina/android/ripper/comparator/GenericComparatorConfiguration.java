@@ -57,7 +57,7 @@ public class GenericComparatorConfiguration
 			
 			ret.testIfFilteredWidgetsMatch = true;
 			
-			String[] filteredWidgetsArray = {
+			String[] filteredWidgetsArray = { 
 					SimpleType.EDIT_TEXT,
 					SimpleType.BUTTON,
 					SimpleType.MENU_VIEW,
@@ -65,7 +65,8 @@ public class GenericComparatorConfiguration
 					SimpleType.SINGLE_CHOICE_LIST,
 					SimpleType.MULTI_CHOICE_LIST,
 					SimpleType.WEB_VIEW,
-					SimpleType.TAB_HOST
+					SimpleType.TAB_HOST,
+					SimpleType.LIST_VIEW
 			};
 			ret.filteredWidgetsArray = filteredWidgetsArray;
 			
@@ -73,6 +74,10 @@ public class GenericComparatorConfiguration
 			ret.compareWidgetSimpleType = true;
 			
 			ret.compareMenuItemCount = true;
+
+			ret.compareListItemCount = true;
+			ret.maxListElementsCount = 3;
+			
 			return ret;
 		}
 		
@@ -98,7 +103,8 @@ public class GenericComparatorConfiguration
 					SimpleType.SINGLE_CHOICE_LIST,
 					SimpleType.MULTI_CHOICE_LIST,
 					SimpleType.WEB_VIEW,
-					SimpleType.TAB_HOST
+					SimpleType.TAB_HOST,
+					SimpleType.LIST_VIEW
 			};
 			ret.filteredWidgetsArray = filteredWidgetsArray;
 			
@@ -106,6 +112,10 @@ public class GenericComparatorConfiguration
 			ret.compareWidgetSimpleType = true;
 			
 			ret.compareMenuItemCount = true;
+			
+			ret.compareListItemCount = true;
+			ret.maxListElementsCount = 3;
+			
 			return ret;
 		}
 	}
@@ -115,6 +125,7 @@ public class GenericComparatorConfiguration
 	/* ACTIVITY OPTIONS */
 	public boolean compareActivityNames = false;
 	public boolean compareActivityTitles = false;
+	public boolean compareDialogTitle = false;
 	public boolean compareActivityClasses = false;
 	public boolean compareActivityWidgetsCount = false;	
 	public boolean testIfWidgetsMatch = false;
@@ -146,10 +157,11 @@ public class GenericComparatorConfiguration
 	/* SPECIFIC WIDGETS OPTIONS */
 
 	//LIST
-	public boolean compareListItemCount = false;	
-	public boolean testIfBothListHaveAtLeastOneElement = false;
-	public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
-	public int fixedNumberOfListElements = 5;
+	public boolean compareListItemCount = false;
+	public int maxListElementsCount = 5;
+//	public boolean testIfBothListHaveAtLeastOneElement = false;
+//	public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
+//	public int fixedNumberOfListElements = 5;
 	
 	//MENU
 	public boolean compareMenuItemCount = false;
