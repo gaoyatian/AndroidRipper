@@ -35,7 +35,11 @@ public class JUnitOutput {
 	
 	public static void main(String[] args) {
 
-		if (args.length != 4) {
+		if (args.length == 1 && args[0].equals("clean")) {
+			new File("./RipperTestCase/assets/activities.xml").delete();
+			new File("./RipperTestCase/AndroidManifest.xml").delete();
+			new File("./RipperTestCase/src/it/unina/android/ripper/test/RipperTest.java").delete();
+		} else if (args.length != 4) {
 			printUsage();
 		} else{
 			File f = new File(args[2]);
@@ -43,9 +47,7 @@ public class JUnitOutput {
 					try {			
 						//JUnitOutput jUnitOutput = new JUnitOutput("kdk.android.simplydo", "kdk.android.simplydo.SimplyDoActivity", "./model/", "CustomWidgetSimpleComparator");
 						JUnitOutput jUnitOutput = new JUnitOutput(args[0], args[1], args[2], args[3]);
-						
 						jUnitOutput.outputManifest();
-						new File("./RipperTestCase/AndroidManifest.xml").delete();
 						jUnitOutput.outputJUnit();
 						jUnitOutput.copyActivitiesXML();
 					} catch(Exception ex) {
@@ -60,11 +62,12 @@ public class JUnitOutput {
 	}
 	
 	public static void printUsage() {
-		System.out.println("java -jar JUnitOutput.jar [activity under test package] [activity under test with full package] [model directory] [comparator name]");
+		System.out.println("java -jar XML2jUnitForAndroidRipper.jar [activity under test package] [activity under test with full package] [model directory] [comparator name]");
 		System.out.println();
 		System.out.println("Comparator name parameter is not validated by the tool for future updates.");
 		System.out.println("Valid comparator names: NameComparator, CustomWidgetSimpleComparator, CustomWidgetIntensiveComparator");
-		
+		System.out.println();
+		System.out.println("To clean the RipperTestCase project: java -jar XML2jUnitForAndroidRipper.jar clean");
 	}
 
 	public String templateFile = "./RipperTest.java.template";
