@@ -76,14 +76,14 @@ public class TaskList extends ArrayList<Task> {
 		return t;
 	}
 
-	@Override
-	public boolean add(Task e) {
-		boolean added = super.add(e);
-		
-		if (added) {
-			this.saveToFile("current_TaskList.bin");
-		}
-		
-		return added;
-	}
+//	@Override
+//	public boolean add(Task e) {
+//		boolean added = super.add(e);
+//		
+//		if (added) {
+//			this.saveToFile("current_TaskList.bin");
+//		}
+//		
+//		return added;
+//	}
 }

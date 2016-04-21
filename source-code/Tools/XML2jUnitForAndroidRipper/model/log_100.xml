@@ -1,0 +1,288 @@
+<?xml version="1.0"?><root>
+<fired_event interaction="click" value="">
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230736" index="10" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <input type="writeText" value="95">
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="" visible="TRUE"/>
+  </input>
+  <input type="writeText" value="71">
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="14" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="" visible="TRUE"/>
+  </input>
+</fired_event>
+<activity class="kdk.android.simplydo.SimplyDoActivity" id="a3" keypress="FALSE" longkeypress="FALSE" menu="TRUE" name="SimplyDoActivity" tab_activity="0" title="Simply Do" uid="471">
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.LinearLayout" count="3" enabled="TRUE" id="-1" index="0" name="" p_id="-1" p_name="" p_type="com.android.internal.policy.impl.PhoneWindow.DecorView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.view.ViewStub" enabled="TRUE" id="16909027" index="1" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="FALSE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.FrameLayout" count="1" enabled="TRUE" id="-1" index="2" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.TextView" enabled="TRUE" id="16908310" index="3" name="Simply Do" p_id="-1" p_name="" p_type="android.widget.FrameLayout" simple_type="text" value="Simply Do" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.FrameLayout" count="1" enabled="TRUE" id="16908290" index="4" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="1" enabled="TRUE" id="-1" index="5" name="" p_id="16908290" p_name="" p_type="android.widget.FrameLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="16908290" ancestor_type="android.widget.FrameLayout" class="android.widget.ViewSwitcher" count="2" enabled="TRUE" id="2131230738" index="6" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230739" index="7" name="" p_id="2131230738" p_name="" p_type="android.widget.ViewSwitcher" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230727" index="8" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230736" index="10" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="1" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="12" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="13" name="95" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="95" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="14" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230740" index="15" name="" p_id="2131230738" p_name="" p_type="android.widget.ViewSwitcher" simple_type="linearLayout" value="" visible="FALSE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230727" index="16" name="" p_id="2131230740" p_name="" p_type="android.widget.LinearLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="17" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="71" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230729" index="18" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="0" enabled="TRUE" id="2131230730" index="19" name="" p_id="2131230740" p_name="" p_type="android.widget.LinearLayout" simple_type="emptyList" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="com.android.internal.policy.impl.PhoneWindow.DecorView" count="1" enabled="TRUE" id="-1" index="20" name="" p_id="-1" p_name="" p_type="null" simple_type="" value="" visible="TRUE"/>
+</activity>
+<fired_event interaction="click" value="">
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230736" index="10" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <input type="writeText" value="43">
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="" visible="TRUE"/>
+  </input>
+  <input type="writeText" value="43">
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="17" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="71" visible="TRUE"/>
+  </input>
+</fired_event>
+<activity class="kdk.android.simplydo.SimplyDoActivity" id="a5" keypress="FALSE" longkeypress="FALSE" menu="TRUE" name="SimplyDoActivity" tab_activity="0" title="Simply Do" uid="472">
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.LinearLayout" count="3" enabled="TRUE" id="-1" index="0" name="" p_id="-1" p_name="" p_type="com.android.internal.policy.impl.PhoneWindow.DecorView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.view.ViewStub" enabled="TRUE" id="16909027" index="1" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="FALSE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.FrameLayout" count="1" enabled="TRUE" id="-1" index="2" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.TextView" enabled="TRUE" id="16908310" index="3" name="Simply Do" p_id="-1" p_name="" p_type="android.widget.FrameLayout" simple_type="text" value="Simply Do" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.FrameLayout" count="1" enabled="TRUE" id="16908290" index="4" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="1" enabled="TRUE" id="-1" index="5" name="" p_id="16908290" p_name="" p_type="android.widget.FrameLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="16908290" ancestor_type="android.widget.FrameLayout" class="android.widget.ViewSwitcher" count="2" enabled="TRUE" id="2131230738" index="6" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230739" index="7" name="" p_id="2131230738" p_name="" p_type="android.widget.ViewSwitcher" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230727" index="8" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230736" index="10" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="2" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="12" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="13" name="43" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="43" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="14" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="15" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="16" name="95" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="95" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="17" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230740" index="18" name="" p_id="2131230738" p_name="" p_type="android.widget.ViewSwitcher" simple_type="linearLayout" value="" visible="FALSE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230727" index="19" name="" p_id="2131230740" p_name="" p_type="android.widget.LinearLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="20" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="43" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230729" index="21" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="0" enabled="TRUE" id="2131230730" index="22" name="" p_id="2131230740" p_name="" p_type="android.widget.LinearLayout" simple_type="emptyList" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="com.android.internal.policy.impl.PhoneWindow.DecorView" count="1" enabled="TRUE" id="-1" index="23" name="" p_id="-1" p_name="" p_type="null" simple_type="" value="" visible="TRUE"/>
+</activity>
+<fired_event interaction="click" value="">
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230736" index="10" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <input type="writeText" value="33">
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="" visible="TRUE"/>
+  </input>
+  <input type="writeText" value="51">
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="20" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="43" visible="TRUE"/>
+  </input>
+</fired_event>
+<activity class="kdk.android.simplydo.SimplyDoActivity" id="a10" keypress="FALSE" longkeypress="FALSE" menu="TRUE" name="SimplyDoActivity" tab_activity="0" title="Simply Do" uid="473">
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.LinearLayout" count="3" enabled="TRUE" id="-1" index="0" name="" p_id="-1" p_name="" p_type="com.android.internal.policy.impl.PhoneWindow.DecorView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.view.ViewStub" enabled="TRUE" id="16909027" index="1" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="FALSE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.FrameLayout" count="1" enabled="TRUE" id="-1" index="2" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.TextView" enabled="TRUE" id="16908310" index="3" name="Simply Do" p_id="-1" p_name="" p_type="android.widget.FrameLayout" simple_type="text" value="Simply Do" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="null" class="android.widget.FrameLayout" count="1" enabled="TRUE" id="16908290" index="4" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="1" enabled="TRUE" id="-1" index="5" name="" p_id="16908290" p_name="" p_type="android.widget.FrameLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="16908290" ancestor_type="android.widget.FrameLayout" class="android.widget.ViewSwitcher" count="2" enabled="TRUE" id="2131230738" index="6" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230739" index="7" name="" p_id="2131230738" p_name="" p_type="android.widget.ViewSwitcher" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230727" index="8" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230736" index="10" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="12" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="13" name="33" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="33" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="14" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="15" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="16" name="43" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="43" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="17" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="18" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="19" name="95" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="95" visible="TRUE"/>
+  <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="20" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230740" index="21" name="" p_id="2131230738" p_name="" p_type="android.widget.ViewSwitcher" simple_type="linearLayout" value="" visible="FALSE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230727" index="22" name="" p_id="2131230740" p_name="" p_type="android.widget.LinearLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="51" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230729" index="24" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="0" enabled="TRUE" id="2131230730" index="25" name="" p_id="2131230740" p_name="" p_type="android.widget.LinearLayout" simple_type="emptyList" value="" visible="TRUE"/>
+  <widget ancestor_id="-1" ancestor_type="" class="com.android.internal.policy.impl.PhoneWindow.DecorView" count="1" enabled="TRUE" id="-1" index="26" name="" p_id="-1" p_name="" p_type="null" simple_type="" value="" visible="TRUE"/>
+</activity>
+<fired_event interaction="selectListItem" value="1">
+  <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+  <input type="writeText" value="89">
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="" visible="TRUE"/>
+  </input>
+  <input type="writeText" value="61">
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="51" visible="TRUE"/>
+  </input>
+</fired_event>
+<activity_description>
+  <activity class="kdk.android.simplydo.SimplyDoActivity" id="a17" keypress="FALSE" longkeypress="FALSE" menu="TRUE" name="SimplyDoActivity" tab_activity="0" title="33" uid="475">
+    <widget ancestor_id="-1" ancestor_type="null" class="android.widget.LinearLayout" count="3" enabled="TRUE" id="-1" index="0" name="" p_id="-1" p_name="" p_type="com.android.internal.policy.impl.PhoneWindow.DecorView" simple_type="linearLayout" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="null" class="android.view.ViewStub" enabled="TRUE" id="16909027" index="1" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="FALSE"/>
+    <widget ancestor_id="-1" ancestor_type="null" class="android.widget.FrameLayout" count="1" enabled="TRUE" id="-1" index="2" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="null" class="android.widget.TextView" enabled="TRUE" id="16908310" index="3" name="33" p_id="-1" p_name="" p_type="android.widget.FrameLayout" simple_type="text" value="33" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="null" class="android.widget.FrameLayout" count="1" enabled="TRUE" id="16908290" index="4" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="1" enabled="TRUE" id="-1" index="5" name="" p_id="16908290" p_name="" p_type="android.widget.FrameLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+    <widget ancestor_id="16908290" ancestor_type="android.widget.FrameLayout" class="android.widget.ViewSwitcher" count="2" enabled="TRUE" id="2131230738" index="6" name="" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230739" index="7" name="" p_id="2131230738" p_name="" p_type="android.widget.ViewSwitcher" simple_type="linearLayout" value="" visible="FALSE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230727" index="8" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230736" index="10" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="12" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+    <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="13" name="33" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="33" visible="TRUE"/>
+    <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="14" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="15" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+    <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="16" name="43" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="43" visible="TRUE"/>
+    <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="17" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="-1" index="18" name="" p_id="2131230737" p_name="" p_type="android.widget.ListView" simple_type="linearLayout" value="" visible="TRUE"/>
+    <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="19" name="95" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="95" visible="TRUE"/>
+    <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="20" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230740" index="21" name="" p_id="2131230738" p_name="" p_type="android.widget.ViewSwitcher" simple_type="linearLayout" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.LinearLayout" count="2" enabled="TRUE" id="2131230727" index="22" name="" p_id="2131230740" p_name="" p_type="android.widget.LinearLayout" simple_type="linearLayout" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230729" index="24" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="0" enabled="TRUE" id="2131230730" index="25" name="" p_id="2131230740" p_name="" p_type="android.widget.LinearLayout" simple_type="emptyList" value="" visible="TRUE"/>
+    <widget ancestor_id="-1" ancestor_type="" class="com.android.internal.policy.impl.PhoneWindow.DecorView" count="1" enabled="TRUE" id="-1" index="26" name="" p_id="-1" p_name="" p_type="null" simple_type="" value="" visible="TRUE"/>
+  </activity>
+  <extracted_events>
+    <event interaction="back" value=""/>
+    <event interaction="changeOrientation" value=""/>
+    <event interaction="openMenu" value=""/>
+    <event interaction="clickText" value="">
+      <widget ancestor_id="-1" ancestor_type="null" class="android.widget.TextView" enabled="TRUE" id="16908310" index="3" name="33" p_id="-1" p_name="" p_type="android.widget.FrameLayout" simple_type="text" value="33" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="click" value="">
+      <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230736" index="10" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="selectListItem" value="1">
+      <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="selectListItem" value="2">
+      <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="selectListItem" value="3">
+      <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="longClickListItem" value="1">
+      <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="longClickListItem" value="2">
+      <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="longClickListItem" value="3">
+      <widget ancestor_id="-1" ancestor_type="" class="android.widget.ListView" count="3" enabled="TRUE" id="2131230737" index="11" name="" p_id="2131230739" p_name="" p_type="android.widget.LinearLayout" simple_type="listView" value="" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="clickText" value="">
+      <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="13" name="33" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="33" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="clickText" value="">
+      <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="14" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="clickText" value="">
+      <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="16" name="43" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="43" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="clickText" value="">
+      <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="17" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="clickText" value="">
+      <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230733" index="19" name="95" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="95" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="clickText" value="">
+      <widget ancestor_id="2131230737" ancestor_type="android.widget.ListView" class="android.widget.TextView" enabled="TRUE" id="2131230734" index="20" name="(0/0)" p_id="-1" p_name="" p_type="android.widget.LinearLayout" simple_type="text" value="(0/0)" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+    <event interaction="click" value="">
+      <widget ancestor_id="-1" ancestor_type="" class="android.widget.Button" enabled="TRUE" id="2131230729" index="24" name="Add" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="button" value="Add" visible="TRUE"/>
+      <input type="writeText" value="89">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230735" index="9" name="New List Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="89" visible="TRUE"/>
+      </input>
+      <input type="writeText" value="53">
+        <widget ancestor_id="-1" ancestor_type="" class="android.widget.EditText" enabled="TRUE" id="2131230728" index="23" name="New Item Name" p_id="2131230727" p_name="" p_type="android.widget.LinearLayout" simple_type="editText" value="61" visible="TRUE"/>
+      </input>
+    </event>
+  </extracted_events>
+</activity_description>
+
+</root>

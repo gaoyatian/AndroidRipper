@@ -1,12 +1,8 @@
 package it.unina.android.ripper.input;
 
-import it.unina.android.ripper.model.ActivityDescription;
-import it.unina.android.ripper.model.Event;
-import it.unina.android.ripper.model.Input;
-import it.unina.android.ripper.model.WidgetDescription;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,6 +12,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.model.Event;
+import it.unina.android.ripper.model.Input;
+import it.unina.android.ripper.model.WidgetDescription;
 
 public class XMLRipperInput implements RipperInput {
 
@@ -290,6 +291,37 @@ public class XMLRipperInput implements RipperInput {
 		return ret;
 	}
 	
+	public ArrayList<ActivityDescription> loadActivityDescriptionList(InputStream is) {
+		ArrayList<ActivityDescription> ret = new ArrayList<ActivityDescription>();
+		
+		NodeList nList = null;
+		try {
+
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(is);
+
+			doc.getDocumentElement().normalize();
+
+			nList = doc.getElementsByTagName(ACTIVITY);
+			
+			for (int i = 0; i < nList.getLength(); i++) {
+	
+				Node nNode = nList.item(i);
+	
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					ActivityDescription ad = this.inputActivityDescription(eElement);
+					ret.add(ad);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
 	
 	public static final String ROOT = "root";
 	
