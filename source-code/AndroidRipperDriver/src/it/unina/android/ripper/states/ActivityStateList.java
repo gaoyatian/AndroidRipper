@@ -82,15 +82,4 @@ public class ActivityStateList extends ArrayList<ActivityDescription> implements
 		
 		return t;
 	}
-
-	@Override
-	public boolean add(ActivityDescription e) {
-		boolean added = super.add(e);
-		
-		if (added) {
-			this.saveToFile("current_ActivityStateList.bin");
-		}
-		
-		return added;
-	}
 }
