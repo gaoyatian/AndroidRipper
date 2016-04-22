@@ -198,6 +198,24 @@ public abstract class AbstractDriver {
 	
 	public int LOG_FILE_NUMBER = 0;
 	
+	public void createLogFileAtCurrentTimeMillis()
+	{
+		currentLogFile = XML_OUTPUT_PATH + LOG_FILE_PREFIX + System.currentTimeMillis() + ".xml"; 
+				
+		try
+		{
+			FileWriter fileWritter = new FileWriter(currentLogFile, false);
+	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+	        bufferWritter.write("<?xml version=\"1.0\"?><root>\n\r");
+	        bufferWritter.flush();
+	        bufferWritter.close();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
 	public void createLogFile()
 	{
 		//currentLogFile = LOG_FILE_PREFIX + System.currentTimeMillis() + ".xml"; 

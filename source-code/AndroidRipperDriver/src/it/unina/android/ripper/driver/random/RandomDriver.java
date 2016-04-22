@@ -1,7 +1,12 @@
 package it.unina.android.ripper.driver.random;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.net.SocketException;
+
 import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.autoandroidlib.logcat.LogcatDumper;
+import it.unina.android.ripper.driver.AbstractDriver;
 import it.unina.android.ripper.input.RipperInput;
 import it.unina.android.ripper.input.XMLRipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
@@ -10,8 +15,6 @@ import it.unina.android.ripper.model.Task;
 import it.unina.android.ripper.net.Message;
 import it.unina.android.ripper.net.MessageType;
 import it.unina.android.ripper.net.RipperServiceSocket;
-import it.unina.android.ripper.observer.RipperEventListener;
-import it.unina.android.ripper.output.RipperOutput;
 import it.unina.android.ripper.output.XMLRipperOutput;
 import it.unina.android.ripper.planner.HandlerBasedPlanner;
 import it.unina.android.ripper.planner.Planner;
@@ -19,10 +22,6 @@ import it.unina.android.ripper.planner.task.TaskList;
 import it.unina.android.ripper.scheduler.DebugRandomScheduler;
 import it.unina.android.ripper.scheduler.RandomScheduler;
 import it.unina.android.ripper.scheduler.Scheduler;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.net.SocketException;
 
 /**
  * TODO:
@@ -34,58 +33,15 @@ import java.net.SocketException;
  *
  */
 
-public class RandomDriver
+public class RandomDriver extends AbstractDriver
 {
-	public static int PORT = 8888;
-	public static String AVD_NAME = "test";
-	public static String AUT_PACKAGE = "";
-	public static String AUT_MAIN_ACTIVITY = "";
-	public static int EMULATOR_PORT = 5554;
-	
-	public static int SLEEP_AFTER_EVENT = 0;
-	public static int SLEEP_AFTER_TASK = 0;
-	public static int SLEEP_AFTER_RESTART = 0;
 	
 	public static int NUM_EVENTS = 30000;
-	
-	public static boolean PULL_COVERAGE = true;
-	public static boolean PULL_COVERAGE_ZERO = true;
 	public static int COVERAGE_FREQUENCY = 100; //if frequency == 0 use samples
 	public static int COVERAGE_SAMPLES[] = { 50,100,200,300,500,700,1000,1500,2000,2500,3000,5000,7000,10000,15000,20000,25000,30000 };
-	public static String COVERAGE_PATH = "";
-	
-	public static boolean SCREENSHOT = false;
-	public static String SCREENSHOTS_PATH = "./screenshots/";
-	
-	public static String REPORT_FILE = "report.xml";
-	public static String LOG_FILE_PREFIX = "log_";
-	public static int NEW_LOG_FREQUENCY = 100;
-	
 	public static boolean FORCE_STOP_EMULATOR_AFTER_EVENTS = false;
 	public static int FORCE_STOP_EMULATOR_AFTER_EVENTS_MAX = 100000;
-	
-	public static int PING_MAX_RETRY = 10;
-	public static int ACK_MAX_RETRY = 10;
-	public static int FAILURE_THRESHOLD = 10;
-	public static int PING_FAILURE_THRESHOLD = 3;
 	public static long RANDOM_SEED = System.currentTimeMillis();
-	
-	public static int SOCKET_EXCEPTION_THRESHOLD = 2;
-	
-	public static String LOGCAT_PATH = "";
-	public static String XML_OUTPUT_PATH = "";
-	public static String JUNIT_OUTPUT_PATH = "";
-	
-	Scheduler scheduler;
-	Planner planner;
-	RipperServiceSocket rsSocket;
-	RipperInput ripperInput;	
-	
-	RipperOutput ripperOutput;
-	
-	boolean running = true;	
-	
-	String currentLogFile;
 	
 	public RandomDriver()
 	{
@@ -126,42 +82,7 @@ public class RandomDriver
 		//TODO: generare dir coverage
 	}
 	
-	public void startRipping()
-	{
-		this.running = true;
-		notifyRipperLog("Start Ripping Loop...");
-		this.rippingLoop();
-	}
-	
-
-	private boolean paused = false;
-	
-	public void pauseRipping()
-	{
-		this.paused = true;
-	}
-	
-	public void resumeRipping()
-	{
-		this.paused = false;
-	}
-
-	public void stopRipping()
-	{
-		this.running = false;
-	}
-	
-	public void ifIsPausedDoPause()
-	{
-		if (paused)
-		{
-			do {
-				Actions.sleepMilliSeconds(500);
-			} while (paused);
-		}
-	}
-	
-	private void rippingLoop()
+	public void rippingLoop()
 	{
 		int retryCount = 0;
 		
@@ -275,7 +196,7 @@ public class RandomDriver
 							if (N_EVENTS_DONE > 0)
 								endLogFile();
 							
-							createLogFile();
+							createLogFileAtCurrentTimeMillis();
 						}
 						
 						//pull coverage at zero
@@ -572,172 +493,5 @@ public class RandomDriver
 		endLogFile();
 		
 		notifyRipperEnded();
-	}
-	
-	public TaskList getTaskList()
-	{
-		return scheduler.getTaskList();
-	}
-	
-	RipperEventListener mRipperDriverListener = null;
-
-	public void setRipperEventListener(RipperEventListener l)
-	{
-		this.mRipperDriverListener = l;
-	}
-	
-	public void notifyRipperStatus(String status)
-	{
-		if (mRipperDriverListener != null)
-			this.mRipperDriverListener.ripperStatusUpdate(status);
-	}
-
-	public void notifyRipperLog(String log)
-	{
-		if (mRipperDriverListener != null)
-			this.mRipperDriverListener.ripperLog(log);
-	}
-
-	public void notifyRipperTaskEnded()
-	{
-		if (mRipperDriverListener != null)
-			this.mRipperDriverListener.ripperTaskEneded();
-	}
-	
-	public void notifyRipperEnded()
-	{
-		if (mRipperDriverListener != null)
-			this.mRipperDriverListener.ripperEneded();
-	}
-	
-	public void writeReportFile(String report)
-	{
-		try
-		{
-			FileWriter fileWritter = new FileWriter(XML_OUTPUT_PATH + REPORT_FILE, false);
-	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-	        bufferWritter.write(report);
-	        bufferWritter.close();
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
-	public void createLogFile()
-	{
-		currentLogFile = XML_OUTPUT_PATH + LOG_FILE_PREFIX + System.currentTimeMillis() + ".xml"; 
-				
-		try
-		{
-			FileWriter fileWritter = new FileWriter(currentLogFile, false);
-	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-	        bufferWritter.write("<?xml version=\"1.0\"?><root>\n\r");
-	        bufferWritter.flush();
-	        bufferWritter.close();
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
-	public void endLogFile()
-	{
-		if (currentLogFile == null && currentLogFile.equals("") == false)
-			return;
-		
-		try
-		{
-			FileWriter fileWritter = new FileWriter(currentLogFile, true);
-	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-	        bufferWritter.write("\n\r</root>");
-	        bufferWritter.flush();
-	        bufferWritter.close();
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		
-	}
-	
-	public void appendLineToLogFile(String s)
-	{
-		if (currentLogFile == null && currentLogFile.equals("") == false)
-			return;
-		
-		try
-		{
-			FileWriter fileWritter = new FileWriter(currentLogFile,true);
-	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-	        bufferWritter.write(s);
-	        bufferWritter.flush();
-	        bufferWritter.close();
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
-	public void pullCoverage(int count) throws SocketException
-	{
-		notifyRipperLog("pull coverage...");
-		
-		String cov_file_name = "coverage"+System.currentTimeMillis()+".ec";
-		
-		Message mCov = new Message(MessageType.COVERAGE_MESSAGE);
-		mCov.addParameter("filename", cov_file_name);
-		rsSocket.sendMessage(mCov);
-		
-		Message message = null;
-		int retryCount = 0;
-		do
-		{								
-			message = rsSocket.readMessage(1000, false);
-			
-			if (message != null)
-				break;
-			
-		} while (running && retryCount++ < ACK_MAX_RETRY);
-		
-		if (retryCount > ACK_MAX_RETRY)
-			notifyRipperLog("max retry exceded coverage");
-
-		
-		if (message != null && message.isTypeOf(MessageType.ACK_MESSAGE))
-		{
-			notifyRipperLog("coverage");
-			Actions.pullCoverage(AUT_PACKAGE, cov_file_name, COVERAGE_PATH, count);
-		}
-	}
-	
-	public void pullCoverageAfterEnd(int count)
-	{
-		notifyRipperLog("pull coverage after end...");		
-		Actions.pullCoverageStandardFile(AUT_PACKAGE, COVERAGE_PATH, count);
-	}
-	
-	protected void pullCoverageFile(String src, int count) {
-		notifyRipperLog("coverage");
-		Actions.pullCoverage(AUT_PACKAGE, src, COVERAGE_PATH, count);
-	}
-	
-	public void pullJUnitLog(int count) {
-		notifyRipperLog("junit log");
-		Actions.pullJUnitLog(AUT_PACKAGE, JUNIT_OUTPUT_PATH, count);
-	}
-	
-	/**
-	 * Check if AVD is ready
-	 * 
-	 * @param avdPort
-	 */
-	protected void waitForEmulator(Integer avdPort) {
-		notifyRipperLog("Waiting for AVD...");
-		Actions.waitForEmulator(avdPort);
-		notifyRipperLog("AVD online!");
 	}
 }
