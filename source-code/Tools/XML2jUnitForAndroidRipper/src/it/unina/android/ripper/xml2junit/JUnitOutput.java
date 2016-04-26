@@ -158,11 +158,28 @@ public class JUnitOutput {
 											if (event != null) {
 												outputEvent(event);
 											}
-										} else if (ASSERT && (eventElement.getTagName().equals("activity") || eventElement.getTagName().equals("activity_description") ) ) {
+										} else if (ASSERT && eventElement.getTagName().equals("activity")) {
 											ActivityDescription ad = xmlInput.inputActivityDescription(eventElement);
 											if (ad != null) {
 												outputActivityDescription(ad);
 											}
+										} else if (ASSERT && eventElement.getTagName().equals("activity_description") ) {
+
+											NodeList adNodes = eventElement.getChildNodes();
+											for (int j = 0; j < adNodes.getLength(); j++) {
+												Node adNode = adNodes.item(j);
+												if (adNode.getNodeType() == Node.ELEMENT_NODE) {
+													Element adElement = (Element)adNode;
+													if (adElement.getTagName().equals("activity") ) {
+														ActivityDescription ad = xmlInput.inputActivityDescription(adElement);
+														if (ad != null) {
+															outputActivityDescription(ad);
+														}
+														break;
+													}
+												}
+											}
+											
 										}
 									}
 								}
