@@ -1,22 +1,22 @@
 package it.unina.android.ripper.driver.random;
 
-import it.unina.android.ripper.autoandroidlib.Actions;
-import it.unina.android.ripper.driver.systematic.SystematicDriver;
-import it.unina.android.ripper.input.RipperInput;
-import it.unina.android.ripper.observer.RipperEventListener;
-import it.unina.android.ripper.planner.Planner;
-import it.unina.android.ripper.scheduler.DebugRandomScheduler;
-import it.unina.android.ripper.scheduler.RandomScheduler;
-import it.unina.android.ripper.scheduler.Scheduler;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import it.unina.android.ripper.autoandroidlib.Actions;
+import it.unina.android.ripper.input.RipperInput;
+import it.unina.android.ripper.observer.RipperEventListener;
+import it.unina.android.ripper.output.RipperOutput;
+import it.unina.android.ripper.planner.Planner;
+import it.unina.android.ripper.scheduler.DebugRandomScheduler;
+import it.unina.android.ripper.scheduler.RandomScheduler;
+import it.unina.android.ripper.scheduler.Scheduler;
+
 public class RandomRipperStarter implements RipperEventListener {
 
-	public final static String VERSION = "0.2";
+	public final static String VERSION = "0.3";
 	
 	Properties conf;
 	RandomDriver driver;
@@ -78,6 +78,7 @@ public class RandomRipperStarter implements RipperEventListener {
 		Scheduler scheduler = null;
 		Planner planner = null;
 		RipperInput ripperInput = null;
+		RipperOutput ripperOutput = null;
 		
 		if (conf != null)
 		{
@@ -101,9 +102,14 @@ public class RandomRipperStarter implements RipperEventListener {
 			String ping_failure_threshold = conf.getProperty("ping_failure_threshold", "3");
 			String sleep_after_task = conf.getProperty("sleep_after_task", "0");
 			
+			String num_events_per_session = conf.getProperty("num_events_per_session", "0");
+			
+			
+			
 			String schedulerClass = conf.getProperty("scheduler", "it.unina.android.ripper.scheduler.DebugRandomScheduler");
 			String plannerClass = conf.getProperty("planner", "it.unina.android.ripper.planner.HandlerBasedPlanner");
 			String inputClass = conf.getProperty("ripper_input", "it.unina.android.ripper.input.XMLRipperInput");
+			String ripperOutputClass = conf.getProperty("ripper_output", "it.unina.android.ripper.output.XMLRipperOutput");
 			
 			String logcatPath = null;
 			try { logcatPath = conf.getProperty("logcat_path", ((new java.io.File( "." ).getCanonicalPath())+"/logcat/")); } catch (IOException e) { }
@@ -129,6 +135,7 @@ public class RandomRipperStarter implements RipperEventListener {
 			
 			
 			RandomDriver.NUM_EVENTS = Integer.parseInt(numEvents);
+			RandomDriver.NUM_EVENTS_PER_SESSION = Integer.parseInt(num_events_per_session);
 			RandomDriver.PULL_COVERAGE = pullCoverage.equals("1");
 			RandomDriver.PULL_COVERAGE_ZERO = pullCoverageZero.equals("1");
 			RandomDriver.COVERAGE_PATH = coveragePath;
@@ -201,6 +208,14 @@ public class RandomRipperStarter implements RipperEventListener {
 				System.exit(1);
 			}
 			
+			try {
+				ripperOutput = (RipperOutput) Class.forName(ripperOutputClass).newInstance();
+			} catch (Exception ex) {
+				println("ERROR: ripper_output class " + ripperOutputClass);
+				ex.printStackTrace();
+				System.exit(1);
+			}
+			
 			if (new java.io.File(coveragePath).exists() == false)
 				new java.io.File(coveragePath).mkdir();
 			
@@ -226,7 +241,7 @@ public class RandomRipperStarter implements RipperEventListener {
 		//starting ripper
 		println("Starting ripper");
 		
-		driver = new RandomDriver(scheduler, planner, ripperInput);
+		driver = new RandomDriver(scheduler, planner, ripperInput, ripperOutput);
 		
 		
 		driver.setRipperEventListener(this);

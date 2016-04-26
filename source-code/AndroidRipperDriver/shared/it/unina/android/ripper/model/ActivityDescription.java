@@ -17,6 +17,7 @@ public class ActivityDescription implements Serializable
 	Boolean handlesLongKeyPress;
 	Boolean isTabActivity;
 	int tabsCount;
+	Boolean isRootActivity;
 	
 	HashMap<String, Boolean> listeners;
 	ArrayList<String> supportedEvents;
@@ -32,6 +33,7 @@ public class ActivityDescription implements Serializable
 		this.handlesKeyPress = false;
 		this.handlesLongKeyPress = false;
 		this.isTabActivity = false;
+		this.isRootActivity = false;
 	}
 	
 	public void addWidget(WidgetDescription widget)
@@ -147,7 +149,11 @@ public class ActivityDescription implements Serializable
 	}
 
 	public String getClassName() {
-		return className;
+		if (this.activityClass != null) {
+			return this.activityClass.getCanonicalName();
+		} else {
+			return className;
+		}
 	}
 
 	public void setClassName(String className) {
@@ -202,7 +208,15 @@ public class ActivityDescription implements Serializable
 	{
 		return hasListener(listenerName) && listeners.get(listenerName);
 	}
-	
+		
+	public Boolean isRootActivity() {
+		return isRootActivity;
+	}
+
+	public void setIsRootActivity(Boolean isRootActivity) {
+		this.isRootActivity = isRootActivity;
+	}
+
 	@Override
 	public String toString()
 	{

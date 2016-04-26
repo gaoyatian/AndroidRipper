@@ -137,7 +137,11 @@ public class WidgetDescription implements Serializable
 	}
 	
 	public String getClassName() {
-		return className;
+		if (this.type != null) {
+			return this.type.getCanonicalName();
+		} else {
+			return className;
+		}
 	}
 
 	public void setClassName(String className) {

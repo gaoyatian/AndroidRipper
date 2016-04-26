@@ -50,7 +50,9 @@ public class XMLRipperInput implements RipperInput {
 					ACTIVITY_HANDLES_KEYPRESS).equalsIgnoreCase("TRUE"));
 			ret.setIsTabActivity(activityElement.getAttribute(
 					ACTIVITY_IS_TABACTIVITY).equalsIgnoreCase("TRUE"));
-
+			ret.setIsRootActivity(activityElement.getAttribute(
+					ACTIVITY_IS_ROOT_ACTIVITY).equalsIgnoreCase("TRUE"));
+			
 			try
 			{
 				ret.setTabsCount( Integer.parseInt(activityElement.getAttribute(ACTIVITY_TABS_COUNT)));
@@ -107,17 +109,24 @@ public class XMLRipperInput implements RipperInput {
 					.newDocumentBuilder()
 					.parse(new ByteArrayInputStream(description.getBytes()));
 			Element root = doc.getDocumentElement();
-			NodeList activityElements = root.getElementsByTagName(ACTIVITY);
-
-			if (activityElements != null && activityElements.getLength() > 0) {
-				Element activityElement = (Element) activityElements.item(0);
-
-				ret = this.inputActivityDescription(activityElement);
+			if (root.getTagName().equals(ACTIVITY)) {
+			
+				ret = this.inputActivityDescription(root);
 
 			} else {
-				// malformed xml
-			}
+				
+				NodeList activityElements = root.getElementsByTagName(ACTIVITY);
 
+				if (activityElements != null && activityElements.getLength() > 0) {
+					Element activityElement = (Element) activityElements.item(0);
+
+					ret = this.inputActivityDescription(activityElement);
+
+				} else {
+					// malformed xml
+				}
+			}
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -333,9 +342,10 @@ public class XMLRipperInput implements RipperInput {
 	public static final String ACTIVITY_HANDLES_KEYPRESS = "keypress";
 	public static final String ACTIVITY_HANDLES_LONG_KEYPRESS = "longkeypress";
 	public static final String ACTIVITY_IS_TABACTIVITY = "tab_activity";
-	public static final String ACTIVITY_TABS_COUNT = "tab_activity";
+	public static final String ACTIVITY_TABS_COUNT = "tab_count";
 	public static final String ACTIVITY_ID = "id";
 	public static final String ACTIVITY_UID = "uid";
+	public static final String ACTIVITY_IS_ROOT_ACTIVITY = "root_activity";	
 	
 	public static final String LISTENER = "listener";
 	public static final String LISTENER_CLASS = "class";

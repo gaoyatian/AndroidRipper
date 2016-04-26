@@ -20,7 +20,7 @@ import java.util.Properties;
 
 public class TestCasesSystematicRipperStarter implements RipperEventListener {
 
-	public final static String VERSION = "0.2";
+	public final static String VERSION = "0.1";
 	
 	Properties conf;
 	TestCasesExecutionSystematicDriver driver;

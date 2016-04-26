@@ -16,12 +16,12 @@ import it.unina.android.ripper.comparator.IComparator;
 import it.unina.android.ripper.input.RipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.Task;
+import it.unina.android.ripper.model.TaskList;
 import it.unina.android.ripper.net.Message;
 import it.unina.android.ripper.net.MessageType;
 import it.unina.android.ripper.net.RipperServiceSocket;
 import it.unina.android.ripper.output.RipperOutput;
 import it.unina.android.ripper.planner.Planner;
-import it.unina.android.ripper.planner.task.TaskList;
 import it.unina.android.ripper.scheduler.Scheduler;
 import it.unina.android.ripper.termination.TerminationCriterion;
 
@@ -376,7 +376,7 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 
 				this.ifIsPausedDoPause();
 
-			} while (running && this.terminationCriterion.check() == false);
+			} while (running && this.checkTerminationCriteria() == false);
 			// condizioni di uscita ripper
 
 			closeStateDescriptionFile();

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.autoandroidlib.logcat.LogcatDumper;
@@ -13,14 +14,17 @@ import it.unina.android.ripper.driver.exception.AckNotReceivedException;
 import it.unina.android.ripper.driver.exception.NullMessageReceivedException;
 import it.unina.android.ripper.input.RipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.model.Event;
+import it.unina.android.ripper.model.Task;
+import it.unina.android.ripper.model.TaskList;
 import it.unina.android.ripper.net.Message;
 import it.unina.android.ripper.net.MessageType;
 import it.unina.android.ripper.net.RipperServiceSocket;
 import it.unina.android.ripper.observer.RipperEventListener;
 import it.unina.android.ripper.output.RipperOutput;
 import it.unina.android.ripper.planner.Planner;
-import it.unina.android.ripper.planner.task.TaskList;
 import it.unina.android.ripper.scheduler.Scheduler;
+import it.unina.android.ripper.termination.TerminationCriterion;
 
 public abstract class AbstractDriver {
 
@@ -61,14 +65,22 @@ public abstract class AbstractDriver {
 	public RipperServiceSocket rsSocket;
 	public RipperInput ripperInput;	
 	
+	public ArrayList<TerminationCriterion> terminationCriteria;
+	
 	public boolean running = true;	
 	
 	public String currentLogFile;
 	public RipperOutput ripperOutput;
 	
+	public int nEvents = 0;
+	public int nTasks = 0;
+	public int nFails = 0;
+	public int nRestart = 0;
+	
 	public AbstractDriver()
 	{
 		super();
+		terminationCriteria = new ArrayList<TerminationCriterion>();
 	}
 
 	public void startRipping()
@@ -565,5 +577,64 @@ public abstract class AbstractDriver {
 
 	public RipperOutput getRipperOutput() {
 		return ripperOutput;
+	}
+	
+	public boolean checkTerminationCriteria() {
+		for (TerminationCriterion tc : this.terminationCriteria) {
+			if (tc.check() == false)
+				return false;
+		}
+		
+		return true;
+	}
+	
+	public void addTerminationCriterion(TerminationCriterion tc) {
+		tc.init(this);
+		terminationCriteria.add(tc);
+	}
+	
+	public TaskList plan(Task t, ActivityDescription activity) {
+		notifyRipperLog("Plan...");
+		TaskList plannedTasks = planner.plan(t, activity);
+
+		if (plannedTasks != null && plannedTasks.size() > 0) {
+			notifyRipperLog("plannedTasks " + plannedTasks.size());
+
+			/*
+			 * appendLineToLogFile("\n<extracted_events>"); for (Task tsk :
+			 * plannedTasks)
+			 * appendLineToLogFile(this.ripperOutput.outputEvent(tsk.get(tsk.
+			 * size() - 1))); appendLineToLogFile("</extracted_events>\n");
+			 */
+		} else {
+			// ???
+			notifyRipperLog("error in planning!");
+			// appendLineToLogFile("\n<error type=\"no_planned_task\" />\n");
+			throw new RuntimeException("No planned tasks!");
+		}
+
+		return plannedTasks;
+	}
+	
+	public Task schedule() {
+		return scheduler.nextTask();
+	}
+	
+	/**
+	 * Execute an event and returns the message received after its execution or
+	 * throws an exception if error
+	 * 
+	 * @param evt
+	 *            Event
+	 * @return Message
+	 * @throws AckNotReceivedException
+	 * @throws NullMessageReceivedException
+	 */
+	public Message executeEvent(Event evt) throws AckNotReceivedException, NullMessageReceivedException {
+		// appendLineToLogFile(this.ripperOutput.outputEvent(evt));
+		notifyRipperLog("event:" + evt.toString());
+
+		rsSocket.sendEvent(evt);
+		return this.waitAck();
 	}
 }

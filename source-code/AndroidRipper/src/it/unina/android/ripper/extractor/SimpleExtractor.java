@@ -55,6 +55,10 @@ public class SimpleExtractor implements IExtractor
 		if (isTabActivity)
 			ret.setTabsCount(this.getTabActivityTabsCount(activity));
 		
+		if (activity.isTaskRoot()) {
+			ret.setIsRootActivity(true);
+		}
+		
 		try
 		{
 			robot.home();
