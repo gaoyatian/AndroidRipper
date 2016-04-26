@@ -13,7 +13,13 @@ public class AndroidRipper {
 		if (args.length < 2) {
 			System.out.println("ERROR: You haven't specified needed parameters!");
 		} else {
-			new AndroidRipperStarter(args[0], args[1]).startRipping();
+			if (checkConfigurationFile(args[1]) == false) {
+				System.out.println("ERROR: Config file does not exist!");
+			} else if (args[0].equals("tc") || args[0].equals("s") || args[0].equals("r")) {
+				new AndroidRipperStarter(args[0], args[1]).startRipping();
+			} else {
+				System.out.println("ERROR: Exploration Type not supported!");
+			}
 			noProblem = true;
 		}
 		

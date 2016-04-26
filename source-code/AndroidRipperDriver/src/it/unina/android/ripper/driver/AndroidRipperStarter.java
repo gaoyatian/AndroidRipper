@@ -24,7 +24,7 @@ import it.unina.android.ripper.termination.TerminationCriterion;
 
 public class AndroidRipperStarter implements RipperEventListener {
 
-	public final static String VERSION = "0.3";
+	public final static String VERSION = "2016.04.26";
 	
 	Properties conf;
 	AbstractDriver driver;
