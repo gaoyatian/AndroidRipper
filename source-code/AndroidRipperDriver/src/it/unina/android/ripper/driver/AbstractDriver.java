@@ -28,37 +28,36 @@ import it.unina.android.ripper.termination.TerminationCriterion;
 
 public abstract class AbstractDriver {
 
-	public static int PORT = 8888;
-	public static String AVD_NAME = "test";
-	public static String AUT_PACKAGE = "";
-	public static String AUT_MAIN_ACTIVITY = "";
-	public static int EMULATOR_PORT = 5554;
+	public int PORT = 8888;
+	public String AVD_NAME = "test";
+	public String AUT_PACKAGE = "";
+	public String AUT_MAIN_ACTIVITY = "";
+	public int EMULATOR_PORT = 5554;
 	
-	public static int SLEEP_AFTER_EVENT = 0;
-	public static int SLEEP_AFTER_TASK = 0;
-	public static int SLEEP_AFTER_RESTART = 0;
+	public int SLEEP_AFTER_EVENT = 0;
+	public int SLEEP_AFTER_TASK = 0;
+	public int SLEEP_AFTER_RESTART = 0;
 
-	public static boolean PULL_COVERAGE = true;
-	public static boolean PULL_COVERAGE_ZERO = true;
-	public static String COVERAGE_PATH = "";
+	public boolean PULL_COVERAGE = true;
+	public boolean PULL_COVERAGE_ZERO = true;
+	public String COVERAGE_PATH = "";
 	
-	public static boolean SCREENSHOT = false;
-	public static String SCREENSHOTS_PATH = "./screenshots/";
+	public boolean SCREENSHOT = false;
+	public String SCREENSHOTS_PATH = "./screenshots/";
 	
-	public static String REPORT_FILE = "report.xml";
-	public static String LOG_FILE_PREFIX = "log_";
-	public static int NEW_LOG_FREQUENCY = 100;
+	public String REPORT_FILE = "report.xml";
+	public String LOG_FILE_PREFIX = "log_";
 	
-	public static int PING_MAX_RETRY = 10;
-	public static int ACK_MAX_RETRY = 10;
-	public static int FAILURE_THRESHOLD = 10;
-	public static int PING_FAILURE_THRESHOLD = 3;
+	public int PING_MAX_RETRY = 10;
+	public int ACK_MAX_RETRY = 10;
+	public int FAILURE_THRESHOLD = 10;
+	public int PING_FAILURE_THRESHOLD = 3;
 	
-	public static int SOCKET_EXCEPTION_THRESHOLD = 2;
+	public int SOCKET_EXCEPTION_THRESHOLD = 2;
 	
-	public static String LOGCAT_PATH = "";
-	public static String XML_OUTPUT_PATH = "";
-	public static String JUNIT_OUTPUT_PATH = "";
+	public String LOGCAT_PATH = "";
+	public String XML_OUTPUT_PATH = "";
+	public String JUNIT_OUTPUT_PATH = "";
 	
 	public Scheduler scheduler;
 	public Planner planner;

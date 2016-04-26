@@ -36,53 +36,11 @@ import it.unina.android.ripper.termination.TerminationCriterion;
 
 public class RandomDriver extends AbstractDriver
 {
-	public static int NUM_EVENTS = 1000;
-	public static int NUM_EVENTS_PER_SESSION = 0; //0 = until NUM_EVENTS
-	public static int COVERAGE_FREQUENCY = 100; //frequency = 0 no coverage 
-	public static long RANDOM_SEED = System.currentTimeMillis();
-	
-	public RandomDriver()
-	{
-		this(
-				new RandomScheduler(RANDOM_SEED),
-				new HandlerBasedPlanner(),
-				new XMLRipperInput(),
-				new XMLRipperOutput(),
-				new MaxEventsTerminationCriterion(NUM_EVENTS)
-		);
-	}
-	
-	public RandomDriver(Planner planner)
-	{
-		this(
-			new DebugRandomScheduler(RANDOM_SEED),
-			planner,		
-			new XMLRipperInput(),
-			new XMLRipperOutput(),
-			new MaxEventsTerminationCriterion(NUM_EVENTS)
-		);
-	}
-
-	public RandomDriver(Scheduler scheduler, Planner planner) {
-		this(
-				scheduler,
-				planner,
-				new XMLRipperInput(),
-				new XMLRipperOutput(),
-				new MaxEventsTerminationCriterion(NUM_EVENTS)
-		);
-	}	
-	
-	public RandomDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, RipperOutput ripperOutput)
-	{
-		this(
-				scheduler,
-				planner,
-				ripperInput,
-				ripperOutput,
-				new MaxEventsTerminationCriterion(NUM_EVENTS)
-		);
-	}
+	public int NUM_EVENTS = 1000;
+	public int NUM_EVENTS_PER_SESSION = 0; //0 = until NUM_EVENTS
+	public int COVERAGE_FREQUENCY = 100; //frequency = 0 no coverage 
+	public long RANDOM_SEED = System.currentTimeMillis();
+	public int NEW_LOG_FREQUENCY = 0; //0 = until end of the session
 	
 	public RandomDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, RipperOutput ripperOutput, TerminationCriterion terminationCriterion)
 	{
@@ -231,6 +189,11 @@ public class RandomDriver extends AbstractDriver
 						if (NUM_EVENTS_PER_SESSION > 0 && (nEvents % NUM_EVENTS_PER_SESSION == 0)) {
 							notifyRipperLog("session limit reached : " + nEvents + "|" + NUM_EVENTS_PER_SESSION);
 							break;
+						}
+						
+						if (NEW_LOG_FREQUENCY > 0 && (nEvents % NEW_LOG_FREQUENCY == 0)) {
+							endLogFile();
+							createLogFileAtCurrentTimeMillis();
 						}
 						
 					} while (
