@@ -4,8 +4,8 @@ import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.Event;
 import it.unina.android.ripper.model.Input;
 import it.unina.android.ripper.model.Task;
+import it.unina.android.ripper.model.TaskList;
 import it.unina.android.ripper.model.WidgetDescription;
-import it.unina.android.ripper.planner.task.TaskList;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -25,7 +25,8 @@ import org.w3c.dom.Node;
 
 public class XMLRipperOutput implements RipperOutput
 {
-
+	public static boolean RUN_IN_THREAD = true; 
+	
 	@Override
 	public String outputActivityDescription(ActivityDescription ad) {
 		try {
@@ -61,7 +62,8 @@ public class XMLRipperOutput implements RipperOutput
 				: "");
 		activity.setAttribute(ACTIVITY_UID, (ad.getUid() != null) ? ad.getUid()
 				: "");
-
+		activity.setAttribute(ACTIVITY_IS_ROOT_ACTIVITY, (ad.isRootActivity()  ? "TRUE" : "FALSE") );
+		
 		HashMap<String, Boolean> listeners = ad.getListeners();
 		for (String key : listeners.keySet()) {
 			Boolean value = listeners.get(key);
@@ -485,46 +487,65 @@ public class XMLRipperOutput implements RipperOutput
 	}
 	
 	protected String XML2String(Document doc) {
-		/*
-		try {
-			StringWriter stw = new StringWriter();
-			
-			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Transformer serializer = tFactory.newTransformer();
-			serializer.setOutputProperty("omit-xml-declaration", "yes");
-			serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-			serializer.setOutputProperty(OutputKeys.INDENT, "yes");
-			
-			DOMSource domSrc = new DOMSource(doc);
-			StreamResult sResult = new StreamResult(stw);
-			serializer.transform(domSrc, sResult);
-			
-			String ret = stw.toString();
-			
-			domSrc = null;
-			sResult = null;
-			stw = null;
-			serializer = null;
-			
-			return ret;
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 		
-		return null;
-		*/		
-		try {
-			XMLSerializerThread xmlSerializerThread = new XMLSerializerThread(doc);
-			xmlSerializerThread.start();
-			xmlSerializerThread.join();
-			return xmlSerializerThread.getOutput();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (RUN_IN_THREAD == false) {
+			try {
+				StringWriter stw = new StringWriter();
+				
+				TransformerFactory tFactory = TransformerFactory.newInstance();
+				Transformer serializer = tFactory.newTransformer();
+				serializer.setOutputProperty("omit-xml-declaration", "yes");
+				serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+				serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+				
+				DOMSource domSrc = new DOMSource(doc);
+				StreamResult sResult = new StreamResult(stw);
+				serializer.transform(domSrc, sResult);
+				
+				String ret = stw.toString();
+				
+				domSrc = null;
+				sResult = null;
+				stw = null;
+				serializer = null;
+				
+				return ret;
+
+//				TransformerFactory transfac = TransformerFactory.newInstance();
+//	            //transfac.setAttribute("indent-number", Integer.valueOf(2));
+//	            Transformer trans = transfac.newTransformer();
+//	            trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+//	            trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+//	            trans.setOutputProperty(OutputKeys.INDENT, "yes");
+//
+//	            //create string from xml tree
+//	            StringWriter sw = new StringWriter();
+//	            StreamResult result = new StreamResult(sw);
+//	            DOMSource source = new DOMSource(doc);
+//	            trans.transform(source, result);
+//	            String xmlString = sw.toString();
+//	            
+//	           return xmlString;
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			
+			return null;
+			
+		} else {
+			try {
+				XMLSerializerThread xmlSerializerThread = new XMLSerializerThread(doc);
+				xmlSerializerThread.start();
+				xmlSerializerThread.join();
+				return xmlSerializerThread.getOutput();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return null;
 		}
-		
-		return null;
 	}
 
 	public static final String ROOT = "description";
@@ -537,9 +558,10 @@ public class XMLRipperOutput implements RipperOutput
 	public static final String ACTIVITY_HANDLES_KEYPRESS = "keypress";
 	public static final String ACTIVITY_HANDLES_LONG_KEYPRESS = "longkeypress";
 	public static final String ACTIVITY_IS_TABACTIVITY = "tab_activity";
-	public static final String ACTIVITY_TABS_COUNT = "tab_activity";
+	public static final String ACTIVITY_TABS_COUNT = "tab_count";
 	public static final String ACTIVITY_ID = "id";
 	public static final String ACTIVITY_UID = "uid";
+	public static final String ACTIVITY_IS_ROOT_ACTIVITY = "root_activity";	
 	
 	public static final String LISTENER = "listener";
 	public static final String LISTENER_CLASS = "class";

@@ -2,7 +2,7 @@ package it.unina.android.ripper.scheduler;
 
 import it.unina.android.ripper.model.Event;
 import it.unina.android.ripper.model.Task;
-import it.unina.android.ripper.planner.task.TaskList;
+import it.unina.android.ripper.model.TaskList;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

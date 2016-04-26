@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.autoandroidlib.logcat.LogcatDumper;
@@ -13,62 +14,72 @@ import it.unina.android.ripper.driver.exception.AckNotReceivedException;
 import it.unina.android.ripper.driver.exception.NullMessageReceivedException;
 import it.unina.android.ripper.input.RipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.model.Event;
+import it.unina.android.ripper.model.Task;
+import it.unina.android.ripper.model.TaskList;
 import it.unina.android.ripper.net.Message;
 import it.unina.android.ripper.net.MessageType;
 import it.unina.android.ripper.net.RipperServiceSocket;
 import it.unina.android.ripper.observer.RipperEventListener;
 import it.unina.android.ripper.output.RipperOutput;
 import it.unina.android.ripper.planner.Planner;
-import it.unina.android.ripper.planner.task.TaskList;
 import it.unina.android.ripper.scheduler.Scheduler;
+import it.unina.android.ripper.termination.TerminationCriterion;
 
 public abstract class AbstractDriver {
 
-	public static int PORT = 8888;
-	public static String AVD_NAME = "test";
-	public static String AUT_PACKAGE = "";
-	public static String AUT_MAIN_ACTIVITY = "";
-	public static int EMULATOR_PORT = 5554;
+	public int PORT = 8888;
+	public String AVD_NAME = "test";
+	public String AUT_PACKAGE = "";
+	public String AUT_MAIN_ACTIVITY = "";
+	public int EMULATOR_PORT = 5554;
 	
-	public static int SLEEP_AFTER_EVENT = 0;
-	public static int SLEEP_AFTER_TASK = 0;
-	public static int SLEEP_AFTER_RESTART = 0;
+	public int SLEEP_AFTER_EVENT = 0;
+	public int SLEEP_AFTER_TASK = 0;
+	public int SLEEP_AFTER_RESTART = 0;
 
-	public static boolean PULL_COVERAGE = true;
-	public static boolean PULL_COVERAGE_ZERO = true;
-	public static String COVERAGE_PATH = "";
+	public boolean PULL_COVERAGE = true;
+	public boolean PULL_COVERAGE_ZERO = true;
+	public String COVERAGE_PATH = "";
 	
-	public static boolean SCREENSHOT = false;
-	public static String SCREENSHOTS_PATH = "./screenshots/";
+	public boolean SCREENSHOT = false;
+	public String SCREENSHOTS_PATH = "./screenshots/";
 	
-	public static String REPORT_FILE = "report.xml";
-	public static String LOG_FILE_PREFIX = "log_";
-	public static int NEW_LOG_FREQUENCY = 100;
+	public String REPORT_FILE = "report.xml";
+	public String LOG_FILE_PREFIX = "log_";
 	
-	public static int PING_MAX_RETRY = 10;
-	public static int ACK_MAX_RETRY = 10;
-	public static int FAILURE_THRESHOLD = 10;
-	public static int PING_FAILURE_THRESHOLD = 3;
+	public int PING_MAX_RETRY = 10;
+	public int ACK_MAX_RETRY = 10;
+	public int FAILURE_THRESHOLD = 10;
+	public int PING_FAILURE_THRESHOLD = 3;
 	
-	public static int SOCKET_EXCEPTION_THRESHOLD = 2;
+	public int SOCKET_EXCEPTION_THRESHOLD = 2;
 	
-	public static String LOGCAT_PATH = "";
-	public static String XML_OUTPUT_PATH = "";
-	public static String JUNIT_OUTPUT_PATH = "";
+	public String LOGCAT_PATH = "";
+	public String XML_OUTPUT_PATH = "";
+	public String JUNIT_OUTPUT_PATH = "";
 	
 	public Scheduler scheduler;
 	public Planner planner;
 	public RipperServiceSocket rsSocket;
 	public RipperInput ripperInput;	
 	
+	public ArrayList<TerminationCriterion> terminationCriteria;
+	
 	public boolean running = true;	
 	
 	public String currentLogFile;
 	public RipperOutput ripperOutput;
 	
+	public int nEvents = 0;
+	public int nTasks = 0;
+	public int nFails = 0;
+	public int nRestart = 0;
+	
 	public AbstractDriver()
 	{
 		super();
+		terminationCriteria = new ArrayList<TerminationCriterion>();
 	}
 
 	public void startRipping()
@@ -197,6 +208,24 @@ public abstract class AbstractDriver {
 	}
 	
 	public int LOG_FILE_NUMBER = 0;
+	
+	public void createLogFileAtCurrentTimeMillis()
+	{
+		currentLogFile = XML_OUTPUT_PATH + LOG_FILE_PREFIX + System.currentTimeMillis() + ".xml"; 
+				
+		try
+		{
+			FileWriter fileWritter = new FileWriter(currentLogFile, false);
+	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+	        bufferWritter.write("<?xml version=\"1.0\"?><root>\n\r");
+	        bufferWritter.flush();
+	        bufferWritter.close();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 	
 	public void createLogFile()
 	{
@@ -547,5 +576,64 @@ public abstract class AbstractDriver {
 
 	public RipperOutput getRipperOutput() {
 		return ripperOutput;
+	}
+	
+	public boolean checkTerminationCriteria() {
+		for (TerminationCriterion tc : this.terminationCriteria) {
+			if (tc.check() == false)
+				return false;
+		}
+		
+		return true;
+	}
+	
+	public void addTerminationCriterion(TerminationCriterion tc) {
+		tc.init(this);
+		terminationCriteria.add(tc);
+	}
+	
+	public TaskList plan(Task t, ActivityDescription activity) {
+		notifyRipperLog("Plan...");
+		TaskList plannedTasks = planner.plan(t, activity);
+
+		if (plannedTasks != null && plannedTasks.size() > 0) {
+			notifyRipperLog("plannedTasks " + plannedTasks.size());
+
+			/*
+			 * appendLineToLogFile("\n<extracted_events>"); for (Task tsk :
+			 * plannedTasks)
+			 * appendLineToLogFile(this.ripperOutput.outputEvent(tsk.get(tsk.
+			 * size() - 1))); appendLineToLogFile("</extracted_events>\n");
+			 */
+		} else {
+			// ???
+			notifyRipperLog("error in planning!");
+			// appendLineToLogFile("\n<error type=\"no_planned_task\" />\n");
+			throw new RuntimeException("No planned tasks!");
+		}
+
+		return plannedTasks;
+	}
+	
+	public Task schedule() {
+		return scheduler.nextTask();
+	}
+	
+	/**
+	 * Execute an event and returns the message received after its execution or
+	 * throws an exception if error
+	 * 
+	 * @param evt
+	 *            Event
+	 * @return Message
+	 * @throws AckNotReceivedException
+	 * @throws NullMessageReceivedException
+	 */
+	public Message executeEvent(Event evt) throws AckNotReceivedException, NullMessageReceivedException {
+		// appendLineToLogFile(this.ripperOutput.outputEvent(evt));
+		notifyRipperLog("event:" + evt.toString());
+
+		rsSocket.sendEvent(evt);
+		return this.waitAck();
 	}
 }

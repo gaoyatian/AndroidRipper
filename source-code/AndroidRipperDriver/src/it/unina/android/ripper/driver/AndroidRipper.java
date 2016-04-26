@@ -2,10 +2,6 @@ package it.unina.android.ripper.driver;
 
 import java.io.File;
 
-import it.unina.android.ripper.driver.random.RandomRipperStarter;
-import it.unina.android.ripper.driver.systematic.SystematicRipperStarter;
-import it.unina.android.ripper.driver.systematic.TestCasesSystematicRipperStarter;
-
 public class AndroidRipper {
 
 	public static void main(String[] args) {
@@ -17,25 +13,14 @@ public class AndroidRipper {
 		if (args.length < 2) {
 			System.out.println("ERROR: You haven't specified needed parameters!");
 		} else {
-			if (args[0] != null && (args[0].equals("systematic") || args[0].equals("s")) ) {
-				if (checkConfigurationFile(args[1])) {
-					new SystematicRipperStarter(args[1]).startRipping();
-				} else {
-					System.out.println("ERROR: Configuration file not found!");
-				}
-			} else if (args[0] != null && (args[0].equals("random") || args[0].equals("r")) ) {
-				if (checkConfigurationFile(args[1])) {
-					new RandomRipperStarter(args[1]).startRipping();
-				} else {
-					System.out.println("ERROR: Configuration file not found!");
-				}
-			} else if (args[0] != null && (args[0].equals("systematic-with-test-cases") || args[0].equals("tc")) ) {
-				if (checkConfigurationFile(args[1])) {
-					new TestCasesSystematicRipperStarter(args[1]).startRipping();
-				} else {
-					System.out.println("ERROR: Configuration file not found!");
-				}
+			if (checkConfigurationFile(args[1]) == false) {
+				System.out.println("ERROR: Config file does not exist!");
+			} else if (args[0].equals("tc") || args[0].equals("s") || args[0].equals("r")) {
+				new AndroidRipperStarter(args[0], args[1]).startRipping();
+			} else {
+				System.out.println("ERROR: Exploration Type not supported!");
 			}
+			noProblem = true;
 		}
 		
 		if (noProblem == false) {
@@ -53,11 +38,12 @@ public class AndroidRipper {
 
 	public static void printUsageInstructions() {
 		System.out.println();
-		System.out.println("Usage: java -jar AndroidRipper.jar [s|r] config.properties");
+		System.out.println("Usage: java -jar AndroidRipper.jar [s|r|tc] config.properties");
 		System.out.println();
 		System.out.println("Parameter 1:");
-		System.out.println("\ts or systematic\t\tsystematic exploration");
-		System.out.println("\tr or random\t\trandom exploration");
+		System.out.println("\ts \t\tsystematic exploration");
+		System.out.println("\ttc \t\thybrid manual-systematic exploration");
+		System.out.println("\tr \t\trandom exploration");
 		System.out.println();
 		System.out.println("Parameter 2:");
 		System.out.println("- configuration file name and path");

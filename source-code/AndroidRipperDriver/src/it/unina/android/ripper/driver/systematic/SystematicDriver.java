@@ -1,5 +1,9 @@
 package it.unina.android.ripper.driver.systematic;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import it.unina.android.ripper.autoandroidlib.Actions;
 import it.unina.android.ripper.comparator.GenericComparator;
 import it.unina.android.ripper.comparator.GenericComparatorConfiguration;
@@ -12,44 +16,31 @@ import it.unina.android.ripper.input.XMLRipperInput;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.Event;
 import it.unina.android.ripper.model.Task;
+import it.unina.android.ripper.model.TaskList;
 import it.unina.android.ripper.net.Message;
 import it.unina.android.ripper.net.MessageType;
 import it.unina.android.ripper.output.RipperOutput;
 import it.unina.android.ripper.output.XMLRipperOutput;
 import it.unina.android.ripper.planner.HandlerBasedPlanner;
 import it.unina.android.ripper.planner.Planner;
-import it.unina.android.ripper.planner.task.TaskList;
 import it.unina.android.ripper.scheduler.BreadthScheduler;
 import it.unina.android.ripper.scheduler.Scheduler;
 import it.unina.android.ripper.states.ActivityStateList;
 import it.unina.android.ripper.termination.EmptyActivityStateListTerminationCriterion;
 import it.unina.android.ripper.termination.TerminationCriterion;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.SocketException;
-
 public class SystematicDriver extends AbstractDriver {
 	public static String STATES_LIST_FILE = "activities.xml";
-
-	int nEvents = 0;
-	int nTasks = 0;
-	int nFails = 0;
-	int nRestart = 0;
 
 	protected IComparator comparator;
 
 	// TODO: generalize -> now only activity-based state
 	protected ActivityStateList statesList;
 
-	protected TerminationCriterion terminationCriterion;
-
 	public SystematicDriver() {
 		this(new BreadthScheduler(), new HandlerBasedPlanner(), new XMLRipperInput(),
 				new GenericComparator(GenericComparatorConfiguration.Factory.getCustomWidgetSimpleComparator()),
 				new EmptyActivityStateListTerminationCriterion(), new XMLRipperOutput());
-
-		this.terminationCriterion.init(this);
 	}
 
 	public SystematicDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, IComparator comparator,
@@ -62,8 +53,27 @@ public class SystematicDriver extends AbstractDriver {
 		this.ripperInput = ripperInput;
 		this.comparator = comparator;
 		this.statesList = new ActivityStateList(this.comparator);
-		this.terminationCriterion = terminationCriterion;
 		this.ripperOutput = ripperOutput;
+		
+		this.addTerminationCriterion(terminationCriterion);
+	}
+	
+	public SystematicDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, IComparator comparator,
+			ArrayList<TerminationCriterion> terminationCriteria, RipperOutput ripperOutput) {
+
+		super();
+
+		this.scheduler = scheduler;
+		this.planner = planner;
+		this.ripperInput = ripperInput;
+		this.comparator = comparator;
+		this.statesList = new ActivityStateList(this.comparator);
+		this.ripperOutput = ripperOutput;
+		
+		for (TerminationCriterion tc : terminationCriteria) {
+			this.addTerminationCriterion(tc);
+		}
+		
 	}
 
 	@Override
@@ -154,6 +164,11 @@ public class SystematicDriver extends AbstractDriver {
 								this.appendLineToLogFile("\n<error type='executeTask' />\n");
 							}
 
+							//TODO
+							if (SCREENSHOT) {
+								
+							}
+							
 							if (PULL_COVERAGE) {
 								notifyRipperLog("pull coverage before end...");
 								pullCoverage(nTasks);
@@ -205,7 +220,7 @@ public class SystematicDriver extends AbstractDriver {
 
 			this.ifIsPausedDoPause();
 
-		} while (running && this.terminationCriterion.check() == false);
+		} while (running && this.checkTerminationCriteria() == false);
 
 		closeStateDescriptionFile();
 
@@ -288,10 +303,6 @@ public class SystematicDriver extends AbstractDriver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	protected Task schedule() {
-		return scheduler.nextTask();
 	}
 
 	/**
@@ -379,24 +390,6 @@ public class SystematicDriver extends AbstractDriver {
 		return msg;
 	}
 
-	/**
-	 * Execute an event and returns the message received after its execution or
-	 * throws an exception if error
-	 * 
-	 * @param evt
-	 *            Event
-	 * @return Message
-	 * @throws AckNotReceivedException
-	 * @throws NullMessageReceivedException
-	 */
-	protected Message executeEvent(Event evt) throws AckNotReceivedException, NullMessageReceivedException {
-		// appendLineToLogFile(this.ripperOutput.outputEvent(evt));
-		notifyRipperLog("event:" + evt.toString());
-
-		rsSocket.sendEvent(evt);
-		return this.waitAck();
-	}
-
 	protected boolean compareAndAddState(ActivityDescription activity) {
 		notifyRipperLog("\tComparator...");
 		if (statesList.containsActivity(activity) == null) {
@@ -415,34 +408,11 @@ public class SystematicDriver extends AbstractDriver {
 		return ad.getId().equals(evt.getBeforeExecutionStateUID());
 	}
 
-	protected TaskList plan(Task t, ActivityDescription activity) {
-		notifyRipperLog("Plan...");
-		TaskList plannedTasks = planner.plan(t, activity);
-
-		if (plannedTasks != null && plannedTasks.size() > 0) {
-			notifyRipperLog("plannedTasks " + plannedTasks.size());
-
-			/*
-			 * appendLineToLogFile("\n<extracted_events>"); for (Task tsk :
-			 * plannedTasks)
-			 * appendLineToLogFile(this.ripperOutput.outputEvent(tsk.get(tsk.
-			 * size() - 1))); appendLineToLogFile("</extracted_events>\n");
-			 */
-		} else {
-			// ???
-			notifyRipperLog("error in planning!");
-			// appendLineToLogFile("\n<error type=\"no_planned_task\" />\n");
-			throw new RuntimeException("No planned tasks!");
-		}
-
-		return plannedTasks;
-	}
-
-	public static String getStatesListFile() {
+	public String getStatesListFile() {
 		return XML_OUTPUT_PATH + STATES_LIST_FILE;
 	}
 
-	public static void setStatesListFile(String statesListFile) {
+	public void setStatesListFile(String statesListFile) {
 		STATES_LIST_FILE = statesListFile;
 	}
 
@@ -468,9 +438,5 @@ public class SystematicDriver extends AbstractDriver {
 
 	public ActivityStateList getStatesList() {
 		return statesList;
-	}
-
-	public TerminationCriterion getTerminationCriterion() {
-		return terminationCriterion;
 	}
 }

@@ -5,8 +5,8 @@ import it.unina.android.ripper.constants.SimpleType;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.Input;
 import it.unina.android.ripper.model.Task;
+import it.unina.android.ripper.model.TaskList;
 import it.unina.android.ripper.model.WidgetDescription;
-import it.unina.android.ripper.planner.task.TaskList;
 import it.unina.android.ripper.planner.widget_events.ListViewEventPlanner;
 import it.unina.android.ripper.planner.widget_events.RadioGroupEventPlanner;
 import it.unina.android.ripper.planner.widget_events.SeekBarEventPlanner;
@@ -25,22 +25,7 @@ import java.util.ArrayList;
  * NOTA: max_event_len -> if task.size() > MAX don't add :-)
  */
 public class HandlerBasedPlanner extends Planner
-{
-	public static int MAX_INTERACTIONS_FOR_LIST = 3;
-	public static int MAX_INTERACTIONS_FOR_PREFERENCES_LIST = 9999;
-	public static int MAX_INTERACTIONS_FOR_SINGLE_CHOICE_LIST = 3;
-	public static int MAX_INTERACTIONS_FOR_MULTI_CHOICE_LIST = 3;
-	public static int MAX_INTERACTIONS_FOR_SPINNER = 9;
-	public static int MAX_INTERACTIONS_FOR_RADIO_GROUP = 9;
-	
-	public static boolean CAN_GO_BACK = true;
-	public static boolean CAN_CHANGE_ORIENTATION = true;
-	public static boolean CAN_OPEN_MENU = true;
-	public static boolean CAN_SCROLL_DOWN = false;
-	public static boolean CAN_GENERATE_KEY_PRESS_EVENTS = false;
-	public static boolean CAN_GENERATE_LONG_KEY_PRESS_EVENTS = false;
-	public static boolean CAN_SWAP_TAB = true;
-	
+{	
 	public static String[] inputWidgetList = {
 		SimpleType.EDIT_TEXT
 		//,SimpleType.SPINNER
@@ -106,8 +91,11 @@ public class HandlerBasedPlanner extends Planner
 	protected TaskList planForActivity(Task currentTask, ActivityDescription activity, String... options)
 	{
 		TaskList taskList = new TaskList();
+
+		if (CAN_GO_BACK_ON_HOME_ACTIVITY && activity.isRootActivity())
+			taskList.addNewTaskForActivity(currentTask, InteractionType.BACK);
 		
-		if (CAN_GO_BACK)
+		if (CAN_GO_BACK && activity.isRootActivity() == false)
 			taskList.addNewTaskForActivity(currentTask, InteractionType.BACK);
 		
 		if (CAN_CHANGE_ORIENTATION)

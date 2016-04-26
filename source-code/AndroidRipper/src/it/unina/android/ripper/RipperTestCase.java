@@ -24,14 +24,13 @@ import it.unina.android.ripper.automation.robot.RobotiumWrapperRobot;
 import it.unina.android.ripper.configuration.Configuration;
 import it.unina.android.ripper.extractor.IExtractor;
 import it.unina.android.ripper.extractor.SimpleExtractor;
-import it.unina.android.ripper.extractor.output.OutputAbstract;
-import it.unina.android.ripper.extractor.output.XMLOutput;
 import it.unina.android.ripper.extractor.screenshoot.IScreenshotTaker;
 import it.unina.android.ripper.extractor.screenshoot.RobotiumScreenshotTaker;
 import it.unina.android.ripper.log.Debug;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.net.Message;
 import it.unina.android.ripper.net.MessageType;
+import it.unina.android.ripper.output.XMLRipperOutput;
 import it.unina.android.ripper_service.IAndroidRipperService;
 import it.unina.android.ripper_service.IAnrdoidRipperServiceCallback;
 
@@ -237,15 +236,15 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 						Activity activity = getActivity();
 
 						if (activity != null) {
-							OutputAbstract o = new XMLOutput();
-
-							ActivityDescription ad = extractor.extract();
-							o.addActivityDescription(ad);
+							XMLRipperOutput o = new XMLRipperOutput();
+							XMLRipperOutput.RUN_IN_THREAD = false;
 
 							Message retMsg = Message.getDescribeMessage();
 							retMsg.addParameter("index", msg.get("index"));
 
-							String s = o.output();
+							ActivityDescription ad = extractor.extract();
+							String s = o.outputActivityDescription(ad);
+									
 							retMsg.addParameter("xml", s);
 
 							mService.send(retMsg);
@@ -553,19 +552,14 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 							
 			        		if (activity != null)
 			        		{
-			        			
-			        			OutputAbstract o = new XMLOutput(); 
-			        			
-			        			ActivityDescription ad = extractor.extract(); 
-			        			Log.v(TAG, "Descrizione Estratta RipperTestCase AD >"+ad);
-			        			o.addActivityDescription( ad );
-			        			Log.v(TAG, "Descrizione Estratta RipperTestCase O >"+o);
+			        			XMLRipperOutput o = new XMLRipperOutput();
+			        			XMLRipperOutput.RUN_IN_THREAD = false;
 			        			
 			        			Message retMsg = Message.getDescribeMessage();
 			        			retMsg.addParameter("index", msg.get("index"));
-			        				//Log.v(TAG, "MSG_RUN_retMsg : " + msg.getParameterValue("index")) ;
-			        			String s = o.output(); 
-			        				//Log.v(TAG, "Descrizione Estratta RipperTestCase >"+s);
+			        			
+			        			ActivityDescription ad = extractor.extract(); 
+			        			String s = o.outputActivityDescription(ad);
 			        			retMsg.addParameter("xml", s);  
 			        			
 			        			mService.send(retMsg);  

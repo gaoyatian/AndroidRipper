@@ -1,7 +1,7 @@
 package it.unina.android.ripper.termination;
 
 import it.unina.android.ripper.driver.AbstractDriver;
-import it.unina.android.ripper.planner.task.TaskList;
+import it.unina.android.ripper.model.TaskList;
 
 public class EmptyActivityStateListTerminationCriterion implements TerminationCriterion {
 

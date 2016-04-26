@@ -1,7 +1,7 @@
 package it.unina.android.ripper.scheduler;
 
 import it.unina.android.ripper.model.Task;
-import it.unina.android.ripper.planner.task.TaskList;
+import it.unina.android.ripper.model.TaskList;
 
 public class BreadthScheduler implements Scheduler {
 

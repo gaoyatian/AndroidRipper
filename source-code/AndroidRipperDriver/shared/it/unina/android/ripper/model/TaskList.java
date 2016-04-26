@@ -1,9 +1,4 @@
-package it.unina.android.ripper.planner.task;
-
-import it.unina.android.ripper.model.Event;
-import it.unina.android.ripper.model.Input;
-import it.unina.android.ripper.model.Task;
-import it.unina.android.ripper.model.WidgetDescription;
+package it.unina.android.ripper.model;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

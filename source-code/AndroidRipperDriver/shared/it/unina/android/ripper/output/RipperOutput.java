@@ -3,8 +3,8 @@ package it.unina.android.ripper.output;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.Event;
 import it.unina.android.ripper.model.Task;
+import it.unina.android.ripper.model.TaskList;
 import it.unina.android.ripper.model.WidgetDescription;
-import it.unina.android.ripper.planner.task.TaskList;
 
 public interface RipperOutput {
 	public String outputActivityDescription(ActivityDescription a);
