@@ -21,7 +21,7 @@ public class MaxEventsTerminationCriterion implements TerminationCriterion {
 
 	@Override
 	public boolean check() {
-		return (this.driver.nEvents > MAX_EVENTS);
+		return (this.driver.nEvents >= MAX_EVENTS);
 	}
 
 }
