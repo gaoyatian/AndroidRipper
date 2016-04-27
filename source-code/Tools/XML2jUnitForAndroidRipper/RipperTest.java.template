@@ -1,6 +1,7 @@
 package it.unina.android.ripper.test;
 
 import java.io.File;
+import java.io.InputStream;
 
 import com.robotium.solo.Solo;
 
