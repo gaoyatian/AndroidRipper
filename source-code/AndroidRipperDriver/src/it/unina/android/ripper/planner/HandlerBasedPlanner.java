@@ -27,7 +27,8 @@ import java.util.ArrayList;
 public class HandlerBasedPlanner extends Planner
 {	
 	public static String[] inputWidgetList = {
-		SimpleType.EDIT_TEXT
+		SimpleType.EDIT_TEXT,
+		SimpleType.AUTOCOMPLETE_TEXTVIEW
 		//,SimpleType.SPINNER
 		//,SimpleType.CHECKBOX
 		//,SimpleType.RADIO
@@ -195,6 +196,11 @@ public class HandlerBasedPlanner extends Planner
 			WidgetInputPlanner widgetInputPlanner = null;
 			
 			if (widgetDescription.getSimpleType().equals(SimpleType.EDIT_TEXT))
+			{
+				RandomNumericValuesGenerator randomValuesGenerator = new RandomNumericValuesGenerator(0,99);
+				widgetInputPlanner = new EditTextInputPlanner(widgetDescription, randomValuesGenerator);
+			}
+			else if (widgetDescription.getSimpleType().equals(SimpleType.AUTOCOMPLETE_TEXTVIEW))
 			{
 				RandomNumericValuesGenerator randomValuesGenerator = new RandomNumericValuesGenerator(0,99);
 				widgetInputPlanner = new EditTextInputPlanner(widgetDescription, randomValuesGenerator);
