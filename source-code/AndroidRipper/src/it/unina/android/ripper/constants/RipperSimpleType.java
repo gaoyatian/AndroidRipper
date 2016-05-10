@@ -47,7 +47,10 @@ public class RipperSimpleType extends it.unina.android.ripper.constants.SimpleTy
 				case ListView.CHOICE_MODE_MULTIPLE: return MULTI_CHOICE_LIST;
 			}
 		}
+		
+		if (type.endsWith("AutoCompleteTextView")) return AUTOCOMPLETE_TEXTVIEW;
 		if (type.endsWith("TextView")) return TEXT_VIEW;
+		
 		if (type.endsWith("ImageView")) return IMAGE_VIEW;
 		if (type.endsWith("LinearLayout")) return LINEAR_LAYOUT;
 		if (type.endsWith("RelativeLayout")) return RELATIVE_LAYOUT;
@@ -56,7 +59,6 @@ public class RipperSimpleType extends it.unina.android.ripper.constants.SimpleTy
 		if (type.endsWith("TwoLineListItem")) return LIST_ITEM;
 		if (type.endsWith("NumberPicker")) return NUMBER_PICKER;
 		if (type.endsWith("NumberPickerButton")) return NUMBER_PICKER_BUTTON;
-		if (type.endsWith("AutoCompleteTextView")) return AUTOCOMPLETE_TEXTVIEW;
 		
 		return "";
 	}
