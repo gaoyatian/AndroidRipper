@@ -773,9 +773,9 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 			notifyRipperLog("max retry exceded coverage");
 
 		if (message != null && message.isTypeOf(MessageType.ACK_MESSAGE)) {
-			Actions.pullCoverageForUserTestCase(AUT_PACKAGE, COVERAGE_PATH, cov_file_name, count, testCaseIndex);
+			Actions.pullCoverageForUserTestCase(AUT_PACKAGE, cov_file_name, COVERAGE_PATH, count, testCaseIndex);
 		}
-	}
+	}	
 	
 	protected void pullCoverageFile(String src, int count,int testCaseIndex) {
 		notifyRipperLog("coverage");

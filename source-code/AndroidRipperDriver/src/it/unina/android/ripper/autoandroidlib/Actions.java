@@ -579,6 +579,7 @@ public class Actions {
 		return (iter > maxIter);
 	}
 	
+	
 	public static void pullCoverageForUserTestCase(final String AUT_PACKAGE, final String COV_FILE, final String COV_PATH, int TEST_COV_COUNTER, int TEST_CASE_INDEX)
 	{
 		String src = "/data/data/"+AUT_PACKAGE+"/"+COV_FILE;
@@ -586,7 +587,7 @@ public class Actions {
 
 		try {
 			tools.adb("pull", src, dest).connectStderr(System.out).connectStdout(System.out);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -595,10 +596,10 @@ public class Actions {
 	public static void pullCoverageStandardFileForUserTestCase(final String AUT_PACKAGE, final String COV_PATH, int TEST_COV_COUNTER_EC, int TEST_CASE_INDEX)
 	{
 		String src = "/data/data/"+AUT_PACKAGE+"/files/coverage.ec";
-		String dest = COV_PATH+"coverage_test_"+TEST_CASE_INDEX+"_"+ TEST_COV_COUNTER_EC +"_ec.ec";
+		String dest = COV_PATH+"coverage_test_"+TEST_CASE_INDEX+"_"+ TEST_COV_COUNTER_EC +".ec";
 
 		try {
-			tools.adb("pull", src, dest).connectStderr(System.out).connectStdout(System.out).waitFor();
+			tools.adb("pull", src, dest).connectStderr(System.out).connectStdout(System.out);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
