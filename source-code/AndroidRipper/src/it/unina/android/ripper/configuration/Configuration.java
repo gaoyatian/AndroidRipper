@@ -2,6 +2,12 @@ package it.unina.android.ripper.configuration;
 
 import it.unina.android.ripper.RipperTestCase;
 
+/**
+ * Configuration
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class Configuration implements IConfiguration
 {
 	/**

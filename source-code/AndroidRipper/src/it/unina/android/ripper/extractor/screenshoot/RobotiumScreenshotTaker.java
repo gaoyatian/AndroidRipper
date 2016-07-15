@@ -15,15 +15,37 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 
+/**
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class RobotiumScreenshotTaker implements IScreenshotTaker
 {
+	/**
+	 * Image captured counter
+	 */
 	private static int COUNT_CAPTURED_IMAGES = 0;
 	
+	/**
+	 * Instrumentation
+	 */
 	Instrumentation instrumentation;
+	
+	/**
+	 * Context
+	 */
 	Context context;
 	
+	/**
+	 * Robot Instance
+	 */
 	IRobot robot = null;
 	
+	/**
+	 * Constructor 
+	 * 
+	 * @param robot Robot Instance
+	 */
 	public RobotiumScreenshotTaker(IRobot robot)
 	{
 		this.robot = robot;
@@ -31,6 +53,9 @@ public class RobotiumScreenshotTaker implements IScreenshotTaker
 		this.context = instrumentation.getContext();
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.extractor.screenshoot.IScreenshotTaker#takeScreenshot(android.app.Activity)
+	 */
 	@SuppressLint("WorldWriteableFiles")
 	public void takeScreenshot(Activity activity)
 	{

@@ -15,6 +15,12 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+/**
+ * Generic Robot Interface
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public interface IRobot {
 
 	/**

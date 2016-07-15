@@ -34,37 +34,71 @@ import it.unina.android.ripper.output.XMLRipperOutput;
 import it.unina.android.ripper_service.IAndroidRipperService;
 import it.unina.android.ripper_service.IAnrdoidRipperServiceCallback;
 
+/**
+ * AndroidRipperTestCase
+ * 
+ * Communicates with the AndroidRipperDriver and executes events on the AUT.
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 
+	/**
+	 * Log TAG
+	 */
 	public static final String TAG = "RipperTestCase";
 
+	/**
+	 * Robot Component Instance
+	 */
 	IRobot robot = null;
+	
+	/**
+	 * Automation Component Instance
+	 */
 	IAutomation automation = null;
+	
+	/**
+	 * Extractor Component Instance
+	 */
 	IExtractor extractor = null;
+	
+	/**
+	 * ScreenshotTaker Component Instance
+	 */
 	IScreenshotTaker screenshotTaker = null;
 
+	/**
+	 * Test Case Running Status
+	 */
 	private boolean testRunning = true;
 
+	/**
+	 * Android ActivityManager
+	 */
 	ActivityManager mActivityManager;
+	
+	/**
+	 * Android Context
+	 */
 	Context mContext;
+	
+	/**
+	 * Ready to Opreate Status
+	 */
 	private boolean readyToOperate = false;
 
+	/**
+	 * Constructor
+	 */
 	public RipperTestCase() {
 		super(Configuration.autActivityClass);
-
-		/*
-		 * NOTE: Capture App Exception
-		 * 
-		 * Thread.setDefaultUncaughtExceptionHandler(new
-		 * UncaughtExceptionHandler() {
-		 * 
-		 * @Override public void uncaughtException(Thread thread, Throwable ex)
-		 * {
-		 * 
-		 * System.out.println(ex.getMessage()); System.exit(1); } });
-		 */
 	}
 
+	/* (non-Javadoc)
+	 * @see android.test.ActivityInstrumentationTestCase2#setUp()
+	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -75,6 +109,9 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 		bindCommunicationServices();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.test.ActivityInstrumentationTestCase2#tearDown()
+	 */
 	@Override
 	protected void tearDown() throws Exception {
 
@@ -99,10 +136,18 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 		super.tearDown();
 	}
 
+	/**
+	 * Get Automation Component Instance
+	 * 
+	 * @return
+	 */
 	public IAutomation getAutomation() {
 		return this.automation;
 	}
 
+	/**
+	 * Operation done after restart
+	 */
 	public void afterRestart() {
 		automation.setActivityOrientation(Solo.PORTRAIT);
 		sleepAfterTask();
@@ -112,8 +157,10 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 		Debug.info(this, "Ready to operate after restarting...");
 	}
 
+	/**
+	 * Main AndroidRipperTestCase Loop
+	 */
 	public void testApplication() {
-		// init components
 		this.robot = new RobotiumWrapperRobot(this);
 		this.automation = new RipperAutomation(this.robot);
 		this.extractor = new SimpleExtractor(this.robot);
@@ -122,55 +169,61 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 		this.afterRestart();
 		readyToOperate = true;
 
-		// Debug.log(extractor.extract().getTitle());
-		// Debug.log(extractor.extract().getWidgets().size()+"");
-
-		// automation.fireEvent (16908315, 16, "OK", "button", "click");
-		// automation.fireEvent (0, "", "null", "openMenu");
-
-		// Debug.log(extractor.extract().getWidgets().size()+"");
-
-		// automation.fireEvent (0, "", "null", "back");
-		// automation.fireEvent (2131099651, 6, "", "button", "click");
-		// automation.fireEvent (0, "", "null", "changeOrientation");
-
-		// infinite loop
+		//loops until test is in running status
 		while (this.testRunning)
 			this.robot.sleep(500);
-
-		// this.sleepAfterTask();
 	}
 
+	/**
+	 * Sleep After Task Completion
+	 */
 	private void sleepAfterTask() {
 		automation.sleep(Configuration.SLEEP_AFTER_TASK);
 	}
 
+	/**
+	 * IAndroidRipperService instance
+	 */
 	IAndroidRipperService mService = null;
+	
+	/**
+	 * ServiceConnection to the Android Service
+	 */
 	private ServiceConnection mConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName className,IBinder service){mService=IAndroidRipperService.Stub.asInterface(service);
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			mService = IAndroidRipperService.Stub.asInterface(service);
 
-	try{mService.register(mCallback);}catch(RemoteException e){e.printStackTrace();}
+			try {
+				mService.register(mCallback);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 
-	}
+		}
 
-	public void onServiceDisconnected(ComponentName className){mService=null;}};
+		public void onServiceDisconnected(ComponentName className) {
+			mService = null;
+		}
+	};
 
+	/**
+	 * IAnrdoidRipperServiceCallback
+	 */
 	IAnrdoidRipperServiceCallback mSecondaryService = null;
 	private ServiceConnection mSecondaryConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName className,IBinder service){mSecondaryService=IAnrdoidRipperServiceCallback.Stub.asInterface(service);}
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			mSecondaryService = IAnrdoidRipperServiceCallback.Stub.asInterface(service);
+		}
 
-	public void onServiceDisconnected(ComponentName className){mSecondaryService=null;}};
+		public void onServiceDisconnected(ComponentName className) {
+			mSecondaryService = null;
+		}
+	};
 
+	/**
+	 * Bind to AndroidRipperService
+	 */
 	private void bindCommunicationServices() {
-		/*
-		 * this.getInstrumentation().getContext().bindService(new
-		 * Intent("it.unina.android.ripper_service.IAndroidRipperService"),
-		 * mConnection, Context.BIND_AUTO_CREATE);
-		 * this.getInstrumentation().getContext().bindService(new Intent(
-		 * "it.unina.android.ripper_service.IAnrdoidRipperServiceCallback"),
-		 * mSecondaryConnection, Context.BIND_AUTO_CREATE);
-		 */
-
 		Intent bindIntent = new Intent(".IAndroidRipperService");
 		bindIntent.setClassName("it.unina.android.ripper_service",
 				"it.unina.android.ripper_service.AndroidRipperService");
@@ -182,6 +235,9 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 		this.getInstrumentation().getContext().bindService(bindIntent, mSecondaryConnection, Context.BIND_AUTO_CREATE);
 	}
 
+	/**
+	 * Unbind from AndroidRipperService
+	 */
 	private void unbindCommunicationServices() {
 		try {
 			mService.unregister(mCallback);
@@ -194,6 +250,11 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 		this.getInstrumentation().getContext().unbindService(mSecondaryConnection);
 	}
 
+	/**
+	 * IAnrdoidRipperServiceCallback
+	 * 
+	 * Handles Messages from AndroidRipperDriver
+	 */
 	private IAnrdoidRipperServiceCallback mCallback = new IAnrdoidRipperServiceCallback.Stub() {
 
 		@Override
@@ -594,6 +655,12 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 
 	};
 
+	/**
+	 * Dump Emma Coverage File
+	 * 
+	 * @param filename file name
+	 * @throws Exception
+	 */
 	protected void dumpCoverage(String filename) throws Exception {
 		Log.v(TAG, "Dumping coverage data!");
 		java.io.File coverageFile = new java.io.File("/data/data/" + Configuration.PACKAGE_NAME + "/" + filename); // chmod
@@ -608,80 +675,10 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 		dumpCoverageMethod.invoke(null, coverageFile, false, false);
 	}
 
-	/*
-	 * private RunningAppProcessInfo getForegroundApp() { RunningAppProcessInfo
-	 * result=null, info=null;
+	/**
+	 * Get the app in foreground
 	 * 
-	 * if(mActivityManager==null) mActivityManager =
-	 * (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
-	 * List <RunningAppProcessInfo> l =
-	 * mActivityManager.getRunningAppProcesses(); Iterator
-	 * <RunningAppProcessInfo> i = l.iterator(); while(i.hasNext()){ info =
-	 * i.next(); if(info.importance ==
-	 * RunningAppProcessInfo.IMPORTANCE_FOREGROUND &&
-	 * !isRunningService(info.processName)){ result=info; break; } } return
-	 * result; }
-	 * 
-	 * private String getForegroundApp2() { if(mActivityManager==null)
-	 * mActivityManager =
-	 * (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
-	 * 
-	 * List< ActivityManager.RunningTaskInfo > taskInfo =
-	 * mActivityManager.getRunningTasks(1); ComponentName componentInfo =
-	 * taskInfo.get(0).topActivity;
-	 * 
-	 * return componentInfo.getPackageName(); }
-	 * 
-	 * private ComponentName getActivityForApp(RunningAppProcessInfo target){
-	 * ComponentName result=null; ActivityManager.RunningTaskInfo info;
-	 * 
-	 * if(target==null) return null;
-	 * 
-	 * if(mActivityManager==null) mActivityManager =
-	 * (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
-	 * List <ActivityManager.RunningTaskInfo> l =
-	 * mActivityManager.getRunningTasks(9999); Iterator
-	 * <ActivityManager.RunningTaskInfo> i = l.iterator();
-	 * 
-	 * while(i.hasNext()){ info=i.next();
-	 * if(info.baseActivity.getPackageName().equals(target.processName)){
-	 * result=info.topActivity; break; } }
-	 * 
-	 * return result; }
-	 * 
-	 * private boolean isStillActive(RunningAppProcessInfo process,
-	 * ComponentName activity) { // activity can be null in cases, where one app
-	 * starts another. for example, astro // starting rock player when a move
-	 * file was clicked. we dont have an activity then, // but the package exits
-	 * as soon as back is hit. so we can ignore the activity // in this case
-	 * if(process==null) return false;
-	 * 
-	 * RunningAppProcessInfo currentFg=getForegroundApp(); ComponentName
-	 * currentActivity=getActivityForApp(currentFg);
-	 * 
-	 * if(currentFg!=null && currentFg.processName.equals(process.processName)
-	 * && (activity==null || currentActivity.compareTo(activity)==0)) return
-	 * true;
-	 * 
-	 * Log.i(TAG, "isStillActive returns false - CallerProcess: " +
-	 * process.processName + " CurrentProcess: " + (currentFg==null ? "null" :
-	 * currentFg.processName) + " CallerActivity:" + (activity==null ? "null" :
-	 * activity.toString()) + " CurrentActivity: " + (currentActivity==null ?
-	 * "null" : currentActivity.toString())); return false; }
-	 * 
-	 * private boolean isRunningService(String processname){
-	 * if(processname==null || processname.isEmpty()) return false;
-	 * 
-	 * RunningServiceInfo service;
-	 * 
-	 * if(mActivityManager==null) mActivityManager =
-	 * (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
-	 * List <RunningServiceInfo> l = mActivityManager.getRunningServices(9999);
-	 * Iterator <RunningServiceInfo> i = l.iterator(); while(i.hasNext()){
-	 * service = i.next(); if(service.process.equals(processname)) return true;
-	 * }
-	 * 
-	 * return false; }
+	 * @return name of the app
 	 */
 	private String getForegroundApp2() {
 		try {

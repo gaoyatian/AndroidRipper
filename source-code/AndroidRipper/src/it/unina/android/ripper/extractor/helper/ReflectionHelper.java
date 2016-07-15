@@ -8,20 +8,24 @@ import java.util.HashMap;
 import android.util.Log;
 
 /**
- * Classe contenente metodi che utilizzano la reflection 
+ * Method that exploit Java Reflection API 
  * 
- * @author nicola
+ * @author Nicola Amatucci - REvERSE
  *
  */
 public class ReflectionHelper
 {
-	public static final String TAG = "ReflectionHelper";
 	/**
-	 * Controlla se una classe implementa l'interfaccia data
+	 * Log TAG
+	 */
+	public static final String TAG = "ReflectionHelper";
+	
+	/**
+	 * Check if a class implement an interface
 	 * 
-	 * @param className CanonicalName della classe
-	 * @param interfaceName CanonicalName dell'interfaccia
-	 * @return esito della ricerca
+	 * @param className CanonicalName of the class
+	 * @param interfaceName CanonicalName of the interface
+	 * @return
 	 * @throws ClassNotFoundException
 	 */
 	public static boolean implementsInterface(String className, String interfaceName) throws ClassNotFoundException
@@ -31,17 +35,16 @@ public class ReflectionHelper
 	}
 	
 	/**
-	 * Controlla se una classe implementa l'interfaccia data
+	 * Check if a class implement an interface
 	 * 
-	 * @param myClass Classe da scansionare
-	 * @param interfaceName CanonicalName dell'interfaccia
+	 * @param myClass Class class
+	 * @param interfaceName CanonicalName of the interface
 	 * @return esito della ricerca
 	 */
 	public static boolean implementsInterface(Class<?> myClass, String interfaceName)
 	{
 		for (Class<?> myInterface : myClass.getInterfaces())
 		{
-			//Log.v(TAG, myInterface.toString());
 			if (myInterface.getCanonicalName().equals(interfaceName))
 				return true;
 		}
@@ -49,14 +52,11 @@ public class ReflectionHelper
 	}
 	
 	/**
-	 * Scansiona una classe e le sue variabili alla ricerca di qualcosa che implementi
-	 * un'interfaccia.
+	 * Scan a class and its variables searching for something implementing an interface.
 	 * 
-	 * Inoltre controlla se ci sono variabili definite inline del tipo dell'interfaccia
-	 * 
-	 * @param className CanonicalName della classe
-	 * @param interfaceName CanonicalName dell'interfaccia
-	 * @return esito della scansione
+	 * @param className CanonicalName of the class
+	 * @param interfaceName CanonicalName of the interface
+	 * @return
 	 * @throws ClassNotFoundException
 	 */
 	public static boolean scanClassForInterface(String className, String interfaceName) throws ClassNotFoundException
@@ -65,42 +65,32 @@ public class ReflectionHelper
 		return ReflectionHelper.scanClassForInterface(myClass, interfaceName);
 	}
 	
-	/* NOTA:
-	 *      if (field.getType().isAssignableFrom(myType))
-	 */
-	
 	/**
-	 * Scansiona una classe e le sue variabili alla ricerca di qualcosa che implementi
-	 * un'interfaccia.
+	 * Scan a class and its variables searching for something implementing an interface.
 	 * 
-	 * Inoltre controlla se ci sono variabili definite inline del tipo dell'interfaccia
-	 * 
-	 * @param myClass Classe da scansionare
-	 * @param interfaceName CanonicalName dell'interfaccia
-	 * @return esito della scansione
+	 * @param myClass Class class
+	 * @param interfaceName CanonicalName of the interface
+	 * @return
 	 * @return
 	 */
 	public static boolean scanClassForInterface(Class<?> myClass, String interfaceName)
 	{
-		//controllo se la classe implementa lei stessa l'interfaccia 
 		if ( ReflectionHelper.implementsInterface(myClass, interfaceName))
 		{
 			Log.v(TAG, "Found interface : " + interfaceName + " in " + myClass.getCanonicalName());
 			return true;
 		}
-		//controllo se un campo implementa l'interfaccia
+
 		for(Field field : myClass.getDeclaredFields() )
 		{
 			Class<?> fieldClass = field.getType();
 								
-			//controlla se implementa l'interfaccia
 			if ( ReflectionHelper.implementsInterface(fieldClass, interfaceName))
 			{
 				Log.v(TAG, "Found field implements : " + interfaceName  + " in " + fieldClass.getCanonicalName());
 				return true;
 			}
 			
-			//controlla se e' una definizione inline
 			if (fieldClass.getCanonicalName().equals(interfaceName))
 			{
 				Log.v(TAG, "Found field inline definition : " + interfaceName  + " in " + fieldClass.getCanonicalName());
@@ -113,11 +103,10 @@ public class ReflectionHelper
 	}
 		
 	/**
-	 * Utilizzando la Reflection ottiene i listener associati ad un oggetto View
+	 * Using Java Reflection API obtains the set of listeners of a View
 	 * 
-	 * @param view View da esaminare
-	 * @return 	risultato sotto forma di HashMap<String, Boolean>, che associa il nome del
-	 * 			listener alla sua effettiva esistenza
+	 * @param view View to reflect
+	 * @return 	HashMap<String, Boolean>: key=name of the method, value=esists?
 	 */
 	public static HashMap<String, Boolean> reflectViewListeners(android.view.View view)
     {
@@ -147,18 +136,7 @@ public class ReflectionHelper
 			ret.put( "OnScrollListener", checkIfFieldIsSet(view, "android.widget.AbsListView", "mOnScrollListener") );			
 			ret.put( "OnItemSelectedListener", checkIfFieldIsSet(view, "android.widget.AdapterView", "mOnItemSelectedListener") );
 			ret.put( "OnItemClickListener", checkIfFieldIsSet(view, "android.widget.AdapterView", "mOnItemClickListener") );
-			ret.put( "OnItemLongClickListener", checkIfFieldIsSet(view, "android.widget.AdapterView", "mOnItemLongClickListener") );
-			
-			/*
-			//longClickPatch
-			if ( ret.get(InteractionType.LONG_CLICK) == true ) 
-			{
-				ret.remove(InteractionType.LONG_CLICK);
-				
-				if ( ret.get(InteractionType.LIST_LONG_SELECT) == false )
-					ret.put(InteractionType.LIST_LONG_SELECT, true);
-			}
-			*/
+			ret.put( "OnItemLongClickListener", checkIfFieldIsSet(view, "android.widget.AdapterView", "mOnItemLongClickListener") );			
 		}
 		
 		if (view instanceof android.view.ViewGroup)
@@ -170,6 +148,14 @@ public class ReflectionHelper
     	return ret;
     }
 	
+	/**
+	 * Check if a field of a class is set
+	 * 
+	 * @param o Class Instance
+	 * @param baseClass (Parent) Class
+	 * @param fieldName Field Name
+	 * @return
+	 */
 	public static boolean checkIfFieldIsSet(Object o, String baseClass, String fieldName)
 	{
 		java.lang.reflect.Field field;
@@ -183,12 +169,7 @@ public class ReflectionHelper
 			
 			boolean ret = (field.get(o) != null);
 			Log.v(TAG, o.getClass().getCanonicalName() + " > " + fieldName + " FOUND | " + ((ret)?"ACTIVE":"NOT ACTIVE") );
-			return ret;
-			
-			/* NOTA:
-			 * Senza log
-			 * 		return (field.get(o) != null);
-			 */
+			return ret;			
     	}
 		catch (Exception e)
 		{
@@ -200,6 +181,14 @@ public class ReflectionHelper
 		return false;
 	}
 	
+	/**
+	 * Check if an ArrayList field of a class is set
+	 * 
+	 * @param o Class Instance
+	 * @param baseClass (Parent) Class
+	 * @param fieldName Field Name
+	 * @return
+	 */
 	public static boolean checkIfArrayListFieldIsSet(Object o, String baseClass, String fieldName)
 	{
 		java.lang.reflect.Field field;
@@ -224,15 +213,9 @@ public class ReflectionHelper
 				{
 					Log.v(TAG, o.getClass().getCanonicalName() + " > " + fieldName + " FOUND | NOT ACTIVE" );
 				}
-				
-				/* NOTA:
-				 * Senza log
-				 * 		return (arrayListField.size() > 0);
-				 */
 			}
 			else
 			{
-				//NOTA: Senza log, va eliminato questo else
 				Log.v(TAG, o.getClass().getCanonicalName() + " > " + fieldName + " FOUND | NULL" );
 				return false;
 			}
@@ -247,6 +230,14 @@ public class ReflectionHelper
 		return false;
 	}
 	
+	/**
+	 * Get the value of a private field
+	 * 
+	 * @param canonicalClassName CanonicalName of the class
+	 * @param fieldName Field Name
+	 * @param o Class Instance
+	 * @return
+	 */
 	public static Object getPrivateField(String canonicalClassName, String fieldName, Object o)
 	{
 		try
@@ -264,10 +255,14 @@ public class ReflectionHelper
 		return null;
 	}
 	
-	/* NOTA:
+	/**
+	 * Check if the class has a declared method
 	 * 
-	 * bisognerebbe controllare la firma del metodo invece che solo il nome
+	 * TODO: check the signature of the method instead of the name only
 	 * 
+	 * @param c Class class
+	 * @param methodName Method Name
+	 * @return
 	 */
 	public static boolean hasDeclaredMethod(Class<?> c, String methodName)
 	{
@@ -285,65 +280,15 @@ public class ReflectionHelper
 		return false;
 	}
 	
-	public static boolean isDescendant(Class<?> descendant, Class<?> anchestor)
+	/**
+	 * Check if the class is a descendant of another class
+	 * 
+	 * @param descendant Descendant Class
+	 * @param ancestor Ancestor Class
+	 * @return
+	 */
+	public static boolean isDescendant(Class<?> descendant, Class<?> ancestor)
 	{
-		return anchestor.isAssignableFrom(descendant);
+		return ancestor.isAssignableFrom(descendant);
 	}
-	
-	
-	/*
-	private static void enableAllViewClassListenerFields()
-	{
-		Field field = null;
-		Class<?> viewObj = null;
-		
-		try {
-			viewObj = Class.forName("android.view.View");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Are you on Android?");
-		}
-		
-		try
-		{
-			field = viewObj.getDeclaredField("mOnFocusChangeListener");
-			field.setAccessible(true);
-		}
-		catch (Exception ex) {}
-		
-		try
-		{
-			field = viewObj.getDeclaredField("mOnClickListener");
-			field.setAccessible(true);
-		}
-		catch (Exception ex) {}
-		
-		try
-		{
-			field = viewObj.getDeclaredField("mOnLongClickListener");
-			field.setAccessible(true);
-		}
-		catch (Exception ex) {}
-		
-		try
-		{
-			field = viewObj.getDeclaredField("mOnCreateContextMenuListener");
-			field.setAccessible(true);
-		}
-		catch (Exception ex) {}
-		
-		try
-		{
-			field = viewObj.getDeclaredField("mOnKeyListener");
-			field.setAccessible(true);
-		}
-		catch (Exception ex) {}
-		
-		try
-		{
-			field = viewObj.getDeclaredField("mOnTouchListener");
-			field.setAccessible(true);
-		}
-		catch (Exception ex) {}
-	}
-	*/	
 }
