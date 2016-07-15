@@ -27,6 +27,12 @@ import android.widget.TextView;
 import com.robotium.solo.Solo;
 
 
+/**
+ * Robotium Robot Implementation
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class RobotiumWrapperRobot implements IRobot
 {
 	/**

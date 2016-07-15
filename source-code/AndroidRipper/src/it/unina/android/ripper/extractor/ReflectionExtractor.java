@@ -26,12 +26,29 @@ import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+/**
+ * Uses the JAVA Reflection API to extract information about the current GUI Interface
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class ReflectionExtractor implements IExtractor
 {
+	/**
+	 * Root View
+	 */
 	Class<?> viewRootClass = null;
 	
+	/**
+	 * Robot Instance
+	 */
 	IRobot robot = null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param robot Robot Instance
+	 */
 	public ReflectionExtractor(IRobot robot)
 	{
 		this.robot = robot;
@@ -45,6 +62,9 @@ public class ReflectionExtractor implements IExtractor
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.extractor.IExtractor#extract()
+	 */
 	@Override
 	public ActivityDescription extract()
 	{
@@ -188,6 +208,13 @@ public class ReflectionExtractor implements IExtractor
 		return ret;
 	}
 	
+	/**
+	 * Detect the first Ancestor that owns a valid id value
+	 * 
+	 * @param v Widget
+	 * @return
+	 * @throws Exception
+	 */
 	private View detectFirstAncestorWithId(View v) throws Exception
 	{
 		if ( (v == null) || (v != null && v.getParent() == null) )
@@ -218,6 +245,13 @@ public class ReflectionExtractor implements IExtractor
 		}
 	}
 		
+	/**
+	 * Set Listeners for the Widget
+	 * 
+	 * @param ad ActivityDescription instance
+	 * @param wd WidgetDescription instance
+	 * @param v Widget
+	 */
 	private void setViewListeners(ActivityDescription ad, WidgetDescription wd, View v)
 	{
 		if ( 
@@ -250,6 +284,12 @@ public class ReflectionExtractor implements IExtractor
 		}
 	}
 	
+	/**
+	 * Detect Name of the Widget
+	 * 
+	 * @param v Widget
+	 * @return
+	 */
 	private String detectName (View v) {
 		String name = "";
 		if (v instanceof TextView) {
@@ -275,6 +315,12 @@ public class ReflectionExtractor implements IExtractor
 		return name;
 	}
 	
+	/**
+	 * Set Value of the Widget
+	 * 
+	 * @param v Widget
+	 * @param wd WidgetDescription instance
+	 */
 	private void setValue (View v, WidgetDescription wd)
 	{		
 		// Checkboxes, radio buttons and toggle buttons -> the value is the checked state (true or false)
@@ -295,6 +341,12 @@ public class ReflectionExtractor implements IExtractor
 				
 	}
 	
+	/**
+	 * Set Count of the Widget
+	 * 
+	 * @param v Widget
+	 * @param wd WidgetDescription instance
+	 */
 	@SuppressWarnings("rawtypes")
 	public static void setCount (View v, WidgetDescription w) {
 		// For lists, the count is set to the number of rows in the list (inactive rows - e.g. separators - count as well)
@@ -328,37 +380,12 @@ public class ReflectionExtractor implements IExtractor
 		}
 	}
 	
-	private String reflectTextualIDbyNumericalID(int id)
-	{
-		try {
-			Class c = Class.forName(Configuration.PACKAGE_NAME+".R");
-			Class idClass = null; 
-			for (Class c1 : c.getClasses())
-			{
-				if (c1.getCanonicalName().endsWith(".id"))
-				{
-					idClass = c1;
-					break;
-				}
-			}
-			
-			if (idClass != null)
-			{
-				for (Field f: idClass.getFields())
-				{
-					if (f.getInt(null) == id)
-						return f.getName();
-				}
-			}
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			//Log.e("nicola", e.toString());
-		}
-		
-		return null;
-	}
-	
+	/**
+	 * Get Listeners for the Activity
+	 * 
+	 * @param activity Activity
+	 * @return
+	 */
 	private HashMap<String, Boolean> getActivityListeners(Activity activity)
 	{
 		HashMap<String, Boolean> ret = new HashMap<String, Boolean>();
@@ -374,6 +401,12 @@ public class ReflectionExtractor implements IExtractor
 		return ret;
 	}
 	
+	/**
+	 * Check if the Activity has a menu
+	 * 
+	 * @param activity Activity
+	 * @return
+	 */
 	private Boolean activityHasMenu(Activity activity)
 	{
 		return 	(
@@ -382,21 +415,45 @@ public class ReflectionExtractor implements IExtractor
 				);
 	}
 	
+	/**
+	 * Check if the Activity handles keypress events
+	 * 
+	 * @param activity Activity
+	 * @return
+	 */
 	private boolean handlesKeyPress(Activity activity)
 	{
 		return ReflectionHelper.hasDeclaredMethod(activity.getClass(), "onKeyDown");
 	}
 	
+	/**
+	 * Check if the Activity handles long keypress events
+	 * 
+	 * @param activity Activity
+	 * @return
+	 */
 	private boolean handlesLongKeyPress(Activity activity)
 	{
 		return ReflectionHelper.hasDeclaredMethod(activity.getClass(), "onKeyLongPress");
 	}
 
+	/**
+	 * Check if Activity is a tab activity
+	 * 
+	 * @param activity Activity
+	 * @return
+	 */
 	private boolean isTabActivity(Activity activity)
 	{
 		return ReflectionHelper.isDescendant(activity.getClass(), android.app.TabActivity.class);
 	}
 	
+	/**
+	 * Get Tabs count
+	 * 
+	 * @param activity Activity
+	 * @return
+	 */
 	public int getTabActivityTabsCount(Activity activity)
 	{
 		return ((android.app.TabActivity)activity).getTabHost().getChildCount();

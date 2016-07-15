@@ -6,8 +6,20 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 
+/**
+ * Detect SimpleType of a Widget
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class RipperSimpleType extends it.unina.android.ripper.constants.SimpleType {
 
+	/**
+	 * Detect SimpleType of a Widget
+	 * 
+	 * @param v Widget
+	 * @return
+	 */
 	public static String getSimpleType(View v)
 	{
 		String type = v.getClass().getName();

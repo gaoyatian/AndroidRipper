@@ -1,17 +1,6 @@
 package it.unina.android.ripper.extractor;
 
-import it.unina.android.ripper.automation.robot.IRobot;
-import it.unina.android.ripper.configuration.Configuration;
-import it.unina.android.ripper.constants.InteractionType;
-import it.unina.android.ripper.constants.RipperSimpleType;
-import it.unina.android.ripper.extractor.helper.ReflectionHelper;
-import it.unina.android.ripper.log.Debug;
-import it.unina.android.ripper.model.ActivityDescription;
-import it.unina.android.ripper.model.WidgetDescription;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.app.Activity;
 import android.view.View;
@@ -25,16 +14,39 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
+import it.unina.android.ripper.automation.robot.IRobot;
+import it.unina.android.ripper.constants.RipperSimpleType;
+import it.unina.android.ripper.extractor.helper.ReflectionHelper;
+import it.unina.android.ripper.log.Debug;
+import it.unina.android.ripper.model.ActivityDescription;
+import it.unina.android.ripper.model.WidgetDescription;
 
+/**
+ * Extract information about the current GUI Interface
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class SimpleExtractor implements IExtractor
 {
+	/**
+	 * Robot Instance
+	 */
 	IRobot robot = null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param robot Robot Instance
+	 */
 	public SimpleExtractor(IRobot robot)
 	{
 		this.robot = robot;
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.extractor.IExtractor#extract()
+	 */
 	@Override
 	public ActivityDescription extract()
 	{
@@ -156,6 +168,12 @@ public class SimpleExtractor implements IExtractor
 		return ret;
 	}
 	
+	/**
+	 * Detect the first Ancestor that owns a valid id value
+	 * 
+	 * @param v Widget
+	 * @return
+	 */
 	private View detectFirstAncestorWithId(View v) // throws Exception
 	{
 		if ( (v == null) || (v != null && v.getParent() == null) )
@@ -183,6 +201,12 @@ public class SimpleExtractor implements IExtractor
 		}
 	}
 
+	/**
+	 * Detect Name of the Widget
+	 * 
+	 * @param v Widget
+	 * @return
+	 */
 	private String detectName (View v) {
 		String name = "";
 		if (v instanceof TextView) {
@@ -208,6 +232,12 @@ public class SimpleExtractor implements IExtractor
 		return name;
 	}
 	
+	/**
+	 * Set Value of the Widget
+	 * 
+	 * @param v Widget
+	 * @param wd WidgetDescription instance
+	 */
 	private void setValue (View v, WidgetDescription wd)
 	{		
 		// Checkboxes, radio buttons and toggle buttons -> the value is the checked state (true or false)
@@ -228,6 +258,12 @@ public class SimpleExtractor implements IExtractor
 				
 	}
 	
+	/**
+	 * Set Count of the Widget
+	 * 
+	 * @param v Widget
+	 * @param wd WidgetDescription instance
+	 */
 	@SuppressWarnings("rawtypes")
 	public static void setCount (View v, WidgetDescription w) {
 		// For lists, the count is set to the number of rows in the list (inactive rows - e.g. separators - count as well)
@@ -261,11 +297,23 @@ public class SimpleExtractor implements IExtractor
 		}
 	}
 
+	/**
+	 * Check if Activity is a tab activity
+	 * 
+	 * @param activity Activity
+	 * @return
+	 */
 	private boolean isTabActivity(Activity activity)
 	{
 		return ReflectionHelper.isDescendant(activity.getClass(), android.app.TabActivity.class);
 	}
 	
+	/**
+	 * Get Tabs count
+	 * 
+	 * @param activity Activity
+	 * @return
+	 */
 	public int getTabActivityTabsCount(Activity activity)
 	{
 		return ((android.app.TabActivity)activity).getTabHost().getChildCount();

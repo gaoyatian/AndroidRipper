@@ -12,6 +12,12 @@ import java.util.prefs.Preferences;
 
 import android.util.Log;
 
+/**
+ * Preferences from XML
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class Prefs {
 	
 	private static Preferences prefs;

@@ -39,15 +39,32 @@ import android.widget.TabHost;
 
 import com.robotium.solo.Solo;
 
+/**
+ * Automation Component Implementation
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class RipperAutomation implements IAutomation {
 
+	/**
+	 * Robot Implementation
+	 */
 	IRobot robot = null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param robot Robot Implementation
+	 */
 	public RipperAutomation(IRobot robot)
 	{
 		this.robot = robot;
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.automation.IAutomation#fireEvent(java.lang.String, java.lang.Integer, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void fireEvent(String widgetId, Integer widgetIndex, String widgetName, String widgetType, String eventType, String value)
 	{
 		if (eventType != null && eventType.equals("") == false)
@@ -89,6 +106,13 @@ public class RipperAutomation implements IAutomation {
 		
 	}
 
+	/**
+	 * Inject Interaction using Robot Instance
+	 * 
+	 * @param v Widget
+	 * @param interactionType Type of Interaction
+	 * @param value Interaction Parameter
+	 */
 	protected void injectInteraction (View v, String interactionType, String value) {
 		if (v!=null)
 			this.robot.requestView(v);
@@ -255,6 +279,9 @@ public class RipperAutomation implements IAutomation {
 		fireEventOnView (v, eventType, value);
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.automation.IAutomation#fireEvent(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void fireEvent (String widgetName, String widgetType, String eventType, String value)
 	{
 		this.robot.updateWidgets();
@@ -279,6 +306,13 @@ public class RipperAutomation implements IAutomation {
 		fireEventOnView(v, eventType, value);
 	}
 	
+	/**
+	 * Fire Event on View
+	 * 
+	 * @param v Widget
+	 * @param eventType Type of Event
+	 * @param value Parameter of the Event
+	 */
 	protected void fireEventOnView (View v, String eventType, String value) {
 		injectInteraction(v, eventType, value);
 		this.robot.sleep(Configuration.SLEEP_AFTER_EVENT);
@@ -288,7 +322,6 @@ public class RipperAutomation implements IAutomation {
 	/* (non-Javadoc)
 	 * @see it.unina.android.ripper.automation.IAutomation#setInput(int, java.lang.String, java.lang.String)
 	 */
-
 	@Override
 	public void setInput (int widgetId, String interactionType, String value)
 	{
@@ -389,6 +422,9 @@ public class RipperAutomation implements IAutomation {
 		this.robot.finalizeRobot();
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.automation.IAutomation#getRobot()
+	 */
 	@Override
 	public IRobot getRobot() {
 		return this.robot;
