@@ -8,15 +8,33 @@ import it.unina.android.ripper.model.WidgetDescription;
 
 import java.util.ArrayList;
 
+/**
+ * Planner for RADIO_GROUP Widget
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class RadioGroupEventPlanner extends WidgetEventPlanner {
 
+	/**
+	 * Max radio buttons to be considered
+	 */
 	int MAX_INTERACTIONS = 5;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param widgetDescription Widget
+	 * @param MAX_INTERACTIONS Max radio buttons to be considered
+	 */
 	public RadioGroupEventPlanner(WidgetDescription widgetDescription, int MAX_INTERACTIONS) {
 		super(widgetDescription);
 		this.MAX_INTERACTIONS = MAX_INTERACTIONS;
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.planner.widget_events.WidgetEventPlanner#tap(it.unina.android.ripper.model.Task, java.util.ArrayList, java.lang.String[])
+	 */
 	@Override
 	protected TaskList tap(Task currentTask, ArrayList<Input> inputs, String... options) {
 		TaskList t = new TaskList();

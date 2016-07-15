@@ -4,6 +4,12 @@ package it.unina.android.ripper.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Task
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class Task extends ArrayList<Event> implements Serializable {
 
 	private static final long serialVersionUID = 987654321L;

@@ -1,5 +1,11 @@
 package it.unina.android.ripper.constants;
 
+/**
+ * String Constants
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class InteractionType {
 
 	public final static String CLICK = "click";

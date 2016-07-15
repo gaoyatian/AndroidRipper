@@ -120,16 +120,48 @@ public class GenericComparatorConfiguration
 		}
 	}
 	
+	/**
+	 * Constructor
+	 */
 	public GenericComparatorConfiguration() { super(); }
+
+	
 	
 	/* ACTIVITY OPTIONS */
+	
+	/**
+	 * Enable Compare ActivityDescription instances name parameter
+	 */
 	public boolean compareActivityNames = false;
+	
+	/**
+	 * Enable Compare ActivityDescription instances title parameter 
+	 */
 	public boolean compareActivityTitles = false;
+	
+	/**
+	 * Enable Compare ActivityDescription instances dialog title parameter 
+	 */
 	public boolean compareDialogTitle = false;
+	
+	/**
+	 * Enable Compare ActivityDescription instances class parameter 
+	 */
 	public boolean compareActivityClasses = false;
-	public boolean compareActivityWidgetsCount = false;	
+	
+	/**
+	 * Enable Compare ActivityDescription instances widget array parameter count 
+	 */
+	public boolean compareActivityWidgetsCount = false;
+	
+	/**
+	 * Enable Compare ActivityDescription instances widget array content 
+	 */
 	public boolean testIfWidgetsMatch = false;
 	
+	/**
+	 * Widget Filter
+	 */
 	public String[] filteredWidgetsArray = {
 			/*
 			SimpleType.EDIT_TEXT,
@@ -142,27 +174,76 @@ public class GenericComparatorConfiguration
 			SimpleType.TAB_HOST 
 			*/
 	};
+	
+	/**
+	 * Enable Compare ActivityDescription instances filtered widget array parameter count 
+	 */
 	public boolean compareActivityFilteredWidgetsCount = false;
+	
+	/**
+	 * Enable Compare ActivityDescription instances filtered widget array content 
+	 */
 	public boolean testIfFilteredWidgetsMatch = false;
 	
 	
+	
 	/* WIDGET OPTIONS */
+	
+	/**
+	 * Enable Compare WidgetDescription instances id parameter
+	 */
 	public boolean compareWidgetIds = false;
+	
+	/**
+	 * Enable Compare WidgetDescription instances SimpleType parameter
+	 */
 	public boolean compareWidgetSimpleType = false;
+	
+	/**
+	 * Enable Compare WidgetDescription instances visible parameter
+	 */
 	public boolean testWidgetVisibilityChange = false;
+	
+	/**
+	 * Enable Compare WidgetDescription instances enable parameter
+	 */
 	public boolean testWidgetEnablingChange = false;
+	
+	/**
+	 * Enable Compare WidgetDescription instances name parameter
+	 */
 	public boolean compareWidgetNames = false;
+	
+	/**
+	 * Enable Compare WidgetDescription instances class parameter
+	 */
 	public boolean compareWidgetClasses = false;
 	
-	/* SPECIFIC WIDGETS OPTIONS */
-
-	//LIST
-	public boolean compareListItemCount = false;
-	public int maxListElementsCount = 5;
-//	public boolean testIfBothListHaveAtLeastOneElement = false;
-//	public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
-//	public int fixedNumberOfListElements = 5;
 	
-	//MENU
+	/* OPTIONS FOR SPECIFIC WIDGETS */
+
+	/* LIST WIDGET OPTIONS */
+
+	/**
+	 * Enable Compare count of items for LIST_VIEW WidgetDescription instances
+	 */
+	public boolean compareListItemCount = false;
+	
+	/**
+	 * Limit Compare count of items for LIST_VIEW WidgetDescription instances to a maximum value.
+	 * After that value, the list are considered having the same number of elements.
+	 */
+	public int maxListElementsCount = 5;
+
+	//public boolean testIfBothListHaveAtLeastOneElement = false;
+	//public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
+	//public int fixedNumberOfListElements = 5;
+	
+	
+	/* MENU WIDGET OPTIONS */
+	
+	/**
+	 * Enable Compare count of items for MENU_VIEW WidgetDescription instances
+	 */
 	public boolean compareMenuItemCount = false;
 }

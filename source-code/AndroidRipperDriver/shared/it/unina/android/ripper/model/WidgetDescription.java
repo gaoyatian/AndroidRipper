@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Abstraction of a GUI Widget, an Android GUI Component
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class WidgetDescription implements Serializable
 {
 	Integer id;

@@ -4,6 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Abstraction of a GUI Interface, an Android Activity
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
+
 public class ActivityDescription implements Serializable
 {
 	String id; //given by comparator

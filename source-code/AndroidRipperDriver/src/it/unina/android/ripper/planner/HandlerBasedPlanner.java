@@ -21,11 +21,21 @@ import it.unina.android.ripper.planner.widget_inputs.values_generator.RandomNume
 
 import java.util.ArrayList;
 
-/*
+/**
+ * Planner based on a relevant events on the current ActivityDescription.
+ * 
+ * This planner take into account listeners defined in the WidgetDescription.
+ *
  * NOTA: max_event_len -> if task.size() > MAX don't add :-)
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
  */
 public class HandlerBasedPlanner extends Planner
 {	
+	/**
+	 * Widget configured as Input Fields
+	 */
 	public static String[] inputWidgetList = {
 		SimpleType.EDIT_TEXT,
 		SimpleType.AUTOCOMPLETE_TEXTVIEW
@@ -38,6 +48,12 @@ public class HandlerBasedPlanner extends Planner
 		//,SimpleType.FOCUSABLE_EDIT_TEXT
 	};
 	
+	/**
+	 * Check if widget is configured as an Input Field
+	 * 
+	 * @param widget Widget
+	 * @return
+	 */
 	protected boolean isInputWidget(WidgetDescription widget)
 	{
 		for (String s : inputWidgetList)
@@ -47,11 +63,17 @@ public class HandlerBasedPlanner extends Planner
 		return false;
 	}
 	
+	/**
+	 * Constructor
+	 */
 	public HandlerBasedPlanner()
 	{
 		super();
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.planner.Planner#plan(it.unina.android.ripper.model.Task, it.unina.android.ripper.model.ActivityDescription, java.lang.String[])
+	 */
 	@Override
 	public TaskList plan(Task currentTask, ActivityDescription activity, String... options)
 	{
@@ -89,6 +111,14 @@ public class HandlerBasedPlanner extends Planner
 		return taskList;
 	}
 	
+	/**
+	 * Plan Task based on the current ActivityDescription. Add an event to the current task.
+	 * 
+	 * @param currentTask Current Task
+	 * @param activity Target Activity
+	 * @param options Configuration
+	 * @return
+	 */
 	protected TaskList planForActivity(Task currentTask, ActivityDescription activity, String... options)
 	{
 		TaskList taskList = new TaskList();
@@ -129,6 +159,15 @@ public class HandlerBasedPlanner extends Planner
 		return taskList;
 	}
 	
+	/**
+	 * Plan Task based on the current WidgetDescription. Add an event to the current task.
+	 * 
+	 * @param currentTask Current Task
+	 * @param widgetDescription Target Widget
+	 * @param inputs Input Fields
+	 * @param options Options
+	 * @return
+	 */
 	protected TaskList planForWidget(Task currentTask, WidgetDescription widgetDescription, ArrayList<Input> inputs, String... options)
 	{
 		//excludes widgets used as input and not enabled or not visible widgets
@@ -189,6 +228,12 @@ public class HandlerBasedPlanner extends Planner
 		}
 	}
 	
+	/**
+	 * Add Input Field Values for a Widget
+	 * 
+	 * @param widgetDescription Input Field Widget
+	 * @return
+	 */
 	protected Input getInputForWidget(WidgetDescription widgetDescription)
 	{
 		if (isInputWidget(widgetDescription))

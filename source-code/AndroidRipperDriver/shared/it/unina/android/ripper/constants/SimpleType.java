@@ -1,5 +1,11 @@
 package it.unina.android.ripper.constants;
 
+/**
+ * String Constants representing Widget Types (class)
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class SimpleType {
 
 	public final static String BUTTON = "button";
@@ -11,7 +17,7 @@ public class SimpleType {
 	public final static String TOGGLE_BUTTON = "toggle";
 	public final static String TAB_HOST = "tabHost";
 	public final static String NULL = "null";
-	public final static String LIST_VIEW = "listView";//
+	public final static String LIST_VIEW = "listView";
 	public final static String SPINNER = "spinner";
 	public final static String TEXT_VIEW = "text";
 	public final static String MENU_VIEW = "menu";
@@ -27,9 +33,9 @@ public class SimpleType {
 	public final static String SPINNER_INPUT = "spinnerInput";
 	public final static String MENU_ITEM = "menuItem";
 	public final static String EMPTY_LIST = "emptyList";
-	public final static String SINGLE_CHOICE_LIST = "singleChoiceList";//
+	public final static String SINGLE_CHOICE_LIST = "singleChoiceList";
 	public final static String MULTI_CHOICE_LIST = "multiChoiceList";
-	public final static String PREFERENCE_LIST = "preferenceList";//
+	public final static String PREFERENCE_LIST = "preferenceList";
 	public final static String EMPTY_SPINNER = "emptySpinner";
 	public final static String RELATIVE_LAYOUT = "relativeLayout";
 	public final static String FOCUSABLE_EDIT_TEXT = "focusableEditText";

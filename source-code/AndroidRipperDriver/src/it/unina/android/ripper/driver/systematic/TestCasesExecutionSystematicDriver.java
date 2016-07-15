@@ -25,40 +25,53 @@ import it.unina.android.ripper.planner.Planner;
 import it.unina.android.ripper.scheduler.Scheduler;
 import it.unina.android.ripper.termination.TerminationCriterion;
 
+/**
+ * Hybrid (Manual + ActiveLearning) Driver
+ * 
+ * TODO: translate comments
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 
 	/**
-	 * total number of test cases set in the bootstrap() method
+	 * Total number of test cases set in the bootstrap() method
 	 */
 	int totalNumberOfTestCases = 0; // num_tot_testcase
 
 	/**
-	 * current test cases
+	 * Current test cases
 	 */
 	int currentTestCaseIndex = 0; // num_tc_corrente
 
 	/**
-	 * set to false if currentTestCaseIndex < totalNumberOfTestCases to allow
+	 * Set to false if currentTestCaseIndex < totalNumberOfTestCases to allow
 	 * the execution of the first step of the process
 	 */
 	boolean testCasesAlreadyExecuted = true; // tc_finiti
 
 	/**
-	 * is the first execution
+	 * Is the first execution?
 	 */
 	boolean beforeTestCasesProcess = true; // esecuzione1
 
 	/**
-	 * set to true if a new state has been found during the execution of the
+	 * Set to true if a new state has been found during the execution of the
 	 * test case
 	 */
 	boolean newStateFoundFromTestExecution = false; // cond_nuovo
 
-	public TestCasesExecutionSystematicDriver() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	/**
+	 * Constructor
+	 * 
+	 * @param scheduler
+	 * @param planner
+	 * @param ripperInput
+	 * @param comparator
+	 * @param terminationCriterion
+	 * @param ripperOutput
+	 */
 	public TestCasesExecutionSystematicDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput,
 			IComparator comparator, TerminationCriterion terminationCriterion, RipperOutput ripperOutput) {
 		super(scheduler, planner, ripperInput, comparator, terminationCriterion, ripperOutput);
@@ -181,17 +194,9 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 		} while (true);
 	}
 
-//	@Override
-//	public void startRipping() {
-//		this.running = true;
-//		notifyRipperLog("Start Ripping Loop...");
-//		this.testCaseExecutionLoop();
-//	}
-//
-//	public void testCaseExecutionLoop() {
-//
-//	}
-
+	/**
+	 * Main Ripping Loop - (Manual + Active Learning) Implementation
+	 */
 	@Override
 	public void rippingLoop() {
 		// reset counters
@@ -417,10 +422,10 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 
 	}
 
-	/*
-	 * Precondition: rsSocket must be connected
+	/**
+	 * Bootstrap Active Learning Ripping Process. Retrieves the first ActivityDescription.
 	 * 
-	 * returns true if ping ok, false if not
+	 * Precondition: rsSocket should be connected
 	 */
 	protected void bootstrap() {
 
@@ -478,12 +483,12 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 					// test case
 					ActivityDescription activityUtente = getCurrentDescriptionAsActivityDescription_Utente(
 							currentTestCaseIndex);
-					
+
 					if (PULL_COVERAGE) {
 						notifyRipperLog("pull coverage after test case...");
 						pullCoverage(0, currentTestCaseIndex);
 					}
-					
+
 					// notifyRipperLog("ActivityUtente ricevuta prima di
 					// comparazione: "+activityUtente.toString());
 
@@ -601,10 +606,16 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 
 	}
 
-	protected boolean startup(boolean esecuzione1) {
+	/**
+	 * StartUp of the Ripping Process
+	 * 
+	 * @param firstExecution is the first execution?
+	 * @return
+	 */
+	protected boolean startup(boolean firstExecution) {
 		// parametro 'esecuzione1' per differenziare i logcat delle 2 differenti
 		// esecuzioni
-		this.beforeTestCasesProcess = esecuzione1;
+		this.beforeTestCasesProcess = firstExecution;
 		int pingFailures = 0;
 
 		long startup_t1 = System.currentTimeMillis();
@@ -622,7 +633,7 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 
 		String file_logcat = LOGCAT_PATH + "logcat_" + EMULATOR_PORT + "_" + (LOGCAT_FILE_NUMBER) + ".txt";
 
-		if (esecuzione1 == true && !(new File(file_logcat).exists())) { // se
+		if (firstExecution == true && !(new File(file_logcat).exists())) { // se
 																		// esecuzione
 																		// 1 e
 																		// non
@@ -704,9 +715,10 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 		return false;
 	}
 
-	/*
-	 * Il nome del log file e' caratterizzato dal numero di test case corrente e
-	 * da un indice.
+	/**
+	 * Number of the current test case
+	 * 
+	 * NOTE: Il nome del log file e' caratterizzato dal numero di test case corrente e da un indice.
 	 */
 	int num_tc_old = 0;
 
@@ -734,7 +746,11 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 		num_tc_old = num_tc_corrente;
 	}
 
-	// chiude LogFile corrente
+	/**
+	 * Close current XML log file
+	 * 
+	 * @param num_tc_corrente
+	 */
 	public void endLogFile(int num_tc_corrente) {
 		if (currentLogFile == null && currentLogFile.equals("") == false)
 			return;
@@ -750,6 +766,13 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 
 	}
 
+	/**
+	 * Handle pull operation of the coverage.ec file from the emulator
+	 * 
+	 * @param count Coverage file number 
+	 * @param testCaseIndex Test Case Index
+	 * @throws SocketException
+	 */
 	public void pullCoverage(int count, int testCaseIndex) throws SocketException {
 		notifyRipperLog("pull coverage...");
 
@@ -775,25 +798,51 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 		if (message != null && message.isTypeOf(MessageType.ACK_MESSAGE)) {
 			Actions.pullCoverageForUserTestCase(AUT_PACKAGE, cov_file_name, COVERAGE_PATH, count, testCaseIndex);
 		}
-	}	
-	
-	protected void pullCoverageFile(String src, int count,int testCaseIndex) {
+	}
+
+	/**
+	 * Handle pull operation of the coverage.ec file from the emulator
+	 * 
+	 * @param src source coverage file name
+	 * @param count Coverage file number 
+	 * @param testCaseIndex Test Case Index
+	 */
+	protected void pullCoverageFile(String src, int count, int testCaseIndex) {
 		notifyRipperLog("coverage");
 		Actions.pullCoverageForUserTestCase(AUT_PACKAGE, src, COVERAGE_PATH, count, testCaseIndex);
 	}
 
+	/**
+	 * Pull from the emulator the jUnit log for a Test Case
+	 * 
+	 * @param count Coverage file number 
+	 * @param testCaseIndex Test Case Index
+	 */
 	public void pullJUnitLog(int count, int testCaseIndex) {
 		notifyRipperLog("junit log");
 		Actions.pullJUnitLogForUserTestCase(AUT_PACKAGE, COVERAGE_PATH, count, testCaseIndex);
 	}
 
-	public void pullCoverageAfterEnd(int count, int indice_testcase) {
+	/**
+	 * Handle pull operation of the coverage.ec file from the emulator
+	 * 
+	 * @param count Coverage file number 
+	 * @param testCaseIndex Test Case Index
+	 */
+	public void pullCoverageAfterEnd(int count, int testCaseIndex) {
 		notifyRipperLog("pull coverage after end...");
-		Actions.pullCoverageStandardFileForUserTestCase(AUT_PACKAGE, COVERAGE_PATH, count, indice_testcase);
+		Actions.pullCoverageStandardFileForUserTestCase(AUT_PACKAGE, COVERAGE_PATH, count, testCaseIndex);
 	}
 
-	// richiede activity description relativo all'esecuzione del test case
-	// utente
+	/**
+	 * runUserTestCase() and return current ActivityDescription (XML)
+	 * 
+	 * NOTE: richiede activity description relativo all'esecuzione del test case utente
+	 * 
+	 * @param i index of the test case
+	 * @return current ActivityDescription (XML)
+	 * @throws IOException
+	 */
 	public String getCurrentDescription_Utente(int i) throws IOException {
 		// describe
 		notifyRipperLog("Metodo Utente richiede describe...");
@@ -807,9 +856,20 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 		return xml;
 	}
 
-	// richiama metodo getCurrentDescription_Utente(i) e setta uid
+	/**
+	 * Unique ID of an Activity obtained from the execution of a test case
+	 *
+	 * NOTE: richiama metodo getCurrentDescription_Utente(i) e setta uid
+	 */
 	int activityUIDutente = 0;
 
+	/**
+	 * runUserTestCase() and return current ActivityDescription
+	 * 
+	 * @param i index of the test case
+	 * @return current ActivityDescription
+	 * @throws IOException
+	 */
 	public ActivityDescription getCurrentDescriptionAsActivityDescription_Utente(int i) throws IOException {
 		this.lastActivityDescription = null;
 
@@ -821,5 +881,5 @@ public class TestCasesExecutionSystematicDriver extends SystematicDriver {
 		}
 		return this.lastActivityDescription;
 	}
-	
+
 }

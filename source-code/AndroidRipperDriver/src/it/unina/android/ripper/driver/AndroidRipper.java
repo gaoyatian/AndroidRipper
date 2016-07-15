@@ -2,8 +2,22 @@ package it.unina.android.ripper.driver;
 
 import java.io.File;
 
+/**
+ * Contains the Entry Point of AndroidRipperDriver
+ * 
+ * @author Nicola Amatucci - REvERSE
+ * 
+ */
 public class AndroidRipper {
 
+	/**
+	 * Entry Point
+	 * 
+	 * args[0] exploration strategy
+	 * args[1] configuration properties file
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		boolean noProblem = false;
@@ -28,6 +42,12 @@ public class AndroidRipper {
 		}
 	}
 	
+	/**
+	 * Verify if the configuration file exists
+	 * 
+	 * @param fileName Configuration file name
+	 * @return
+	 */
 	public static boolean checkConfigurationFile(String fileName) {
 		if (new File(fileName).exists()) {
 			return true;
@@ -36,6 +56,9 @@ public class AndroidRipper {
 		}
 	}
 
+	/**
+	 * Print usage instructions
+	 */
 	public static void printUsageInstructions() {
 		System.out.println();
 		System.out.println("Usage: java -jar AndroidRipper.jar [s|r|tc] config.properties");

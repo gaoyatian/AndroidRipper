@@ -1,36 +1,27 @@
 package it.unina.android.ripper_service.net.packer;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import org.json.JSONObject;
 
+/**
+ * Message Packer/UnPacker class
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class MessagePacker {
 
+	/**
+	 * Pack Map into a byte array
+	 * 
+	 * @param map Map to pack
+	 * @return packed Map
+	 */
 	public static byte[] pack(Map map) {
 		if (map != null) {
-			/*
-			if (map.containsKey("xml")) {
-				String xml = (String) map.get("xml");
-
-				try {
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					GZIPOutputStream gzip = new GZIPOutputStream(out);
-					gzip.write(xml.getBytes());
-					gzip.close();
-					String xmlGzip = out.toString("ISO-8859-1");
-					map.put("xml", xmlGzip);
-				} catch (Throwable t) {
-				}
-			}
-			*/
 			try {
 				JSONObject jsonObject = new JSONObject();
 
@@ -50,6 +41,12 @@ public class MessagePacker {
 		return null;
 	}
 
+	/**
+	 * UnPack Map from byte array
+	 * 
+	 * @param b byte array
+	 * @return UnPacked Map
+	 */
 	public static Map unpack(byte[] b) {
 		if (b != null) {
 			String s = new String(b);
@@ -64,34 +61,6 @@ public class MessagePacker {
 					map.put(key, jsonObject.get(key));				
 				}
 				
-				/*
-				if (map.containsKey("xml")) {
-					String dataXml = (String)map.get("xml");
-					
-					if (dataXml != null)
-					{
-						byte[] data = dataXml.getBytes("ISO-8859-1");
-						
-						ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-						ByteArrayInputStream in = new ByteArrayInputStream(data);
-						try {
-							InputStream inflater = new GZIPInputStream(in);
-							byte[] bbuf = new byte[256];
-							while (true) {
-								int r = inflater.read(bbuf);
-								if (r < 0) {
-									break;
-								}
-								buffer.write(bbuf, 0, r);
-							}
-						} catch (IOException e) {
-							throw new IllegalStateException(e);
-						}
-						String o = new String(buffer.toByteArray(), "ISO-8859-1");
-						map.put("xml", o);
-					}
-				}
-				*/
 				return map;
 
 			} catch (Throwable t) {

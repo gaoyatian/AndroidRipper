@@ -16,10 +16,25 @@ import it.unina.android.ripper.planner.widget_inputs.values_generator.RandomNume
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Planner based on a static configuration. The configuration defines the set of considered
+ * interactive widgets and the relative subset of events that can be fired.
+ * 
+ * This planner does not take into account listeners defined in the WidgetDescription.
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class ConfigurationBasedPlanner extends HandlerBasedPlanner
 {	
+	/**
+	 * Planner Configuration
+	 */
 	HashMap<String, WidgetEventPlanner.WidgetEventPlannerConfiguration> eventConfiguration;
 	
+	/**
+	 * Widget Taken into account by the Planner
+	 */
 	public static String[] configuredEventWidgetList = {
 			SimpleType.BUTTON
 			,SimpleType.MENU_ITEM
@@ -41,6 +56,12 @@ public class ConfigurationBasedPlanner extends HandlerBasedPlanner
 			,SimpleType.RATING_BAR
 		};
 	
+	/**
+	 * Check if the Widget is handled by the planner
+	 * 
+	 * @param widget Widget
+	 * @return
+	 */
 	protected boolean isEventWidgetConfiguredForInteraction(WidgetDescription widget)
 	{
 		for (String s : configuredEventWidgetList)
@@ -50,6 +71,9 @@ public class ConfigurationBasedPlanner extends HandlerBasedPlanner
 		return false;
 	}
 	
+	/**
+	 * Constructor. Defines the subset of events for each one of the considered widgets.
+	 */
 	public ConfigurationBasedPlanner() {
 		super();
 		
@@ -79,6 +103,9 @@ public class ConfigurationBasedPlanner extends HandlerBasedPlanner
 		this.eventConfiguration.put(SimpleType.RATING_BAR, new WidgetEventPlanner.WidgetEventPlannerConfiguration(true, false, false));
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.planner.HandlerBasedPlanner#planForWidget(it.unina.android.ripper.model.Task, it.unina.android.ripper.model.WidgetDescription, java.util.ArrayList, java.lang.String[])
+	 */
 	@Override
 	protected TaskList planForWidget(Task currentTask, WidgetDescription widgetDescription, ArrayList<Input> inputs, String... options)
 	{
