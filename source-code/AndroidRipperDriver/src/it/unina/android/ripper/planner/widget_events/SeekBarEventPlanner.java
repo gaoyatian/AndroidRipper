@@ -9,15 +9,33 @@ import it.unina.android.ripper.planner.widget_inputs.values_generator.ValuesGene
 
 import java.util.ArrayList;
 
+/**
+ * Planner for SEEK_BAR Widget
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class SeekBarEventPlanner extends WidgetEventPlanner {
 	
+	/**
+	 * Values Generator
+	 */
 	ValuesGenerator mValuesGenerator;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param widgetDescription Widget
+	 * @param valuesGenerator Values Generator
+	 */
 	public SeekBarEventPlanner(WidgetDescription widgetDescription, ValuesGenerator valuesGenerator) {
 		super(widgetDescription);
 		this.mValuesGenerator = valuesGenerator; 
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.planner.widget_events.WidgetEventPlanner#tap(it.unina.android.ripper.model.Task, java.util.ArrayList, java.lang.String[])
+	 */
 	@Override
 	protected TaskList tap(Task currentTask, ArrayList<Input> inputs, String... options)
 	{

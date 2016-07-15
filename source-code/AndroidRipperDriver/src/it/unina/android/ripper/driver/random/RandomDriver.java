@@ -25,59 +25,104 @@ import it.unina.android.ripper.termination.MaxEventsTerminationCriterion;
 import it.unina.android.ripper.termination.TerminationCriterion;
 
 /**
+ * RandomDriver
+ * 
  * TODO:
- * - extracted_events invece di tasklist
- * - selected_event intorno ad event
- * - entrambi in activity
+ * - extracted_events instead of tasklist
+ * - selected_event instead of event
+ * - both in activity
  * 
  * @author Testing
  *
  */
 
-public class RandomDriver extends AbstractDriver
-{
+public class RandomDriver extends AbstractDriver {
+	/**
+	 * Number of random events to trigger
+	 */
 	public int NUM_EVENTS = 1000;
-	public int NUM_EVENTS_PER_SESSION = 0; //0 = until NUM_EVENTS
-	public int COVERAGE_FREQUENCY = 100; //frequency = 0 no coverage 
+
+	/**
+	 * Number of events for each session
+	 * 
+	 * 0 = until NUM_EVENTS
+	 */
+	public int NUM_EVENTS_PER_SESSION = 0;
+
+	/**
+	 * Number of events between each coverage.ec retrieval
+	 * 
+	 * 0 = no coverage
+	 */
+	public int COVERAGE_FREQUENCY = 100;
+
+	/**
+	 * Random Seed
+	 */
 	public long RANDOM_SEED = System.currentTimeMillis();
-	public int NEW_LOG_FREQUENCY = 0; //0 = until end of the session
-	
-	public RandomDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, RipperOutput ripperOutput, TerminationCriterion terminationCriterion)
-	{
+
+	/**
+	 * Number of events between each xml log creation
+	 * 
+	 * 0 = until end of the session
+	 */
+	public int NEW_LOG_FREQUENCY = 0;
+
+	/**
+	 * 
+	 * @param scheduler
+	 * @param planner
+	 * @param ripperInput
+	 * @param ripperOutput
+	 * @param terminationCriterion
+	 */
+	public RandomDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, RipperOutput ripperOutput,
+			TerminationCriterion terminationCriterion) {
 		super();
-		
+
 		this.scheduler = scheduler;
-		this.planner = planner;		
+		this.planner = planner;
 		this.ripperInput = ripperInput;
 		this.ripperOutput = ripperOutput;
-		
+
 		this.addTerminationCriterion(terminationCriterion);
-		
-		//TODO: move
-		//Planner.CAN_GO_BACK_ON_HOME_ACTIVITY = false;
-		
-		//TODO: generare dir coverage
+
+		// TODO: move
+		// Planner.CAN_GO_BACK_ON_HOME_ACTIVITY = false;
+
+		// TODO: create coverage dir
 	}
-	
-	public RandomDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, RipperOutput ripperOutput, ArrayList<TerminationCriterion> terminationCriteria)
-	{
+
+	/**
+	 * 
+	 * @param scheduler
+	 * @param planner
+	 * @param ripperInput
+	 * @param ripperOutput
+	 * @param terminationCriteria
+	 */
+	public RandomDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, RipperOutput ripperOutput,
+			ArrayList<TerminationCriterion> terminationCriteria) {
 		super();
-		
+
 		this.scheduler = scheduler;
-		this.planner = planner;		
+		this.planner = planner;
 		this.ripperInput = ripperInput;
 		this.ripperOutput = ripperOutput;
-		
+
 		for (TerminationCriterion tc : terminationCriteria) {
 			this.addTerminationCriterion(tc);
 		}
-		
-		//TODO: generare dir coverage
+
+		// TODO: create coverage dir
 	}
-	
-	public void rippingLoop()
-	{
-		// reset counters
+
+	/**
+	 * Main Ripping Loop - Random Implementation
+	 */
+	@Override
+	public void rippingLoop() {
+		//reset counters
 		nEvents = 0;
 		nTasks = 0;
 		nFails = 0;
@@ -91,14 +136,15 @@ public class RandomDriver extends AbstractDriver
 
 		do {
 			nRestart++;
-			
+
+			//startup process
 			long startup_time_t1 = System.currentTimeMillis();
 			boolean started = this.startup();
 			startup_time += System.currentTimeMillis() - startup_time_t1;
 
 			if (running && started) {
-				createLogFileAtCurrentTimeMillis();		
-				
+				createLogFileAtCurrentTimeMillis();
+
 				if (bootstrap == false) {
 					if (PULL_COVERAGE_ZERO) {
 						try {
@@ -107,104 +153,96 @@ public class RandomDriver extends AbstractDriver
 							ex.printStackTrace();
 						}
 					}
-										
+
 					bootstrap = true;
 				}
-				
+
 				try {
-					
+
 					do {
 						notifyRipperLog("Alive...");
 						if (rsSocket.isAlive() == false) {
 							notifyRipperLog("... NOT Alive!");
 							break;
 						}
-						
+
 						// describe
 						ActivityDescription activity = getCurrentDescriptionAsActivityDescription();
 						if (activity != null) {
-							
+
 							this.appendLineToLogFile(this.ripperOutput.outputActivityDescription(activity));
-														
+
+							// plan
 							TaskList plannedTasks = plan(null, activity);
 							scheduler.addTasks(plannedTasks);
-							
-							//schedule
+
+							// schedule
 							Task t = scheduler.nextTask();
 
-							if (t == null)
-							{
+							if (t == null) {
 								notifyRipperLog("No scheduled task!");
-								
+
 								appendLineToLogFile("\n<error type=\"nothing_scheduled\" />\n");
-								continue; //nothing to do
+								continue; // nothing to do
 							}
-							
+
+							//execute
 							Message msg = this.executeTask(t);
-							
+
+							//handle execution result
 							if (msg == null || running == false) {
 								// do nothing
 								notifyRipperLog("msg == null || running == false");
 							} else {
-								
+
 								if (msg != null && msg.isTypeOf(MessageType.ACK_MESSAGE)) {
-									
+
 									nTasks++;
 									nEvents++;
-									
+
 								} else if ((msg != null && msg.isTypeOf(MessageType.FAIL_MESSAGE))) {
-									
+
 									nFails++;
 									this.appendLineToLogFile("\n<failure type=\"fail_message\" />\n");
-									
-								}  else {
-									
+
+								} else {
+
 									notifyRipperLog("executeTask(): something went wrong?!?");
 									this.appendLineToLogFile("\n<error type='executeTask' />\n");
-									
+
 								}
 
-								//TODO
+								// TODO
 								if (SCREENSHOT) {
-									
+
 								}
 
-								if (
-										PULL_COVERAGE &&
-										COVERAGE_FREQUENCY != 0 &&
-										(nEvents - 1) >= COVERAGE_FREQUENCY &&
-										((nEvents-1) % COVERAGE_FREQUENCY == 0)
-								)
-								{
+								if (PULL_COVERAGE && COVERAGE_FREQUENCY != 0 && (nEvents - 1) >= COVERAGE_FREQUENCY
+										&& ((nEvents - 1) % COVERAGE_FREQUENCY == 0)) {
 									notifyRipperLog("pull coverage...");
 									pullCoverage(nEvents - 1);
 								}
-								
+
 							}
-							
-							
-							
+
 						}
-						
+
 						if (NUM_EVENTS_PER_SESSION > 0 && (nEvents % NUM_EVENTS_PER_SESSION == 0)) {
 							notifyRipperLog("session limit reached : " + nEvents + "|" + NUM_EVENTS_PER_SESSION);
 							break;
 						}
-						
+
 						if (NEW_LOG_FREQUENCY > 0 && (nEvents % NEW_LOG_FREQUENCY == 0)) {
 							endLogFile();
 							createLogFileAtCurrentTimeMillis();
 						}
-						
-					} while (
-							running &&
-							this.checkTerminationCriteria() == false
-					);
-					
+
+					} while (running && this.checkTerminationCriteria() == false);
+
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				
+
 				endLogFile();
 			}
 
@@ -242,18 +280,15 @@ public class RandomDriver extends AbstractDriver
 			this.shutdown();
 
 			this.ifIsPausedDoPause();
-			
-		} while (
-				running &&
-				this.checkTerminationCriteria() == false
-		);
-		
+
+		} while (running && this.checkTerminationCriteria() == false);
+
 		long executionTime = System.currentTimeMillis() - t1;
 
 		this.notifyRipperLog("Execution Time: " + executionTime);
 
 		String reportXML = "<?xml version=\"1.0\"?><report>\n";
-		reportXML += "<seed>"+RANDOM_SEED+"</seed>\n";
+		reportXML += "<seed>" + RANDOM_SEED + "</seed>\n";
 		reportXML += "<events>" + nEvents + "</events>\n";
 		reportXML += "<execution_time>" + executionTime + "</execution_time>\n";
 		reportXML += "<restart>" + nRestart + "</restart>\n";
@@ -261,13 +296,13 @@ public class RandomDriver extends AbstractDriver
 		reportXML += "<tasks>" + nTasks + "</tasks>\n";
 		reportXML += "<startup_time>" + startup_time + "</startup_time>\n";
 		reportXML += "</report>";
-	
+
 		writeReportFile(reportXML);
-		
+
 		this.notifyRipperEnded();
-	
+
 	}
-	
+
 	/**
 	 * Returns the Message related to the execution of the last event of the
 	 * task or null if an ack message is not received
@@ -278,9 +313,9 @@ public class RandomDriver extends AbstractDriver
 	 */
 	protected Message executeTask(Task t) {
 		Message msg = null;
-		
+
 		if (t != null && t.size() > 0) {
-			
+
 			Event evt = t.get(0);
 			try {
 				this.appendLineToLogFile(this.ripperOutput.outputFiredEvent(evt));
@@ -294,11 +329,11 @@ public class RandomDriver extends AbstractDriver
 				notifyRipperLog("executeTask(): NullMessageReceivedException"); // failure
 				this.appendLineToLogFile("\n<error type='NullMessageReceivedException' />\n");
 			}
-			
+
 			Actions.sleepMilliSeconds(SLEEP_AFTER_EVENT);
-			
+
 		}
-		
+
 		return msg;
 	}
 }

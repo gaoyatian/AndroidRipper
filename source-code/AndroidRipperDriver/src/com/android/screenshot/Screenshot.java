@@ -16,20 +16,14 @@
 
 package com.android.screenshot;
 
-import com.android.ddmlib.AdbCommandRejectedException;
+import java.io.IOException;
+
 import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.Log;
-import com.android.ddmlib.RawImage;
 import com.android.ddmlib.Log.ILogOutput;
 import com.android.ddmlib.Log.LogLevel;
-import com.android.ddmlib.TimeoutException;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import com.android.ddmlib.RawImage;
 
 /**
  * Connects to a device using ddmlib and dumps its event log as long as the device is connected.

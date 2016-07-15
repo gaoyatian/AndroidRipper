@@ -2,7 +2,12 @@ package it.unina.android.ripper.model;
 
 import java.io.Serializable;
 
-
+/**
+ * Input
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class Input implements Serializable {
 	private WidgetDescription widget;
 	private String value;

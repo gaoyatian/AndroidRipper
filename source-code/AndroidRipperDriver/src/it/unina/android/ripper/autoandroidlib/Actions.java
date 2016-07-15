@@ -9,16 +9,45 @@ import java.text.DecimalFormat;
 
 import com.googlecode.autoandroid.lib.AndroidTools;
 
+/**
+ * Interaction with the emulator (AVD) and the Host PC
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class Actions {
 
+	/**
+	 * Time (in seconds) to wait AndroidRipperService to be started
+	 */
 	public static int ANDROID_RIPPER_SERVICE_WAIT_SECONDS = 3;
+	
+	/**
+	 * Time (in seconds) to wait AndroidRipperTestCase to be started
+	 */
 	public static int ANDROID_RIPPER_WAIT_SECONDS = 3;
+	
+	/**
+	 * Time (in seconds) to wait Android Emulator to be started
+	 */
 	public static int START_EMULATOR_NO_SNAPSHOOT_WAIT_SECONDS = 0;
+	
+	/**
+	 * Time (in seconds) to wait Android Emulator to be started
+	 */
 	public static int START_EMULATOR_SNAPSHOOT_WAIT_SECONDS = 0;
 	
+	/**
+	 * AutoAndroidLib instance
+	 */
 	public static AndroidTools tools = AndroidTools.get();
 
-	//anche tramite adb
+	/**
+	 * Send a message to a specific emulator on localhost
+	 * 
+	 * @param port Emulator Port
+	 * @param message Message
+	 */
 	public static void sendMessageToEmualtor(int port, String message)
 	{
 		try {
@@ -37,6 +66,34 @@ public class Actions {
 		}
 	}
 
+	/**
+	 * Send a message to a specific emulator on a remote host
+	 * 
+	 * @param port Emulator Port
+	 * @param host Remote Host
+	 * @param message Message
+	 */
+	public static void sendMessageToRemoteEmualtor(int port, String host, String message)
+	{
+		try {
+			Socket socket = new Socket(host,port);
+			
+			sleepSeconds(1);
+			
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			out.println(message);
+			out.flush();
+			out.close();
+			socket.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Send Back Key to main emulator
+	 */
 	public static void sendBackKey()
 	{
 		try {
@@ -47,18 +104,21 @@ public class Actions {
 		}		
 	}
 
-	public static void killAll()
-	{
-		/*
-		try {
-			tools.adb("shell", "am kill-all");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/		
-	}
+//	public static void killAll()
+//	{
+//		/*
+//		try {
+//			tools.adb("shell", "am kill-all");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		*/		
+//	}
 	
+	/**
+	 * Send Home Key to main emulator
+	 */
 	public static void sendHomeKey()
 	{
 		try {
@@ -69,6 +129,9 @@ public class Actions {
 		}
 	}
 
+	/**
+	 * Start AndroidRipperService on main emulator
+	 */
 	public static void startAndroidRipperService()
 	{
 		try {
@@ -81,11 +144,21 @@ public class Actions {
 		sleepSeconds(ANDROID_RIPPER_SERVICE_WAIT_SECONDS);
 	}
 	
+	/**
+	 * Sleep
+	 * 
+	 * @param seconds seconds to sleep
+	 */
 	public static void sleepSeconds(int seconds)
 	{
 		sleepMilliSeconds(seconds * 1000);
 	}
 	
+	/**
+	 * Sleep
+	 * 
+	 * @param milli milliseconds to sleep
+	 */
 	public static void sleepMilliSeconds(int milli)
 	{
 		try {
@@ -96,18 +169,35 @@ public class Actions {
 		}
 	}
 
+	/**
+	 * Ripper Active status
+	 */
 	public static boolean ripperActive = false;
 	
+	/**
+	 * Ripper Active status
+	 * 
+	 * @return status
+	 */
 	public static boolean isRipperActive()
 	{
 		return ripperActive;
 	}
 	
+	/**
+	 * Set Ripper Active Status
+	 * @param b status
+	 */
 	public static void setRipperActive(boolean b)
 	{
 		ripperActive = b;
 	}
 	
+	/**
+	 * Start Android Ripper for an AUT on the main emulator
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 */
 	public static void startAndroidRipper(String AUT_PACKAGE)
 	{
 		createAUTFilesDir(AUT_PACKAGE);
@@ -132,6 +222,11 @@ public class Actions {
 		sleepSeconds(ANDROID_RIPPER_WAIT_SECONDS);
 	}
 	
+	/**
+	 * Create dirs used by AndroidRipperTestCase in the AUT data storage
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 */
 	public static void createAUTFilesDir(String AUT_PACKAGE)
 	{
 		try {
@@ -145,6 +240,12 @@ public class Actions {
 		//sleepSeconds(3);
 	}
 	
+	/**
+	 * Start an emulator without loading the snapshot
+	 * 
+	 * @param AVD_NAME Name of the emulator
+	 * @param EMULATOR_PORT Port of the emulator
+	 */
 	public static void startEmulatorNoSnapshotLoad(final String AVD_NAME, final int EMULATOR_PORT)
 	{
 			(new Thread() {
@@ -163,6 +264,12 @@ public class Actions {
 			sleepSeconds(START_EMULATOR_NO_SNAPSHOOT_WAIT_SECONDS);
 	}
 	
+	/**
+	 * Start an emulator without loading the snapshot and wipes the user partition
+	 * 
+	 * @param AVD_NAME Name of the emulator
+	 * @param EMULATOR_PORT Port of the emulator
+	 */
 	public static void startEmulatorNoSnapshotLoadWipeData(final String AVD_NAME, final int EMULATOR_PORT)
 	{
 			(new Thread() {
@@ -181,6 +288,12 @@ public class Actions {
 			sleepSeconds(START_EMULATOR_NO_SNAPSHOOT_WAIT_SECONDS);
 	}
 	
+	/**
+	 * Start an emulator without saving the snapshot
+	 * 
+	 * @param AVD_NAME Name of the emulator
+	 * @param EMULATOR_PORT Port of the emulator
+	 */
 	public static void startEmulatorNoSnapshotSave(final String AVD_NAME, final int EMULATOR_PORT)
 	{
 		try {
@@ -194,17 +307,40 @@ public class Actions {
 		}
 	}
 	
-	//adb pull %/data/data/%APPPACKAGE%/files% %FILESPATH%
+	/**
+	 * Pull coverage
+	 * 		adb pull %/data/data/%APPPACKAGE%/files% %FILESPATH%
+	 *  
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param COV_PATH Path on Host PC for coverage files
+	 * @param COV_COUNTER Current Coverage file number
+	 */
 	public static void pullCoverage(final String AUT_PACKAGE, final String COV_PATH, final int COV_COUNTER)
 	{
 		pullCoverage(AUT_PACKAGE, "coverage.ec", COV_PATH, COV_COUNTER);
 	}
 	
+	/**
+	 * Pull coverage
+	 * 
+	 * @param EMULATOR_PORT Port of the emulator
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param COV_PATH Path on Host PC for coverage files
+	 * @param COV_COUNTER Current Coverage file number
+	 */
 	public static void pullCoverage(final int EMULATOR_PORT, final String AUT_PACKAGE, final String COV_PATH, final int COV_COUNTER)
 	{
 		pullCoverage(EMULATOR_PORT, AUT_PACKAGE, "coverage.ec", COV_PATH, COV_COUNTER);
 	}
 	
+	/**
+	 * Pull coverage
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param COV_FILE File name of the coverage file
+	 * @param COV_PATH Path on Host PC for coverage files
+	 * @param COV_COUNTER Current Coverage file number
+	 */
 	public static void pullCoverage(final String AUT_PACKAGE, final String COV_FILE, final String COV_PATH, final int COV_COUNTER)
 	{
 		DecimalFormat num = new DecimalFormat("00000");
@@ -220,6 +356,15 @@ public class Actions {
 		}				
 	}
 	
+	/**
+	 * Pull coverage
+	 * 
+	 * @param EMULATOR_PORT Port of the emulator
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param COV_FILE File name of the coverage file
+	 * @param COV_PATH Path on Host PC for coverage files
+	 * @param COV_COUNTER Current Coverage file number
+	 */
 	public static void pullCoverage(final int EMULATOR_PORT, final String AUT_PACKAGE, final String COV_FILE, final String COV_PATH, final int COV_COUNTER)
 	{
 		DecimalFormat num = new DecimalFormat("00000");
@@ -235,6 +380,13 @@ public class Actions {
 		}
 	}
 	
+	/**
+	 * Pull coverage to a file with the filename in a standard format
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param COV_PATH Path on Host PC for coverage files
+	 * @param COV_COUNTER Current Coverage file number
+	 */
 	public static void pullCoverageStandardFile(final String AUT_PACKAGE, final String COV_PATH, final int COV_COUNTER)
 	{
 			//Actions.sleepSeconds(3);
@@ -253,6 +405,14 @@ public class Actions {
 			//Actions.sleepSeconds(3);
 	}
 	
+	/**
+	 * Pull coverage to a file with the filename in a standard format
+	 * 
+	 * @param EMULATOR_PORT Port of the emulator
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param COV_PATH Path on Host PC for coverage files
+	 * @param COV_COUNTER Current Coverage file number
+	 */
 	public static void pullCoverageStandardFile(final int EMULATOR_PORT, final String AUT_PACKAGE, final String COV_PATH, final int COV_COUNTER)
 	{
 		//Actions.sleepSeconds(3);
@@ -271,6 +431,13 @@ public class Actions {
 		//Actions.sleepSeconds(3);
 	}
 	
+	/**
+	 * Pull jUnit Log generated by Polidea Instrumentation
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param DEST_PATH Path on Host PC for log files
+	 * @param COV_COUNTER Current Coverage file number
+	 */
 	public static void pullJUnitLog(final String AUT_PACKAGE, final String DEST_PATH, final int COV_COUNTER)
 	{
 		DecimalFormat num = new DecimalFormat("00000");
@@ -286,6 +453,14 @@ public class Actions {
 		}
 	}
 	
+	/**
+	 * Pull jUnit Log generated by Polidea Instrumentation
+	 * 
+	 * @param EMULATOR_PORT Port of the emulator
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param DEST_PATH Path on Host PC for log files
+	 * @param COV_COUNTER Current Coverage file number
+	 */
 	public static void pullJUnitLog(final int EMULATOR_PORT, final String AUT_PACKAGE, final String DEST_PATH, final int COV_COUNTER)
 	{
 		DecimalFormat num = new DecimalFormat("00000");
@@ -301,7 +476,12 @@ public class Actions {
 		}		
 	}
 	
-	public static void waitForEmulatorOnline(Integer avdPort) {
+	/**
+	 * Wait for an emulator to be online
+	 * 
+	 * @param EMULATOR_PORT Port of the emulator
+	 */
+	public static void waitForEmulatorOnline(Integer EMULATOR_PORT) {
 
 		boolean waitingEmulatorBoot = true;
 
@@ -315,7 +495,7 @@ public class Actions {
 					BufferedReader input = new BufferedReader(
 							new InputStreamReader(p.getInputStream()));
 					while ((line = input.readLine()) != null) {
-						if (line != null && line.contains(avdPort.toString())) {
+						if (line != null && line.contains(EMULATOR_PORT.toString())) {
 							if (line.contains("device")) {
 								waitingEmulatorBoot = false;
 							}
@@ -342,14 +522,19 @@ public class Actions {
 		
 	}
 	
-	public static void waitForEmulatorBoot(Integer avdPort) {
+	/**
+	 * Wait for an emulator to boot
+	 * 
+	 * @param EMULATOR_PORT Port of the emulator
+	 */
+	public static void waitForEmulatorBoot(Integer EMULATOR_PORT) {
 
 		boolean waitingEmulatorOnline = true;
 
 		do {
 
 			try {
-				final Process p = Runtime.getRuntime().exec("adb -s emulator-"+avdPort+" shell getprop init.svc.bootanim");
+				final Process p = Runtime.getRuntime().exec("adb -s emulator-"+EMULATOR_PORT+" shell getprop init.svc.bootanim");
 
 				try {
 					String line = "";
@@ -380,8 +565,14 @@ public class Actions {
 		} while (waitingEmulatorOnline);
 		
 	}
-	
-	public static void waitForProcessToEnd(String AUT_PACKAGE, Integer avdPort) {
+
+	/**
+	 * Wait for a process identified by its package to be ended on an emulator
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param EMULATOR_PORT Port of the emulator
+	 */
+	public static void waitForProcessToEnd(String AUT_PACKAGE, Integer EMULATOR_PORT) {
 
 		boolean found = false;
 
@@ -390,7 +581,7 @@ public class Actions {
 			found = false;
 			
 			try {
-				final Process p = Runtime.getRuntime().exec("adb -s emulator-"+avdPort+" shell ps " + AUT_PACKAGE);
+				final Process p = Runtime.getRuntime().exec("adb -s emulator-"+EMULATOR_PORT+" shell ps " + AUT_PACKAGE);
 
 				try {
 					String line = "";
@@ -424,11 +615,24 @@ public class Actions {
 		
 	}
 	
-	public static boolean killProcessByPackage(String AUT_PACKAGE, String avdPort) {
-		String pid = getProcessPID(AUT_PACKAGE, avdPort);
+	/**
+	 * Kill a process running on an emulator identified by the package of the AUT
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param EMULATOR_PORT Port of the emulator
+	 * @return
+	 */
+	public static boolean killProcessByPackage(String AUT_PACKAGE, String EMULATOR_PORT) {
+		String pid = getProcessPID(AUT_PACKAGE, EMULATOR_PORT);
 		return killProcess(pid);
 	}
 	
+	/**
+	 * Kill a process on the default emulator by using its PID
+	 * 
+	 * @param PID Process ID
+	 * @return
+	 */
 	public static boolean killProcess(String PID) {
 		if (PID != null) 
 		{
@@ -443,12 +647,19 @@ public class Actions {
 		return false;
 	}
 	
-	public static String getProcessPID(String AUT_PACKAGE, String avdPort) {
+	/**
+	 * Get the PID of an AUT identified by its package
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param EMULATOR_PORT Port of the emulator
+	 * @return Process ID
+	 */
+	public static String getProcessPID(String AUT_PACKAGE, String EMULATOR_PORT) {
 
 		String pid = null;
 		
 		try {
-			final Process p = Runtime.getRuntime().exec("adb -s emulator-"+avdPort+" shell ps " + AUT_PACKAGE);
+			final Process p = Runtime.getRuntime().exec("adb -s emulator-"+EMULATOR_PORT+" shell ps " + AUT_PACKAGE);
 
 			try {
 				String line = "";
@@ -482,14 +693,24 @@ public class Actions {
 		return pid;
 	}
 	
-	public static void waitForEmulator(Integer avdPort) {
-		waitForEmulatorOnline(avdPort);
+	/**
+	 * Wait for an emulator
+	 * 
+	 * @param EMULATOR_PORT Port of the emulator
+	 */
+	public static void waitForEmulator(Integer EMULATOR_PORT) {
+		waitForEmulatorOnline(EMULATOR_PORT);
 		System.out.println("Emulator Online!");
-		waitForEmulatorBoot(avdPort);
+		waitForEmulatorBoot(EMULATOR_PORT);
 		System.out.println("Emulator Booted!");
 	}
 
-	public static void waitEmulatorClosed(Integer avdPort) {
+	/**
+	 * Wait for an emulator to be closed
+	 * 
+	 * @param EMULATOR_PORT Port of the emulator
+	 */
+	public static void waitEmulatorClosed(Integer EMULATOR_PORT) {
 		boolean waitingEmulatorClose = false;
 
 		do {
@@ -504,7 +725,7 @@ public class Actions {
 					BufferedReader input = new BufferedReader(
 							new InputStreamReader(p.getInputStream()));
 					while ((line = input.readLine()) != null) {
-						if (line != null && line.contains(avdPort.toString())) {
+						if (line != null && line.contains(EMULATOR_PORT.toString())) {
 							if (line.contains("device")) {
 								waitingEmulatorClose = true;
 							}
@@ -533,7 +754,15 @@ public class Actions {
 		
 	}
 
-	public static boolean waitForProcessToEndMaxIterations(String AUT_PACKAGE, int avdPort, int maxIter) {
+	/**
+	 * Wait for a process to end
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param EMULATOR_PORT Port of the emulator
+	 * @param maxIter Max Retry
+	 * @return
+	 */
+	public static boolean waitForProcessToEndMaxIterations(String AUT_PACKAGE, int EMULATOR_PORT, int maxIter) {
 		boolean found = false;
 
 		int iter = 0;
@@ -543,7 +772,7 @@ public class Actions {
 			found = false;
 			
 			try {
-				final Process p = Runtime.getRuntime().exec("adb -s emulator-"+avdPort+" shell ps " + AUT_PACKAGE);
+				final Process p = Runtime.getRuntime().exec("adb -s emulator-"+EMULATOR_PORT+" shell ps " + AUT_PACKAGE);
 
 				try {
 					String line = "";
@@ -579,7 +808,17 @@ public class Actions {
 		return (iter > maxIter);
 	}
 	
-	
+	/**
+	 * Pull from the emulator a coverage file for a Test Case
+	 * 
+	 * NOTE: TestCasesExecution*Driver
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param COV_FILE Coverage file name
+	 * @param COV_PATH Path on Host PC for coverage files
+	 * @param TEST_COV_COUNTER Coverage file number 
+	 * @param TEST_CASE_INDEX Current Test Case Index
+	 */
 	public static void pullCoverageForUserTestCase(final String AUT_PACKAGE, final String COV_FILE, final String COV_PATH, int TEST_COV_COUNTER, int TEST_CASE_INDEX)
 	{
 		String src = "/data/data/"+AUT_PACKAGE+"/"+COV_FILE;
@@ -593,10 +832,20 @@ public class Actions {
 		}
 	}
 
-	public static void pullCoverageStandardFileForUserTestCase(final String AUT_PACKAGE, final String COV_PATH, int TEST_COV_COUNTER_EC, int TEST_CASE_INDEX)
+	/**
+	 * Pull from the emulator a coverage file for a Test Case
+	 * 
+	 * NOTE: TestCasesExecution*Driver
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param COV_PATH Path on Host PC for coverage files
+	 * @param TEST_COV_COUNTER Coverage file number 
+	 * @param TEST_CASE_INDEX Current Test Case Index
+	 */
+	public static void pullCoverageStandardFileForUserTestCase(final String AUT_PACKAGE, final String COV_PATH, int TEST_COV_COUNTER, int TEST_CASE_INDEX)
 	{
 		String src = "/data/data/"+AUT_PACKAGE+"/files/coverage.ec";
-		String dest = COV_PATH+"coverage_test_"+TEST_CASE_INDEX+"_"+ TEST_COV_COUNTER_EC +".ec";
+		String dest = COV_PATH+"coverage_test_"+TEST_CASE_INDEX+"_"+ TEST_COV_COUNTER +".ec";
 
 		try {
 			tools.adb("pull", src, dest).connectStderr(System.out).connectStdout(System.out);
@@ -606,10 +855,20 @@ public class Actions {
 		}
 	}
 	
-	public static void pullJUnitLogForUserTestCase(final String AUT_PACKAGE, final String DEST_PATH, final int TEST_JUNIT_COUNTER, int INDICE_TESTCASE)
+	/**
+	 * Pull from the emulator the jUnit log for a Test Case
+	 * 
+	 * NOTE: TestCasesExecution*Driver
+	 * 
+	 * @param AUT_PACKAGE Package of the AUT
+	 * @param DEST_PATH Path on Host PC for log files
+	 * @param TEST_JUNIT_COUNTER jUnit Log file number 
+	 * @param TEST_CASE_INDEX Current Test Case Index
+	 */
+	public static void pullJUnitLogForUserTestCase(final String AUT_PACKAGE, final String DEST_PATH, final int TEST_JUNIT_COUNTER, int TEST_CASE_INDEX)
 	{
 		String src = "/data/data/"+AUT_PACKAGE+"/files/it.unina.android.ripper-TEST.xml";
-		String dest = DEST_PATH+"junit-log-"+ "test_"+INDICE_TESTCASE +"_"+TEST_JUNIT_COUNTER +".xml";
+		String dest = DEST_PATH+"junit-log-"+ "test_"+TEST_CASE_INDEX +"_"+TEST_JUNIT_COUNTER +".xml";
 
 		try {
 			tools.adb("pull", src, dest).connectStderr(System.out).connectStdout(System.out).waitFor();

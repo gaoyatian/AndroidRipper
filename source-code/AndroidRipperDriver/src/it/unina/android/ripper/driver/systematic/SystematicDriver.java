@@ -29,20 +29,50 @@ import it.unina.android.ripper.states.ActivityStateList;
 import it.unina.android.ripper.termination.EmptyActivityStateListTerminationCriterion;
 import it.unina.android.ripper.termination.TerminationCriterion;
 
+/**
+ * ActiveLearning Driver
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class SystematicDriver extends AbstractDriver {
+	
+	/**
+	 * States List File name
+	 */
 	public static String STATES_LIST_FILE = "activities.xml";
 
+	/**
+	 * ActivityDescription Comparator instance
+	 */
 	protected IComparator comparator;
 
-	// TODO: generalize -> now only activity-based state
+	/**
+	 * ActivityStateList instance
+	 * 
+	 * TODO: generalize -> now only activity-based state
+	 */
 	protected ActivityStateList statesList;
 
+	/**
+	 * Constructor. Default Components.
+	 */
 	public SystematicDriver() {
 		this(new BreadthScheduler(), new HandlerBasedPlanner(), new XMLRipperInput(),
 				new GenericComparator(GenericComparatorConfiguration.Factory.getCustomWidgetSimpleComparator()),
 				new EmptyActivityStateListTerminationCriterion(), new XMLRipperOutput());
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param scheduler
+	 * @param planner
+	 * @param ripperInput
+	 * @param comparator
+	 * @param terminationCriterion
+	 * @param ripperOutput
+	 */
 	public SystematicDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, IComparator comparator,
 			TerminationCriterion terminationCriterion, RipperOutput ripperOutput) {
 
@@ -58,6 +88,16 @@ public class SystematicDriver extends AbstractDriver {
 		this.addTerminationCriterion(terminationCriterion);
 	}
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param scheduler
+	 * @param planner
+	 * @param ripperInput
+	 * @param comparator
+	 * @param terminationCriteria
+	 * @param ripperOutput
+	 */
 	public SystematicDriver(Scheduler scheduler, Planner planner, RipperInput ripperInput, IComparator comparator,
 			ArrayList<TerminationCriterion> terminationCriteria, RipperOutput ripperOutput) {
 
@@ -76,6 +116,9 @@ public class SystematicDriver extends AbstractDriver {
 		
 	}
 
+	/**
+	 * Main Ripping Loop - Active Learning Implementation
+	 */
 	@Override
 	public void rippingLoop() {
 		// reset counters
@@ -242,28 +285,44 @@ public class SystematicDriver extends AbstractDriver {
 		writeReportFile(reportXML);
 	}
 
+	/**
+	 * Open the XML Description File (no overwrite)
+	 */
 	protected void initStateDescriptionFile() {
 		this.initStateDescriptionFile(false);
 	}
 	
+	/**
+	 * Open the XML Description File
+	 * 
+	 * @param overwrite
+	 */
 	protected void initStateDescriptionFile(boolean overwrite) {
 		if (overwrite || new File(XML_OUTPUT_PATH + STATES_LIST_FILE).exists() == false) {
 			writeStringToFile("<?xml version=\"1.0\"?><states>\n", XML_OUTPUT_PATH + STATES_LIST_FILE);
 		}
 	}
 
+	/**
+	 * Close the XML Description File
+	 */
 	protected void closeStateDescriptionFile() {
 		appendStringToFile("</states>\n", XML_OUTPUT_PATH + STATES_LIST_FILE);
 	}
 
+	/**
+	 * Append an ActivtyDescription to the XML Description File
+	 * 
+	 * @param ad
+	 */
 	protected void appendStatesDescriptionFile(ActivityDescription ad) {
 		appendStringToFile("\n" + this.ripperOutput.outputActivityDescription(ad), XML_OUTPUT_PATH + STATES_LIST_FILE);
 	}
 
-	/*
-	 * Precondition: rsSocket must be connected
+	/**
+	 * Bootstrap Active Learning Ripping Process. Retrieves the first ActivityDescription.
 	 * 
-	 * returns true if ping ok, false if not
+	 * Precondition: rsSocket should be connected
 	 */
 	protected void bootstrap() {
 		try {
@@ -390,6 +449,12 @@ public class SystematicDriver extends AbstractDriver {
 		return msg;
 	}
 
+	/**
+	 * Compare a ActivityDescription with the ones contained in the statesList
+	 * 
+	 * @param activity ActivityDescription to compare
+	 * @return
+	 */
 	protected boolean compareAndAddState(ActivityDescription activity) {
 		notifyRipperLog("\tComparator...");
 		if (statesList.containsActivity(activity) == null) {
@@ -401,6 +466,15 @@ public class SystematicDriver extends AbstractDriver {
 		}
 	}
 
+	/**
+	 * Check if the ActivityDescription is equivalent (using the Comparator) to the one
+	 * where the event evt was planned to be performed
+	 * 
+	 * @param ad Activity Description
+	 * @param evt Event Description
+	 * @return
+	 * @throws IOException
+	 */
 	protected boolean checkBeforeEventStateId(ActivityDescription ad, Event evt) throws IOException {
 		if (evt.getBeforeExecutionStateUID().equals("UNDEFINED"))
 			return true;
@@ -408,34 +482,37 @@ public class SystematicDriver extends AbstractDriver {
 		return ad.getId().equals(evt.getBeforeExecutionStateUID());
 	}
 
+	/**
+	 * Get the XML Description File name with full path
+	 * 
+	 * @return
+	 */
 	public String getStatesListFile() {
 		return XML_OUTPUT_PATH + STATES_LIST_FILE;
 	}
 
+	/**
+	 * Set the XML Description File
+	 * 
+	 * @param statesListFile
+	 */
 	public void setStatesListFile(String statesListFile) {
 		STATES_LIST_FILE = statesListFile;
 	}
 
-	public int getnEvents() {
-		return nEvents;
-	}
-
-	public int getnTasks() {
-		return nTasks;
-	}
-
-	public int getnFails() {
-		return nFails;
-	}
-
-	public int getnRestart() {
-		return nRestart;
-	}
-
+	/**
+	 * Comparator Instance
+	 * @return
+	 */
 	public IComparator getComparator() {
 		return comparator;
 	}
 
+	/**
+	 * ActivityStateList Instance
+	 * 
+	 * @return
+	 */
 	public ActivityStateList getStatesList() {
 		return statesList;
 	}

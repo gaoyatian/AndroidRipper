@@ -5,21 +5,39 @@ import java.io.PrintStream;
 
 import com.googlecode.autoandroid.lib.AndroidTools;
 
+/**
+ * Dumps the Logcat to a File
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class LogcatDumper extends Thread {
-
-	/*
-	public static void main(String args[]) {
-		new LogcatDumper(5554).start();
-	}
-	*/
 	
+	/**
+	 * Emulator Port
+	 */
 	int emulatorPort;
+	
+	/**
+	 * Destination File Name
+	 */
 	String filename;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param port Emulator port
+	 */
 	public LogcatDumper(int port) {
 		this(port, "logcat_" + System.currentTimeMillis() + ".txt");
 	}
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param port Emulator port
+	 * @param filename Destination File Name
+	 */	
 	public LogcatDumper(int port, String filename) {
 		super();
 		this.emulatorPort = port;

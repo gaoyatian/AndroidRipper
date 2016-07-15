@@ -6,6 +6,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+/**
+ * Task List
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class TaskList extends ArrayList<Task> {
 
 	private static final long serialVersionUID = 1234567890L;

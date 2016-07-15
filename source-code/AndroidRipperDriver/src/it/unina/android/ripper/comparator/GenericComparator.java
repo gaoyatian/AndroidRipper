@@ -9,35 +9,57 @@ import it.unina.android.ripper.constants.SimpleType;
 import it.unina.android.ripper.model.ActivityDescription;
 import it.unina.android.ripper.model.WidgetDescription;
 
+/**
+ * Generic Comparator.
+ * 
+ * Contains a set of methods to compare two ActivityDescription Instances. 
+ * 
+ * @author Nicola Amatucci - REvERSE
+ * 
+ */
 public class GenericComparator implements IComparator, Serializable {
 
-	/* BASIC DEBUG FUNCTIONS ;-) */
+	/* DEBUG FUNCTIONS ;-) */
 	public static boolean DEBUG = true;
 	public static final String TAG = "GenericComparator";
 	public static void debug(String s) { if (DEBUG)	System.out.println("["+TAG+"]"+s); }
 	public static void debug(boolean condition, String s) { if (DEBUG && condition)	System.out.println("["+TAG+"]"+s); }
-	/* END OF BASIC DEBUG FUNCTIONS ;-) */
+	/* END OF DEBUG FUNCTIONS ;-) */
 	
+	/**
+	 * Comparator Configuration
+	 */
 	GenericComparatorConfiguration config = null;
 	
+	/**
+	 * Constructor
+	 */
 	public GenericComparator()
 	{
 		super();
 		this.config = GenericComparatorConfiguration.Factory.getDefaultComparator();
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param config Configuration
+	 */
 	public GenericComparator(GenericComparatorConfiguration config)
 	{
 		super();
 		this.config = config;
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.comparator.IComparator#compare(it.unina.android.ripper.model.ActivityDescription, it.unina.android.ripper.model.ActivityDescription)
+	 */
 	@Override
 	public Object compare(ActivityDescription activity1, ActivityDescription activity2)
 	{
-		//TODO: parameters validation ;-)
+		//TODO: parameters validation
 		
-		//filter widget if needed
+		//Filter widget (if needed)
 		ArrayList<WidgetDescription> filteredWidgets1 = new ArrayList<WidgetDescription>();
 		ArrayList<WidgetDescription> filteredWidgets2 = new ArrayList<WidgetDescription>();
 		if (
@@ -52,7 +74,7 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		
 		
-		//compare activity names		
+		//Compare the name parameter of the ActivityDescription instances		
 		if (config.compareActivityNames)
 		{
 			 
@@ -68,7 +90,7 @@ public class GenericComparator implements IComparator, Serializable {
 			
 		
 		
-		//compare activity titles
+		//Compare the title parameter of the ActivityDescription instances	
 		if (config.compareActivityTitles)
 		{
 			 if (		(activity1.getTitle() != null && activity2.getTitle() == null) 	
@@ -83,7 +105,7 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		
 		
-		//compare activity classes
+		//Compare the class parameter of the ActivityDescription instances	
 		if (config.compareActivityClasses)
 		{
 			String className1 = null;
@@ -121,7 +143,7 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		
 		
-		//compare activity widget count
+		//Compare the Widgets array size of the ActivityDescription instances	
 		if (config.compareActivityWidgetsCount && activity1.getWidgets().size() != activity2.getWidgets().size())
 		{
 			debug("compare activity widget count -> false");
@@ -131,7 +153,7 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		
 		
-		//compare activity FILTERED widget count
+		//Compare the filtered Widgets array size of the ActivityDescription instances	
 		if (config.compareActivityFilteredWidgetsCount && filteredWidgets1.size() != filteredWidgets2.size())
 		{
 			debug("compare activity FILTERED widget count -> false");
@@ -141,7 +163,7 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		
 		
-		//test if widgets match
+		//Test if the Widgets array elements match in the ActivityDescription instances
 		if (config.testIfWidgetsMatch)
 		{
 			ArrayList<WidgetDescription> widgets1 = activity1.getWidgets();
@@ -157,7 +179,7 @@ public class GenericComparator implements IComparator, Serializable {
 		
 		
 		
-		//test if FILTERED widgets match
+		//Test if the filtered Widgets array elements match in the ActivityDescription instances
 		if (config.testIfFilteredWidgetsMatch)
 		{
 			if (testIfWidgetsListMatch(filteredWidgets1, filteredWidgets2) == false)
@@ -168,12 +190,16 @@ public class GenericComparator implements IComparator, Serializable {
 		}
 		debug(config.testIfFilteredWidgetsMatch, "test if FILTERED widgets match -> true");
 		
-		
-		
-		
 		return true;
 	}
 
+	/**
+	 * Filter the Widget array
+	 * 
+	 * @param activity Activity
+	 * @param filteredWidgets List of Widget to Filter
+	 * @return
+	 */
 	private ArrayList<WidgetDescription> filterWidgets(ActivityDescription activity, List<String> filteredWidgets)
 	{	
 		ArrayList<WidgetDescription> ret = new ArrayList<WidgetDescription>();
@@ -185,8 +211,16 @@ public class GenericComparator implements IComparator, Serializable {
 		return ret;
 	}
 	
+	/**
+	 * Compares two WidgetDescription instances
+	 * 
+	 * @param w1 Widget
+	 * @param w2 Widget
+	 * @return
+	 */
 	protected boolean matchWidget(WidgetDescription w1, WidgetDescription w2)
 	{
+		//Compare the id parameter of the WidgetDescription instances
 		if (config.compareWidgetIds && w1.getId() != w1.getId())
 		{
 			debug("compare widget id -> false");
@@ -194,8 +228,7 @@ public class GenericComparator implements IComparator, Serializable {
 		}
 		debug(config.compareWidgetIds, "compare widget id -> true");
 		
-		
-		
+		//Compare the SimpleType parameter of the WidgetDescription instances
 		if (config.compareWidgetSimpleType && w1.getSimpleType().equals(w2.getSimpleType()) == false)
 		{
 			debug("compare widget simple type("+w1.getSimpleType()+","+w2.getSimpleType()+") -> false");
@@ -203,19 +236,15 @@ public class GenericComparator implements IComparator, Serializable {
 		}
 		debug(config.compareWidgetSimpleType, "compare widget simple type -> true");
 		
-		
-		
-		
+		//Compare the visibile parameter of the WidgetDescription instances
 		if (config.testWidgetVisibilityChange && w1.isVisible() == w2.isVisible())
 		{
 			debug("test widget visibility change -> false");
 			return false;
 		}
 		debug(config.testWidgetVisibilityChange, "test widget visibility change -> true");
-		
-		
-		
-		
+
+		//Compare the enabled parameter of the WidgetDescription instances
 		if (config.testWidgetEnablingChange && w1.isVisible() == w2.isVisible())
 		{
 			debug("test widget enabling change -> false");
@@ -223,9 +252,7 @@ public class GenericComparator implements IComparator, Serializable {
 		}
 		debug(config.testWidgetEnablingChange, "test widget enabling change -> true");
 
-		
-		
-		
+		//Compare the item count of two LIST_VIEW WidgetDescription instances		
 		if (w1.getSimpleType().equals(SimpleType.LIST_VIEW) && w2.getSimpleType().equals(SimpleType.LIST_VIEW))
 		{		
 			if (config.compareListItemCount &&  w1.getCount() != w2.getCount())
@@ -258,10 +285,8 @@ public class GenericComparator implements IComparator, Serializable {
 //			}
 //			debug(config.testIfBothListHaveMinusThanAFixedNumberOfElements, "testIfBothListHaveMinusThanAFixedNumberOfElements -> true");
 		}
-			
-		
-		
-		
+
+		//Compare the item count of two MENU_VIEW WidgetDescription instances			
 		if (w1.getSimpleType().equals(SimpleType.MENU_VIEW) && w2.getSimpleType().equals(SimpleType.MENU_VIEW))
 		{
 			if (config.compareMenuItemCount && w1.getCount() != w2.getCount())
@@ -272,9 +297,7 @@ public class GenericComparator implements IComparator, Serializable {
 			debug(config.compareMenuItemCount, "compare menu item count -> true");
 		}
 		
-		
-		
-		
+		//Compare the title of two DIALOG_VIEW WidgetDescription instances		
 		if (config.compareDialogTitle && w1.getSimpleType().equals(SimpleType.DIALOG_VIEW) && w2.getSimpleType().equals(SimpleType.DIALOG_VIEW))
 		{
 			if (w1.getName().equals(w2.getName()) == false) {
@@ -283,15 +306,22 @@ public class GenericComparator implements IComparator, Serializable {
 			}
 			debug("compare dialog names -> true");
 		}
-		
-		
-		
-		
+
 		return true;
 	}
 	
+	/**
+	 * Test if the array of WidgetDescription instances of two ActivityDescription instances match
+	 * 
+	 * @param widgets1 Array of WidgetDescription of the first ActivityDescription instance
+	 * @param widgets2 Array of WidgetDescription of the second ActivityDescription instance
+	 * @return
+	 */
 	protected boolean testIfWidgetsListMatch(ArrayList<WidgetDescription> widgets1, ArrayList<WidgetDescription> widgets2)
 	{
+		/**
+		 * Implement a contains() method to verify if the widget is already in the list
+		 */
 		ArrayList<WidgetDescription> checkedAlready = new ArrayList<WidgetDescription>()
 		{
 			@Override
@@ -305,7 +335,7 @@ public class GenericComparator implements IComparator, Serializable {
 			
 		};
 		
-		//pass1
+		//First Pass of comparison
 		for (WidgetDescription w1 : widgets1)
 		{
 			//if (checkedAlready.contains(w1) == false) {
@@ -318,7 +348,7 @@ public class GenericComparator implements IComparator, Serializable {
 			//}
 		}
 		
-		//pass2
+		//Second Pass of comparison
 		for (WidgetDescription w2 : widgets2)
 		{
 			if (checkedAlready.contains(w2) == false) {
@@ -333,6 +363,12 @@ public class GenericComparator implements IComparator, Serializable {
 		return true;
 	}
 	
+	/**
+	 * Serach for a WidgetDescription in a list of WidgetDescription
+	 * @param w1 WidgetDescription to search for
+	 * @param widgets Array of WidgetDescription to search in
+	 * @return
+	 */
 	private boolean lookFor(WidgetDescription w1, ArrayList<WidgetDescription> widgets)
 	{
 		for (WidgetDescription w2 : widgets)

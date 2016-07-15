@@ -10,18 +10,41 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * List of Activity States traversed during the ripping process. 
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class ActivityStateList extends ArrayList<ActivityDescription> implements Serializable
 {
+	/**
+	 * Comparator Instance
+	 */
 	IComparator comparator = null;
 
+	/**
+	 * Last id assigned to a traversed Activity
+	 */
 	int lastActivityId = 0;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param comparator Comparator instance
+	 */
 	public ActivityStateList(IComparator comparator)
 	{
 		super();
 		this.comparator = comparator;
 	}
 
+	/**
+	 * Check if the Activity has been traversed during the ripping process 
+	 * 
+	 * @param activity1 Activity Description
+	 * @return
+	 */
 	public String containsActivity(ActivityDescription activity1)
 	{
 		for (ActivityDescription activity2 : this)
@@ -36,17 +59,34 @@ public class ActivityStateList extends ArrayList<ActivityDescription> implements
 		return null;
 	}
 	
+	/**
+	 * Get the Id of an equivalent ActivityDescription, if it exists
+	 * 
+	 * @param activity1 Activity Description
+	 * @return
+	 */
 	public String getEquivalentActivityStateId(ActivityDescription activity1)
 	{
 		return this.containsActivity(activity1);
 	}
 	
+	/**
+	 * Add an ActivityDescription and sets its id
+	 * 
+	 * @param a
+	 * @return
+	 */
 	public boolean addActivity(ActivityDescription a)
 	{
 		a.setId("a"+(++lastActivityId));
 		return this.add(a);
 	}
 	
+	/**
+	 * Get the last ActivityDescription added
+	 * 
+	 * @return
+	 */
 	public ActivityDescription getLatestAdded()
 	{
 		if (this.size() > 0)
@@ -55,6 +95,11 @@ public class ActivityStateList extends ArrayList<ActivityDescription> implements
 			return null;
 	}
 	
+	/**
+	 * Output ActivityDescription to Object File
+	 * 
+	 * @param fileName Output file
+	 */
 	public void saveToFile(String fileName) {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(fileName);
@@ -67,6 +112,12 @@ public class ActivityStateList extends ArrayList<ActivityDescription> implements
 		}
 	}
 	
+	/**
+	 * Read ActivityDescription from Object File
+	 * 
+	 * @param fileName Input File
+	 * @return
+	 */
 	public static ActivityStateList loadFromFile(String fileName) {
 		ActivityStateList t = null;
 		

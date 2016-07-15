@@ -4,6 +4,12 @@ package it.unina.android.ripper.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Event
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class Event implements Serializable {
 
 	private String interaction;

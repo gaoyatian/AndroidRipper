@@ -22,15 +22,45 @@ import it.unina.android.ripper.scheduler.RandomScheduler;
 import it.unina.android.ripper.scheduler.Scheduler;
 import it.unina.android.ripper.termination.TerminationCriterion;
 
+/**
+ * Configure the AndroidRipperDriver, handle console output, start up the ripping process
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class AndroidRipperStarter implements RipperEventListener {
 
+	/**
+	 * Version
+	 */
 	public final static String VERSION = "2016.04.26";
 	
+	/**
+	 * Configuration
+	 */
 	Properties conf;
+	
+	/**
+	 * Driver Instance
+	 */
 	AbstractDriver driver;
+	
+	/**
+	 * Configuration file name
+	 */
 	String configFile;
+	
+	/**
+	 * RipperDriver type
+	 */
 	String driverType = null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param driverType RipperDriver type
+	 * @param configFile Configuration file name
+	 */
 	public AndroidRipperStarter(String driverType, String configFile) {
 		super();
 		if (new File(configFile).exists() == false) {
@@ -41,6 +71,9 @@ public class AndroidRipperStarter implements RipperEventListener {
 		}
 	}
 	
+	/**
+	 * Configure and StartUp Ripping Process
+	 */
 	public void startRipping()
 	{
 		if (driverType.equals("s")) {
@@ -333,6 +366,12 @@ public class AndroidRipperStarter implements RipperEventListener {
 		
 	}
 	
+	/**
+	 * Load the configuration file into a Properties class instance
+	 * 
+	 * @param fileName configuration file name
+	 * @return
+	 */
 	private Properties loadConfigurationFile(String fileName)
 	{
 		Properties conf = new Properties();
@@ -346,28 +385,45 @@ public class AndroidRipperStarter implements RipperEventListener {
 		
 		return null;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.observer.RipperEventListener#ripperLog(java.lang.String)
+	 */
 	@Override
 	public void ripperLog(String log) {
 		println(log);
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.observer.RipperEventListener#ripperStatusUpdate(java.lang.String)
+	 */
 	@Override
 	public void ripperStatusUpdate(String status) {
 		println(status);
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.observer.RipperEventListener#ripperTaskEneded()
+	 */
 	@Override
 	public void ripperTaskEneded() {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unina.android.ripper.observer.RipperEventListener#ripperEneded()
+	 */
 	@Override
 	public void ripperEneded() {
 		println("Ripper Ended!");
 		System.exit(0);
 	}
 	
+	/**
+	 * Print a formatted debug line
+	 * 
+	 * @param line line to print
+	 */
 	protected void println(String line)
 	{
 		System.out.println("["+System.currentTimeMillis()+"] " + line);

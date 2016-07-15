@@ -11,18 +11,54 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+/**
+ * Handles the communication with AndroidRipperService running on the emulator.
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class RipperServiceSocket {
+	/**
+	 * Log Tag
+	 */
 	public static final String TAG = "RipperServiceSocket";
 	
+	/**
+	 * Socket Read Timeout
+	 */
 	public static int READ_TIMEOUT = 20000;
 	
+	/**
+	 * AndroidRipperService host name
+	 */
 	String host;
+	
+	/**
+	 * AndroidRipperService port
+	 */
 	int port;
+	
+	/**
+	 * Socket Instance
+	 */
 	Socket socket = null;
+	
+	/**
+	 * Connection Status
+	 */
 	boolean connected = false;	
 	
+	/**
+	 * Current Message index (for message sequence verification)
+	 */
 	long curIndex = 0;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param host AndroidRipperService host name
+	 * @param port AndroidRipperService port
+	 */
 	public RipperServiceSocket(String host, int port)
 	{
 		super();
@@ -30,6 +66,13 @@ public class RipperServiceSocket {
 		this.port = port;
 	}
 	
+	/**
+	 * Concatenate two array of bytes
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	private byte[] concatenateByteArrays(byte[] a, byte[] b) {
 	    byte[] result = new byte[a.length + b.length]; 
 	    System.arraycopy(a, 0, result, 0, a.length); 
@@ -41,17 +84,31 @@ public class RipperServiceSocket {
 	    return result;
 	}
 	
+	/**
+	 * Connect to AndroidRipperService
+	 * 
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public void connect()  throws UnknownHostException, IOException
 	{
 		this.socket = new Socket(host, port);
 		connected = true; //if exception this line isn't reached
 	}
 	
+	/**
+	 * Connection Status
+	 * 
+	 * @return
+	 */
 	public boolean isConnected()
 	{
 		return this.connected;
 	}
 	
+	/**
+	 * Disconnect from AndroidRipperService
+	 */
 	public void disconnect()
 	{
 		if (this.socket != null)
@@ -61,11 +118,25 @@ public class RipperServiceSocket {
 		connected = false;
 	}
 	
+	/**
+	 * Low Level Send Messages to AndroidRipperService
+	 * 
+	 * @param message
+	 * @throws IOException
+	 */
 	private void sendBytes(byte[] message) throws IOException {
 		this.socket.getOutputStream().write(message);
 		this.socket.getOutputStream().flush();
 	}
 	
+	/**
+	 * Low Level Read Messages from AndroidRipperService
+	 * 
+	 * @param timeout Read Timeout
+	 * @param bigBuffer Use a big Buffer?
+	 * @return read bytes
+	 * @throws IOException
+	 */
 	private byte[] readBytes(int timeout, boolean bigBuffer) throws IOException
 	{
 		if(bigBuffer) {
@@ -81,21 +152,30 @@ public class RipperServiceSocket {
 		}
 	}
 	
+	/**
+	 * Low Level Read Messages from AndroidRipperService without timeout
+	 * 
+	 * @param bigBuffer Use a big Buffer?
+	 * @return read bytes
+	 * @throws IOException
+	 */
 	private byte[] readBytesNoTimeout(boolean bigBuffer) throws IOException
 	{
 		if(bigBuffer) {
-			//this.socket.setSoTimeout(timeout);
 			byte[] buffer = this.readBytesBigBuffer();
-			//this.socket.setSoTimeout(0);
 			return buffer;
 		} else {
-			//this.socket.setSoTimeout(timeout);
 			byte[] buffer = this.readBytes();
-			//this.socket.setSoTimeout(0);
 			return buffer;			
 		}
 	}
 
+	/**
+	 * readBytes() base function
+	 * 
+	 * @return read bytes
+	 * @throws IOException
+	 */
 	private byte[] readBytes() throws IOException
 	{
 		byte[] buffer = new byte[5600];
@@ -105,7 +185,7 @@ public class RipperServiceSocket {
 		while((c = this.socket.getInputStream().read()) != 16 && c != -1)
 			buffer[i++] = (byte)c;
 
-		//connessione caduta
+		//connection closed
 		if (c == -1) {
 			buffer = null;
 			return null;
@@ -120,6 +200,12 @@ public class RipperServiceSocket {
 		return buffer_trim;
 	}
 	
+	/**
+	 * readBytesBigBuffer() base function
+	 * 
+	 * @return read bytes
+	 * @throws IOException
+	 */
 	private byte[] readBytesBigBuffer() throws IOException
 	{
 		byte[] buffer = new byte[65000];
@@ -129,12 +215,11 @@ public class RipperServiceSocket {
 		while((c = this.socket.getInputStream().read()) != 16 && c != -1)
 			buffer[i++] = (byte)c;
 
-		//connessione caduta
+		//connection closed
 		if (c == -1) {
 			buffer = null;
 			return null;
 		}
-			
 		
 		byte[] buffer_trim = new byte[i];
 		for (int j = 0; j < i; j++)
@@ -145,6 +230,11 @@ public class RipperServiceSocket {
 		return buffer_trim;
 	}
 	
+	/**
+	 * High Level Send Messages to AndroidRipperService
+	 * 
+	 * @param msg Message to Send
+	 */
 	public void sendMessage(Message msg)
 	{
 		msg.addParameter("index", Long.toString(++curIndex));
@@ -171,6 +261,12 @@ public class RipperServiceSocket {
 		}
 	}
 	
+	/**
+	 * High Level Read Messages from AndroidRipperService
+	 * 
+	 * @return Read Message
+	 * @throws SocketException
+	 */
 	public Message readMessage() throws SocketException
 	{
 		//return readMessage(0);
@@ -208,6 +304,13 @@ public class RipperServiceSocket {
 		return null;		
 	}
 	
+	/**
+	 * High Level Read Messages from AndroidRipperService without timeout
+	 * 
+	 * @param bigBuffer Use a big Buffer?
+	 * @return Read Message
+	 * @throws SocketException
+	 */
 	public Message readMessageNoTimeout(boolean bigBuffer) throws SocketException {
 
 		try {
@@ -245,6 +348,14 @@ public class RipperServiceSocket {
 		return null;
 	}
 	
+	/**
+	 * High Level Read Messages from AndroidRipperService
+	 * 
+	 * @param timeout Read Timeout
+	 * @param bigBuffer Use a big Buffer?
+	 * @return Read Message
+	 * @throws SocketException
+	 */
 	public Message readMessage(int timeout, boolean bigBuffer) throws SocketException
 	{
 		
@@ -286,6 +397,12 @@ public class RipperServiceSocket {
 		return null;		
 	}
 	
+	/**
+	 * Check if AndroidRipperService is responding
+	 * 
+	 * @return
+	 * @throws SocketException
+	 */
 	public boolean isAlive() throws SocketException
 	{
 		this.sendMessage(Message.getPingMessage());
@@ -293,6 +410,12 @@ public class RipperServiceSocket {
 		return (m != null);
 	}
 	
+	/**
+	 * Send a PING Message
+	 * 
+	 * @return
+	 * @throws SocketException
+	 */
 	public Message ping() throws SocketException
 	{
 		this.sendMessage(Message.getPingMessage());
@@ -301,11 +424,26 @@ public class RipperServiceSocket {
 		return m;
 	}
 	
+	/**
+	 * Send a DESCRIBE Message.
+	 * 
+	 * Call describe(MAX_RETRY = 5)
+	 * 
+	 * @return
+	 * @throws SocketException
+	 */
 	public String describe() throws SocketException
 	{
 		return describe(5);
 	}
 	
+	/**
+	 * Send a DESCRIBE Message.
+	 * 
+	 * @param MAX_RETRY Maximum number of retry
+	 * @return
+	 * @throws SocketException
+	 */
 	public String describe(int MAX_RETRY) throws SocketException
 	{
 		Message describeMsg = null;
@@ -357,6 +495,11 @@ public class RipperServiceSocket {
 		} while(true);		
 	}
 	
+	/**
+	 * Send an EVENT Message
+	 * 
+	 * @param evt Event instance to send
+	 */
 	public void sendEvent(Event evt)
 	{
 		if (evt.getInputs() != null && evt.getInputs().size() > 0)

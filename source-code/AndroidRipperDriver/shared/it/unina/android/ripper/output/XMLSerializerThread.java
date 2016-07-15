@@ -10,6 +10,12 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
+/**
+ * Thread that performs the XML Serialization
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class XMLSerializerThread extends Thread {
 
 	private String output;
