@@ -8,6 +8,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.os.RemoteException;
 
+/**
+ * AndroidRipperService Stub
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class AndroidRipperServiceStub extends IAndroidRipperService.Stub {
 
 	AndroidRipperService service = null;
