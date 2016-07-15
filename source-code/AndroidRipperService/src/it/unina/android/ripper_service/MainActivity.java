@@ -7,6 +7,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Activity that can be used to manually start AndroidRipperService
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class MainActivity extends Activity {
 
 	@Override

@@ -4,6 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * android.intent.action.BOOT_COMPLETED Broadcast Receiver
+ * 
+ * @author Nicola Amatucci - REvERSE
+ *
+ */
 public class StartupReceiver extends BroadcastReceiver {
 
 	@Override
