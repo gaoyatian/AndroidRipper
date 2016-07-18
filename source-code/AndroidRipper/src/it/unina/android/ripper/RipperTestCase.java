@@ -23,6 +23,7 @@ import it.unina.android.ripper.automation.robot.IRobot;
 import it.unina.android.ripper.automation.robot.RobotiumWrapperRobot;
 import it.unina.android.ripper.configuration.Configuration;
 import it.unina.android.ripper.extractor.IExtractor;
+import it.unina.android.ripper.extractor.ReflectionExtractor;
 import it.unina.android.ripper.extractor.SimpleExtractor;
 import it.unina.android.ripper.extractor.screenshoot.IScreenshotTaker;
 import it.unina.android.ripper.extractor.screenshoot.RobotiumScreenshotTaker;
@@ -163,7 +164,13 @@ public class RipperTestCase extends ActivityInstrumentationTestCase2 {
 	public void testApplication() {
 		this.robot = new RobotiumWrapperRobot(this);
 		this.automation = new RipperAutomation(this.robot);
-		this.extractor = new SimpleExtractor(this.robot);
+		
+		if (Configuration.EXTRACTOR_CLASS.equals("SimpleExtractor")) {
+			this.extractor = new SimpleExtractor(this.robot);
+		} else {
+			this.extractor = new ReflectionExtractor(this.robot);
+		}
+		
 		this.screenshotTaker = new RobotiumScreenshotTaker(this.robot);
 
 		this.afterRestart();
