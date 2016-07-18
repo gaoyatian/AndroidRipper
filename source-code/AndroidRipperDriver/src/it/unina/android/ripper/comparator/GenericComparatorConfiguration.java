@@ -235,9 +235,9 @@ public class GenericComparatorConfiguration
 	 */
 	public int maxListElementsCount = 5;
 
-	//public boolean testIfBothListHaveAtLeastOneElement = false;
-	//public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
-	//public int fixedNumberOfListElements = 5;
+	public boolean testIfBothListHaveAtLeastOneElement = false;
+	public boolean testIfBothListHaveMinusThanAFixedNumberOfElements = false;
+	public int fixedNumberOfListElements = 5;
 	
 	
 	/* MENU WIDGET OPTIONS */
