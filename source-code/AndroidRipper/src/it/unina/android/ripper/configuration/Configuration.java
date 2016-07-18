@@ -55,6 +55,12 @@ public class Configuration implements IConfiguration
 	 */
 	public static Class<?> autActivityClass;
 	
+	
+	/**
+	 * Extractor Component Class Name
+	 */
+	public static String EXTRACTOR_CLASS = "%%_EXTRACTOR_CLASS_%%";
+	
 	/**
 	 * Load configuration
 	 */

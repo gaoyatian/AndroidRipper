@@ -27,6 +27,7 @@ public class GuiRipperInstaller {
 	public static final String AVD_NAME = "AVD_NAME";
 	public static final String AVD_PORT = "AVD_PORT";
 	public static final String LOG_FILE = "LOG_FILE";
+	public static final String EXTRACTOR_CLASS = "EXTRACTOR_CLASS";
 	
 	public static String shell_CMD = OSSpecific.getShellCommand();
 	
@@ -102,6 +103,8 @@ public class GuiRipperInstaller {
 
 		String logfile = this.config.getProperty(LOG_FILE, "install_log.txt");
 		
+		String extractorClass = this.config.getProperty(EXTRACTOR_CLASS, "SimpleExtractor");
+		
 		//check avd
 		if (checkAVD(avdName) == false) {
 			throw new RuntimeException("AVD does not exist!");
@@ -125,9 +128,9 @@ public class GuiRipperInstaller {
 		
 		//replace strings
 		println("Editing 'Configuration.java'");
-		replaceStringsInFile(testSuitePath+"/src/it/unina/android/ripper/configuration/Configuration.java.template", testSuitePath+"/src/it/unina/android/ripper/configuration/Configuration.java", appPackage, appMainActivity);
+		replaceStringsInFile(testSuitePath+"/src/it/unina/android/ripper/configuration/Configuration.java.template", testSuitePath+"/src/it/unina/android/ripper/configuration/Configuration.java", appPackage, appMainActivity, extractorClass);
 		println("Editing 'AndroidManifest.xml'");
-		replaceStringsInFile(testSuitePath+"/AndroidManifest.xml.template", testSuitePath+"/AndroidManifest.xml", appPackage, appMainActivity);
+		replaceStringsInFile(testSuitePath+"/AndroidManifest.xml.template", testSuitePath+"/AndroidManifest.xml", appPackage, appMainActivity, extractorClass);
 		
 		try
 		{
@@ -330,7 +333,7 @@ public class GuiRipperInstaller {
 		}
 	}
 	
-	protected void replaceStringsInFile(String templateFilePath, String outputFilePath, String appPackage, String appMainActivity) {
+	protected void replaceStringsInFile(String templateFilePath, String outputFilePath, String appPackage, String appMainActivity, String extractorClass) {
 		try {
 			
 			Path templatePath = Paths.get(templateFilePath);
@@ -340,6 +343,8 @@ public class GuiRipperInstaller {
 			String content = new String(Files.readAllBytes(templatePath), charset);
 			content = content.replaceAll("%%_PACKAGE_NAME_%%", appPackage);
 			content = content.replaceAll("%%_CLASS_NAME_%%", appMainActivity);
+			content = content.replaceAll("%%_EXTRACTOR_CLASS_%%", extractorClass);
+			
 			Files.write(outPath, content.getBytes(charset));
 
 		} catch(Exception ex) {
